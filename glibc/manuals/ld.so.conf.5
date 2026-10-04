@@ -1,0 +1,15 @@
+.TH LD.SO.CONF 5 "" "Config Files" "Core Linux Distribution"
+
+.SH NAME
+ld.so.conf - shared library directories
+
+.SH DESCRIPTION
+/etc/ld.so.conf contains a listing of directories containing shared
+libraries. ldconfig(8) will run through the directories in ld.so.conf
+preparing them for linking. The format is simply one directory per line.
+/lib and /usr/lib are assumed by ldconfig(8) regardless of whether they
+appear in ld.so.conf.
+
+.SH NOTE
+This man page was written for the Core Linux Distribution
+[http://coredistro.sf.net/]. Feel free to use it elsewhere.
