@@ -1,0 +1,120 @@
+.\" corepkg - The Core GNU/Linux Distro package manager. 
+.\" Copyright 2003 Josh Devan <jd@eknitek.net> 
+.\" Copyright 2011-2012, 2015-2017, 2020 David Egan Evans <sinuhe@gnu.org>
+.\" 
+.\" This program is free software; you can redistribute it and/or modify 
+.\" it under the terms of the GNU General Public License as published by 
+.\" the Free Software Foundation; either version 2 of the License, or 
+.\" (at your option) any later version. 
+.\" 
+.\" This program is distributed in the hope that it will be useful, 
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of 
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+.\" GNU General Public License for more details. 
+.\" 
+.\" You should have received a copy of the GNU General Public License along 
+.\" with this program; if not, write to the Free Software Foundation, Inc., 
+.\" 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+.TH corepkg 8 "24 July 2020" "CorePKG" "Core"
+
+.SH NAME
+corepkg - Handle core packages [.cpk]
+
+.SH SYNOPSIS
+.B corepkg -c|-l dir
+.br
+.B corepkg -i|-u|-x file [dir]
+.br
+.B corepkg -q file
+.br
+.B corepkg -q|-r pkg [dir]
+
+.SH DESCRIPTION
+The CorePKG utility installs, removes, queries, and creates core packages.
+It also lists installed packages and extracts the contents of a core
+pacakge. A core package is a gzip compressed tape archive containing
+a core.info and core.list file in the root of the archive, and using
+.cpk as extension. Arguments are of three types: file (a .cpk package),
+package name (pkg), or directory (dir). All directory arguments are
+optional and will revert to defaults if not included.
+
+.SH INSTALL
+corepkg -i file [dir]
+.sp 2
+Install package file to the filesystem. [dir] defaults to "/". Any extra
+installation (and removal) instructions will be displayed.
+
+.SH UPGRADE
+corepkg -u file [dir]
+.sp 2
+Upgrade package with a new version. [dir defaults to "/".
+Currently, this does not allow upgrading a package of a different name.
+
+.SH REMOVE
+corepkg -r pkg [dir]
+.sp 2
+Remove package [pkg] from the filesystem. [dir] defaults to "/". Any
+extra removal (and installation) instructions will be displayed. There
+is no dependency checking. If you remove critical libraries or
+binaries, your system may become inoperable. A log will be placed in
+[dir]/var/log/removed_pkgs/pkg-$(date +%F) of the package, and files,
+removed.
+
+.SH QUERY
+corepkg -q pkg [dir]
+.br
+corepkg -q file
+.sp 2
+Display information about a package from a package file, or from an
+installed package. [dir] defaults to "/".
+
+.SH LIST
+corepkg -l [dir]
+.sp 2
+List all installed packages and their versions. [dir] defaults to "/".
+
+.SH CREATE
+corepkg -c [dir]
+.sp 2
+Create a package from directory [dir]. [dir] defaults to the current
+working directory.
+
+.SH EXTRACT
+corepkg -x file [dir]
+.sp 2
+Extract package [file] to a directory. [dir] defaults to the name of
+the package.
+
+.SH BUGS
+corepkg -r|-u will clobber packaged configuration files.
+
+Configuration files must be added by the installer, or system
+adminstrator, not a package (examples should be found in /usr/doc).
+Static configuration files should, of course, be installed in /usr/lib.
+
+corepkg -u does not upgrade or replace packages with a different name.
+
+Dynamically shared library dependencies are not tracked (other than the
+arbitrary DEPENDS in core.info). Should they be?
+
+.SH EXAMPLES
+corepkg -i bash-2.05b+1.cpk /mnt/root
+.br
+corepkg -u bash /mnt/root
+.br
+corepkg -q bash-2.05b+1.cpk
+.br
+corepkg -q bash /
+.br
+corepkg -l /
+.br
+corepkg -c Core/bash
+.br
+corepkg -x bash-2.05b+1.cpk pkgs/core_bash
+
+.SH AUTHORS
+Josh Devan, author of the Core Linux Distribution, now defunct, for which he
+wrote the original CorePKG.
+
+David Egan Evans
