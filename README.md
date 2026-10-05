@@ -1,10 +1,10 @@
 # Core3 Linux Distribution
-In April 2003, Josh Devin released a fairly refined and minimalized
-Linux distribution on CD-ROM. Think of it like a mini-version of LFS
-(which I actually think it was based on). I'm a Slackware user, and that
-distribution has some influences on my approach to upgrading Core. There
-was a Core 2 project that ended in Prime, but it used different approaches
-to building up a system.
+In April 2003, Josh Devin released a fairly refined and minimalized Linux
+distribution on CD-ROM. Think of it like a mini-version of LFS (which
+I suspect it was based on). I'm a Slackware user, and that distribution
+has some influences on my approach to upgrading Core. There was a Core 2
+project that ended in Prime, but it used different approaches to building
+up a system.
 
 For me, I just used what I was given the way it was intended to be used:
 installing to an Intel computer, then building it up.
@@ -14,7 +14,7 @@ moved things forward, and packages needed to be patched for bugs, it
 didn't have a mechanism for upgrading using the package manager.  So I
 modified it to include an upgrade feature, and that solved the problem.
 
-Except it wasn't licensed for redistribution. So I wrote Josh, and I he
+Except it wasn't licensed for redistribution. So I wrote Josh, and he
 offered it under the GPL. His criteria was all versions of the GPL. I
 contacted the FSF and they provided me space to add corepkg. I started
 it under the GPLv1, and then we changed that to GPLv2, then GPLv2 that
