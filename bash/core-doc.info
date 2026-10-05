@@ -1,0 +1,21 @@
+PKG=core_doc_bash$
+NAME=doc_bash$
+DESC=extra documentation for bash$
+
+MAJOR=2.05b.7$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/bash/$
+SRC_DATE=oct 5 2014$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=apr 4 2025$
+
+COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/bash.info.gz /usr/info/dir$
+REMOVE=install-info --delete /usr/info/bash.info.gz /usr/info/dir$
+
+NOTES=$
