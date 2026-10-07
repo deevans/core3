@@ -1,0 +1,21 @@
+PKG=core_doc_perl$
+NAME=doc_perl$
+DESC=extra documentation for perl$
+
+MAJOR=5.8.0$
+MINOR=1$
+
+SRC_URL=http://www.cpan.org/src/$
+SRC_DATE=jul 18 2002$
+
+BIN_URL=http://oberon07.com/dee/software/linux/$
+BIN_DATE=apr 4 2025$
+
+COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$
