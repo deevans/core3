@@ -1,0 +1,16 @@
+ftp-data 20/tcp
+ftp      21/tcp
+ssh      22/tcp
+telnet   23/tcp
+smtp     25/tcp
+domain   53/tcp
+domain   53/udp
+gopher   70/tcp
+finger   79/tcp
+www      80/tcp
+pop3     110/tcp
+nntp     119/tcp
+imap2    143/tcp
+irc      194/tcp
+syslog   514/udp
+printer  515/tcp

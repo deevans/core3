@@ -1,0 +1,11 @@
+TIMEOUT 60
+ABORT "NO CARRIER"
+ABORT "NO DIALTONE"
+ABORT "ERROR"
+ABORT "NO ANSWER"
+ABORT "BUSY"
+"" "AT&FH0"
+"OK" "ATDT1234567"
+"CONNECT" ""
+"ogin" "login"
+"assword" "password"

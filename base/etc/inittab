@@ -1,0 +1,21 @@
+# 0: halt
+# 1: single user
+# 2: nada
+# 3: multi user (default)
+# 4: X11
+# 5: nada
+# 6: reboot
+
+id:3:initdefault:
+
+ca::ctrlaltdel:/usr/bin/shutdown -r now
+
+si::sysinit:/etc/rc.d/rc.si
+ha:0:wait:/etc/rc.d/rc.ha halt
+su:1:wait:/etc/rc.d/rc.su
+mu:3:wait:/etc/rc.d/rc.mu
+rb:6:wait:/etc/rc.d/rc.ha reboot
+
+c1:134:respawn:/usr/bin/agetty 38400 tty1
+c2:134:respawn:/usr/bin/agetty 38400 tty2
+c3:134:respawn:/usr/bin/agetty 38400 tty3

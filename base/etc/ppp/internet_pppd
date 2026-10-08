@@ -1,0 +1,9 @@
+ttyS1
+115200
+crtscts
+defaultroute
+lock
+modem
+noipdefault
+passive
+connect "chat -vf /etc/ppp/internet_chat"

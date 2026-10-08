@@ -1,0 +1,9 @@
+ip   0   IP
+icmp 1   ICMP
+igmp 2   IGMP
+ggp  3   GGP
+tcp  6   TCP
+pup  12  PUP
+udp  17  UDP
+idp  22  IDP
+raw  255 RAW
