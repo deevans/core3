@@ -1,0 +1,1 @@
+58666acc8bcf21fe9d546c1ab08adb36a7505a17  texinfo-4.2.tar.gz
