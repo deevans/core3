@@ -56,6 +56,8 @@ done
 
 cp -Rdp etc/ dev/ root/ usr/ var/ /tmp/$DIST-$PKG/
 mkdir -m 700 -p /tmp/$DIST-$PKG/var/lock/
+mkdir -m 755 /tmp/$DIST-$PKG/dev/pts/
+chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
 
 # This assumes the move of bash from /bin/bash to /usr/bin/bash:
 (cd /tmp/$DIST-$PKG/usr/bin/
@@ -64,7 +66,8 @@ mkdir -m 700 -p /tmp/$DIST-$PKG/var/lock/
 
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
 echo .so man1/bash.1 > /tmp/$DIST-$PKG/usr/man/man1/sh.1
-bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/sh.1
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man{1,7}/*.?
+bzip2 -9 /tmp/$DIST-$PKG/usr/share/licenses/*
 
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0

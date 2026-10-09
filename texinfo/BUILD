@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=texinfo
-VERSION=4.2
+VERSION=4.9.92
 ARCH=i386
 
 if test ! -w .
@@ -42,23 +42,28 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
-	--libdir=/usr/lib \
-        --mandir=/usr/man \
 	--disable-nls \
+	--libdir=/usr/lib \
+	--infodir=/usr/info \
+        --mandir=/usr/man \
+	--prefix=/usr \
+	--sbindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-cp ../infokey.1 /tmp/$DIST-$PKG/usr/man/man1/
+#cp ../infokey.1 /tmp/$DIST-$PKG/usr/man/man1/
 
-rm /tmp/$DIST-$PKG/usr/bin/texi{2dvi,ndex}
-rm /tmp/$DIST-$PKG/usr/man/man1/texi{2dvi,ndex}.1
+for i in texi2dvi texindex
+do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
+done
+rm /tmp/$DIST-$PKG/usr/bin/pdftexi2dvi
+rm /tmp/$DIST-$PKG/usr/bin/texi2pdf
 rm -r /tmp/$DIST-$PKG/usr/man/man5/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;

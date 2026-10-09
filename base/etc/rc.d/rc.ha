@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/bash
 
 echo "-- /etc/rc.d/rc.ha $1 --"
 

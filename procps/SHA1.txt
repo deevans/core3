@@ -1,1 +1,1 @@
-bb4f42273138930031daeab20db09a70dd600cc8  procps-3.0.4.tar.gz
+b60567cc6263167fa1a4ff6a5bea26db86022c10  procps-3.2.7.tar.gz

@@ -8,14 +8,14 @@ MINOR=1$
 SRC_URL=http://www.tazenda.demon.co.uk/phil/net-tools/$
 SRC_DATE=apr 15 2001$
 
-BIN_URL=http://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 8 2025$
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=apr 23 2025$
 
-COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
 INSTALL=$
 REMOVE=$
 
-NOTES=$
+NOTES=Uses LFS patch for GCC 3.4$

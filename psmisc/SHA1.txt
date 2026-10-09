@@ -1,1 +1,1 @@
-800f060c37959828c6af915ade488543c707595e  psmisc-21.2.tar.gz
+cb15c23e9cfe618e9de5f066525bce7dc7b77421  psmisc-22.6.tar.gz

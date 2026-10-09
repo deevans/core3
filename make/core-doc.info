@@ -2,16 +2,16 @@ PKG=core_doc_make$
 NAME=doc_make$
 DESC=extra documentation for make$
 
-MAJOR=3.80$
+MAJOR=3.81$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/make/$
-SRC_DATE=oct 4 2002$
+SRC_DATE=apr 1 2006$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 8 2025$
+BIN_DATE=apr 23 2025$
 
-COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

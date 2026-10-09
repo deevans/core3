@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=shadow
-VERSION=4.0.3
+VERSION=4.0.18.1
 ARCH=i386
 
 if test ! -w .
@@ -41,40 +41,39 @@ tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
+	--bindir=/usr/bin \
+	--disable-nls \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--bindir=/usr/bin \
+	--prefix=/usr \
 	--sbindir=/usr/bin \
-	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--sysconfdir=/etc \
+	--without-selinux \
+	$ARCH-$DIST-linux-gnu
+
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-for i in gshadow group
-do cp ../$i.5 /tmp/$DIST-$PKG/usr/man/man5/
-done
-cp man/dpasswd.8 /tmp/$DIST-$PKG/usr/man/man8/
 
-#mv /tmp/$DIST-$PKG/usr/bin/passwd /tmp/$DIST-$PKG/bin/
-#mv /tmp/$DIST-$PKG/bin/sg /tmp/$DIST-$PKG/usr/bin/
-for i in vipw groups
-do rm /tmp/$DIST-$PKG/usr/bin/$i
+# Why doesn't this install automatically?
+cp libmisc/libmisc.a /tmp/$DIST-$PKG/usr/lib/
+
+cp ../group.5 /tmp/$DIST-$PKG/usr/man/man5/
+
+for i in vi{gr,pw}
+do rm /tmp/$DIST-$PKG/usr/sbin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 done
-rm /tmp/$DIST-$PKG/usr/sbin/vipw
+for i in groups
+do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
+done
 
 rm -r /tmp/$DIST-$PKG/usr/man/man3/
-rm /tmp/$DIST-$PKG/usr/man/man8/vi{gr,pw}.8
-rm /tmp/$DIST-$PKG/usr/man/man8/adduser.8
+rm -r /tmp/$DIST-$PKG/etc/
 rm /tmp/$DIST-$PKG/usr/lib/*.la
-
-# Because --disable-nls doesn't work:
-for i in cs de fr hu id it ja ko pl pt_BR
-do rm -r /tmp/$DIST-$PKG/usr/man/$i/
-done
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-# This does not make the binaries as small as on Coredistro:
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded

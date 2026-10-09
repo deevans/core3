@@ -2,7 +2,7 @@
 rm -f base/*.cpk
 
 mv -f */core_doc_*-*.cpk /root/core/pkgs/optional/
-#mv -f */*-doc-*.cpk /root/core/pkgs/optional/
+mv -f */*-doc-*.cpk /root/core/pkgs/optional/
 mv -f glibc/core_glibc-i18n-*.cpk /root/core/pkgs/optional/
 mv -f ncurses/core_ncurses-terminfo-*.cpk /root/core/pkgs/optional/
 #mv -f nano/nano-rc-*.cpk /root/core/pkgs/optional/

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sysklogd
-VERSION=1.4.1
+VERSION=1.5
 ARCH=i386
 
 if test ! -w .
@@ -40,6 +40,9 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
+# LFS fix for broken klogd:
+sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
+
 sed -i "/^CFLAGS/ s/-O3/-Os -march=$ARCH/" Makefile
 make all || exit 6
 
@@ -47,11 +50,9 @@ mkdir -m 755 -p /tmp/$DIST-$PKG/usr/bin/
 cp syslogd klogd /tmp/$DIST-$PKG/usr/bin/
 
 mkdir -m 755 -p /tmp/$DIST-$PKG/usr/man/man{5,8}
-cp {k,sys}logd.8 /tmp/$DIST-$PKG/usr/man/man8/
+cp {k,sys{,k}}logd.8 /tmp/$DIST-$PKG/usr/man/man8/
 cp syslog.conf.5 /tmp/$DIST-$PKG/usr/man/man5/
-
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
-#chmod o-rwx,g-w /tmp/$DIST-$PKG/sbin/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

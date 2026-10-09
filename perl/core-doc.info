@@ -2,16 +2,16 @@ PKG=core_doc_perl$
 NAME=doc_perl$
 DESC=extra documentation for perl$
 
-MAJOR=5.8.0$
+MAJOR=5.8.9$
 MINOR=1$
 
 SRC_URL=http://www.cpan.org/src/$
-SRC_DATE=jul 18 2002$
+SRC_DATE=dec 14 2008$
 
 BIN_URL=http://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 8 2025$
+BIN_DATE=apr 23 2025$
 
-COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

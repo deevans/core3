@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=diffutils
-VERSION=2.8.1
+VERSION=2.8.7
 ARCH=i386
 
 if test ! -w .
@@ -46,11 +45,11 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -mcpu=$ARCH" ./configure \
-	--prefix=/usr \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
 	--disable-nls \
+        --mandir=/usr/man \
+	--prefix=/usr \
 	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/

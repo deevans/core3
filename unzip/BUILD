@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=unzip
-VERSION=5.50
+VERSION=5.52
 ARCH=i386
 
 if test ! -w .
@@ -37,10 +37,9 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xzf $PKG-$VERSION.tar.gz || exit 4
+tar xzf ${PKG}*.tar.gz || exit 4
 cd $PKG-$VERSION/ || exit 5
 
-# Even before these patches, the Coredistro binary size is smaller:
 for i in ../*.patch
 do patch -p1 <$i
 done

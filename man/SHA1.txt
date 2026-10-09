@@ -1,1 +1,1 @@
-c84fad7f9e76885a762f97a3eb372d1b7c5e3c03  man-1.5k.tar.gz
+c97012607ed9d75a6eee7e66d257a99a8ed86918  man-1.6f.tar.gz

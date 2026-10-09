@@ -1,6 +1,5 @@
-
 # CorePKG build script for psmisc.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=psmisc
-VERSION=21.2
+VERSION=22.6
 ARCH=i386
 
 if test ! -w .
@@ -51,6 +50,9 @@ cd $PKG-$VERSION || exit 5
 sed -i "/^CFLAGS/ s/-Wall/-Wall -Os -march=$ARCH/" src/Makefile
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
+
+# Remove pstree.x11 symlink for now; use rewritten fuser only:
+rm /tmp/$DIST-$PKG/usr/bin/{oldfuser,pstree.x11}
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=gawk
-VERSION=3.1.1
+VERSION=3.1.6
 ARCH=i386
 
 if test ! -w .
@@ -43,23 +42,26 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--infodir=/usr/info \
+        --mandir=/usr/man \
+	--prefix=/usr
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-rm /tmp/$DIST-$PKG/usr/bin/$PKG-$VERSION
-rm /tmp/$DIST-$PKG/usr/bin/p$PKG-$VERSION
 
+rm /tmp/$DIST-$PKG/usr/bin/{,p}$PKG-$VERSION
+
+for i in pgawk.1
+do rm /tmp/$DIST-$PKG/usr/man/man1/$i
+	echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/$i
+done
 echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/awk.1
-echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/pgawk.1
-
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir

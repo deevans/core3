@@ -1,6 +1,5 @@
-
 # CorePKG build script for GNU tar.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=tar
-VERSION=1.13.25
+VERSION=1.19
 ARCH=i386
 
 if test ! -w .
@@ -44,17 +43,18 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+        --infodir=/usr/info \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--prefix=/usr \
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 

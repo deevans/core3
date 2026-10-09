@@ -1,1 +1,1 @@
-4a33dd4a5bca3070a116ee893a798afaa4349abd  e2fsprogs-1.29.tar.gz
+9410c11fc8be1cba435f24d086d154526dc42a77  e2fsprogs-1.40.8.tar.gz

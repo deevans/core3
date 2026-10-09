@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sysvinit
-VERSION=2.84
+VERSION=2.86
 ARCH=i386
 
 if test ! -w .
@@ -37,10 +37,10 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 
 cd $PKG-$VERSION/src || exit 5
-sed -i '/^CC/ s/cc/gcc/' Makefile
+#sed -i '/^CC/ s/cc/gcc/' Makefile
 sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
 make || exit 6
 
@@ -72,9 +72,9 @@ cp *.8 /tmp/$DIST-$PKG/usr/man/man8/
 
 cd ../
 
+rm /tmp/$DIST-$PKG/usr/man/man1/mountpoint.1
+rm /tmp/$DIST-$PKG/usr/man/man8/bootlogd.8
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
-
-#chmod g-w,o-rwx /tmp/$DIST-$PKG/sbin/*
 
 #find /tmp/$DIST-$PKG/ | xargs file | \
 #	grep -e "executable" -e "shared object" | \

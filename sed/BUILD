@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sed
-VERSION=4.0
+VERSION=4.1.5
 ARCH=i386
 
 if test ! -w .

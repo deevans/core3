@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=gzip
-VERSION=1.2.4
+VERSION=1.3.12
 ARCH=i386
 
 if test ! -w .
@@ -31,59 +30,39 @@ then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
-then rm -r /tmp/$DIST-$PKG-doc/
+then rm -fr /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+	--infodir=/usr/info \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--prefix=/usr \
+	--sbindir=/usr/bin
 make || exit 6
-make gzip.info || exit 7
-#make install DESTDIR=/tmp/$DIST-$PKG/
+make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
 
-# Devan's Core renamed zdiff to zcmp. 
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-cp gzip /tmp/$DIST-$PKG/usr/bin/
-for i in gzexe zdiff zforce zgrep zmore znew
-do cp $i.in /tmp/$DIST-$PKG/usr/bin/$i
-done
-(cd /tmp/$DIST-$PKG/usr/bin/
-ln -s gzip gunzip
-ln -s gzip zcat
-ln -s zdiff zcmp
-)
-
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-for i in gzip gzexe zdiff zforce zgrep zmore znew
-do cp $i.1 /tmp/$DIST-$PKG/usr/man/man1/
-done
-
-for i in gunzip zcat
-do echo .so man1/gzip.1 > /tmp/$DIST-$PKG/usr/man/man1/$i.1
-done
-echo .so man1/zdiff.1 > /tmp/$DIST-$PKG/usr/man/man1/zcmp.1
+echo .so man1/gzip.1 >/tmp/$DIST-$PKG/usr/man/man1/uncompress.1
+echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zegrep.1
+echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zfgrep.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-mkdir -p /tmp/$DIST-$PKG/usr/info/
-cp gzip.info /tmp/$DIST-$PKG/usr/info/
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
@@ -91,7 +70,6 @@ mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
-# This provides a bigger binary that provided by Coredistro:
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded

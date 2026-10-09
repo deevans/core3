@@ -1,1 +1,1 @@
-cb14189c47f281b33fd1ef37c4c8df39250fa7d5  wget-1.8.2.tar.gz
+1a059b3736ef908b68acac91670f9df576d1a061  wget-1.12.tar.bz2

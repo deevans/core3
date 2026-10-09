@@ -1,4 +1,3 @@
-
 # CorePKG build script for glibc.
 # Copyright 2010-2025 David Egan Evans
 #
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=glibc
-VERSION=2.3.3
+VERSION=2.3.4
 ARCH=i386
 
 if test ! -w .
@@ -58,17 +57,21 @@ cd ..
 mkdir $PKG-build/
 cd $PKG-build
 
-CFLAGS="-Os -mcpu=$ARCH" AWK=gawk ../$PKG-$VERSION/configure \
+CFLAGS="-Os -march=$ARCH" AWK=gawk ../$PKG-$VERSION/configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-profile \
-	--enable-kernel=2.4.18 \
+	--enable-kernel=2.4.21 \
 	--enable-add-ons=linuxthreads \
+	--host=$ARCH-$DIST-linux-gnu \
 	--mandir=/usr/man \
 	--prefix=/usr \
-	$ARCH-$DIST-linux-gnu
+	--target=$ARCH-$DIST-linux-gnu \
+	--without-__thread \
+	--with-tls
 
-SHELL=/bin/bash make || exit 6
-SHELL=/bin/bash make install install_root=/tmp/$DIST-$PKG/
+SHELL=/usr/bin/bash make || exit 6
+SHELL=/usr/bin/bash make install install_root=/tmp/$DIST-$PKG/
 
 mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
 rmdir /tmp/$DIST-$PKG/usr/sbin/
@@ -76,7 +79,8 @@ chmod o-rwx /tmp/$DIST-$PKG/sbin/*
 
 rm -r /tmp/$DIST-$PKG/etc/
 rm -r /tmp/$DIST-$PKG/usr/share/locale/
-rm /tmp/$DIST-$PKG/usr/bin/{glibcbug,xtrace}
+# glibcbug was removed in 2.3.4:
+rm /tmp/$DIST-$PKG/usr/bin/xtrace
 
 # For some reason, man pages were not installed for Glibc 2.3:
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
@@ -101,6 +105,10 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
 cd ..
+mkdir -p /tmp/$DIST-$PKG/usr/share/$PKG/
+cp $PKG-$VERSION/LICENSES /tmp/$DIST-$PKG/usr/share/$PKG/LICENSES.txt
+bzip2 -9 /tmp/$DIST-$PKG/usr/share/$PKG/LICENSES.txt
+
 cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 cp core-i18n.info /tmp/$DIST-$PKG-i18n/core.info

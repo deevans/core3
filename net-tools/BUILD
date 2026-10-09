@@ -38,6 +38,8 @@ if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
+
+patch -p0 <$PKG-$VERSION-gcc34-3.patch
 cd $PKG-$VERSION || exit 5
 
 # Because Coredistro has /bin/env:

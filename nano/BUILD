@@ -11,11 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, see <https://www.gnu.org/licenses>.
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA 02111-1307 USA
 
 DIST=deevans
 PKG=nano
-VERSION=1.2.5
+VERSION=2.0.7
 ARCH=i386
 
 if test ! -w .
@@ -37,22 +38,21 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -fr $PKG-$VERSION/
+then rm -r $PKG-$VERSION/
 fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
-	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--infodir=/usr/info \
+        --mandir=/usr/man \
+	--prefix=/usr
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -79,4 +79,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -fr $PKG-$VERSION/
+rm -r $PKG-$VERSION/

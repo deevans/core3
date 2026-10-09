@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=modutils
-VERSION=2.4.21
+VERSION=2.4.27
 ARCH=i386
 
 if test ! -w .
@@ -37,32 +37,23 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
-	--bindir=/usr/bin \
-        --mandir=/usr/man \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+        --mandir=/usr/man \
+	--prefix=/usr \
+	--sbindir=/usr/bin \
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
-#make install DESTDIR=/tmp/$DIST-$PKG/
-
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-for i in depmod genksyms insmod
-do cp $i/$i /tmp/$DIST-$PKG/usr/bin/
-done
-for i in mod{info,probe} kernelversion k{,all}syms insmod_ksymoops_clean {ls,rm}mod
-do cp insmod/$i /tmp/$DIST-$PKG/usr/bin/
-done
+make install DESTDIR=/tmp/$DIST-$PKG/
 
 # Does not include the .2 manuals:
-mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
-cp man/kernelversion.1 /tmp/$DIST-$PKG/usr/man/man1/
-cp man/modules.conf.5 /tmp/$DIST-$PKG/usr/man/man5/
-cp man/*.8 /tmp/$DIST-$PKG/usr/man/man8/
-echo man8/insmod.8 > /tmp/$DIST-$PKG/usr/man/man8/insmod_ksymoops_clean.8
+rm -r /tmp/$DIST-$PKG/usr/man/man2/
+
+echo .so man8/insmod.8 > /tmp/$DIST-$PKG/usr/man/man8/insmod_ksymoops_clean.8
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

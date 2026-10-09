@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=nasm
-VERSION=0.98.35
+VERSION=2.02
 ARCH=i386
 
 if test ! -w .
@@ -36,7 +36,7 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \

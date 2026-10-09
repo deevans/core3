@@ -1,1 +1,1 @@
-d65de43ff956dc800d501d08fdcb4d2627c29594  sysvinit-2.84.tar.gz
+e4b8c4ab3b080dd8cc3f29f0c38a32fc7307d8ef  sysvinit-2.86.tar.bz2

@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=less
-VERSION=378
+VERSION=418
 ARCH=i386
 
 if test ! -w .
@@ -40,26 +40,33 @@ tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man
+        --mandir=/usr/man \
+	--prefix=/usr \
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 #make install DESTDIR=/tmp/$DIST-$PKG/
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
 cp less /tmp/$DIST-$PKG/usr/bin/
+
+# Remove this once util-linux takes over:
 (cd /tmp/$DIST-$PKG/usr/bin/
 	ln -s less more
 )
+mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
+echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
 
 cp lessecho lesskey /tmp/$DIST-$PKG/usr/bin/
 
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
+#mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
 cp less.nro /tmp/$DIST-$PKG/usr/man/man1/less.1
 cp lesskey.nro /tmp/$DIST-$PKG/usr/man/man1/lesskey.1
-cp ../lessecho.1 /tmp/$DIST-$PKG/usr/man/man1/
-cp ../more.1 /tmp/$DIST-$PKG/usr/man/man1/
+cp lessecho.nro /tmp/$DIST-$PKG/usr/man/man1/lessecho.1
+#cp ../lessecho.1 /tmp/$DIST-$PKG/usr/man/man1/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

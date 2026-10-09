@@ -1,6 +1,5 @@
-
 # CorePKG build script for e2fsprogs.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=e2fsprogs
-VERSION=1.29
+VERSION=1.40.8
 ARCH=i386
 
 if test ! -w .
@@ -41,17 +40,20 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -mcpu=$ARCH" ./configure \
-	--prefix=/usr \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
-	--sbindir=/usr/bin \
 	--disable-nls \
+	--disable-uuidd \
+	--infodir=/usr/info \
+        --mandir=/usr/man \
+	--prefix=/usr \
+	--sbindir=/usr/bin \
+	--sysconfdir=/etc \
 	--with-cc=gcc \
-	--build=$ARCH-$DIST-linux-gnu
+	$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-rm -r /tmp/$DIST-$PKG/usr/{info,lib}/
+rm -r /tmp/$DIST-$PKG/etc/
 
 # Remove linked file names and replace with .so reference files:
 for i in mkfs.ext{2,3}
@@ -83,12 +85,20 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
+mkdir -p /tmp/$DIST-$PKG-doc/usr/
+if test -f /tmp/$DIST-$PKG/usr/info/dir
+then rm /tmp/$DIST-$PKG/usr/info/dir
+fi
+mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+
 cd ..
 cp core.info /tmp/$DIST-$PKG/
+cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 if test $(id -u) -ne 0
-then echo $PKG has been installed to /tmp/$DIST-$PKG/
-	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
-else chown -R root: /tmp/$DIST-$PKG/
+then echo $PKG has been installed to /tmp/$DIST-$PKG*/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG*/
+else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
+	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -fr $PKG-$VERSION/

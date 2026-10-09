@@ -1,1 +1,1 @@
-e78d9c3f7795aca3b4e03eb5cea00c4490a4fb44  nano-1.2.5.tar.bz2
+6616c6496e6f21e61df6bb991c0be84eda5c6a0c  nano-2.0.7.tar.gz

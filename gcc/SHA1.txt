@@ -1,2 +1,1 @@
-5c9ebc2fd66e0a161d951163124dc3c091e394cf  gcc-3.2.tar.gz
-e91213f3028817503731a5278289aaf372c2146c  gcc-3.2-glibc-2.3-compat.diff
+97b290fdc572c8e490b3b39f243e69bacad23c2b  gcc-3.4.6.tar.bz2

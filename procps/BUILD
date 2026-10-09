@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=procps
-VERSION=3.0.4
+VERSION=3.2.7
 ARCH=i386
 
 if test ! -w .
@@ -47,11 +47,12 @@ sed -i '/^man8/ s:/share::' Makefile
 sed -i '/^ldconfig/ s:= ldconfig:= /sbin/ldconfig:' Makefile 
 CC=gcc make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
+
 mv /tmp/$DIST-$PKG/bin/* /tmp/$DIST-$PKG/usr/bin/
 rmdir /tmp/$DIST-$PKG/bin/
 mv /tmp/$DIST-$PKG/sbin/* /tmp/$DIST-$PKG/usr/bin/
 rmdir /tmp/$DIST-$PKG/sbin/
-rm /tmp/$DIST-$PKG/lib/libproc.so
+#rm /tmp/$DIST-$PKG/lib/libproc.so
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

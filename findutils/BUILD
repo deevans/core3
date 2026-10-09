@@ -51,9 +51,10 @@ do patch -p1 <$i
 done
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--localstatedir=/var \
+	--prefix=/usr
 make || exit 6
 
 mkdir -p /tmp/$DIST-$PKG/usr/{bin,libexec,man}

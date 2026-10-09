@@ -1,76 +1,29 @@
 The following describes changes from Josh Devin's Core in ascending
-order. It does not reflect changes made inbetween that may have been
-necessary for the upgrade process. This file is influenced by Slackware.
+order. This file is influenced by Slackware.
 
-pkgs/core_which-2.17+1.cpk: upgraded.
-pkgs/optional/core_doc_which-2.17+1.cpk: upgraded.
-  The dir file registration but still exists with this package, so 
-  remains broken. However, the man page is a complete duplicate.
-pkgs/core_nano-1.2.5+1.cpk: upgraded.
-pkgs/optional/core_doc_nano-1.2.5+1.cpk: upgraded.
 pkgs/core_gzip-1.2.4a+1.cpk: rebuilt.
 pkgs/optional/core_doc_gzip-1.2.4a+1.cpk: rebuilt.
 pkgs/core_file-3.41+1.cpk: upgraded.
-pkgs/core_bzip2-1.05+1.cpk: upgraded.
-pkgs/core_bash-3.0.17+1.cpk: upgraded.
-pkgs/optional/core_doc_bash-3.0.17+1.cpk: upgraded.
-pkgs/core_man-1.5k+1.cpk: rebuilt.
-pkgs/optional/core_doc_binutils-2.13+1.cpk: rebuilt.
-pkgs/core_shadow-4.0.3+1.cpk: rebuilt.
-pkgs/core_less-378+1.cpk: rebuilt.
+pkgs/core_bash-3.1+1.cpk: upgraded.
+  Move to /usr/bin/. Why do spectre/meltdown patches cause all 3.x Bash
+  versions to malfunction?
+pkgs/optional/core_doc_bash-3.1+1.cpk: upgraded.
+pkgs/core_less-418+1.cpk: upgraded.
   This required a change to /etc/man.conf.
 pkgs/core_lilo-22.5.9+1.cpk: upgraded.
-  Devin's Core came with LILO 22.3.3. Current source code availability
-  would require a downgrade to 22.3 or an upgrade to 22.4.1. The upgrade
-  worked until a rebuild of the toolchain. Upgrading to 22.5.9 required
-  a newer bin86. This seems to have worked well.
 pkgs/core_bin86-0.16.11+1.cpk: upgraded.
-  The LILO version provided by Core is no longer available on the
-  internet. With existing updates, the 22.4 series that I had upgraded
-  to stopped working with a known bug. Instead of searching for patches, it
-  was easier to upgrade to 22.5.9 (the last of the 22.5 releases). This
-  required moving to 0.16.11, which Slackware 9.0 had the original
-  tarball available. It appears 0.16.12 changes the name to dev86.
-pkgs/core_groff-1.18.1+2.cpk: rebuilt.
-pkgs/optional/core_doc_groff-1.18.1+2.cpk: rebuilt.
-pkgs/core_fileutils-4.1.11+1.cpk: upgraded.
-pkgs/optional/core_doc_fileutils-4.1+1.cpk: removed.
-  It is noted that the upgraded fileutils provides a coreutils.info file.
-  This means that a package install will overwrite the file of one of the
-  other two. Remove the coreutils.info file provided by fileutils.
-pkgs/unzip-5.50+2.cpk: rebuilt.
-pkgs/zip-2.3+2.cpk: rebuilt.
-pkgs/core_which-2.14+1.cpk: rebuilt.
-pkgs/optional/core_doc_which-2.14+1.cpk: rebuilt.
-  There seems to be a bug in the which info manual. It is missing 
-  information necessary to register it with the dir file, generating a
-  related error. The info manual in core_doc_which is essentially a
-  duplicate of the man page. A rebuild doesn't appear to fix it, but an
-  upgrade does.
-pkgs/core_wget-1.8.2+1.cpk: rebuilt.
-pkgs/optional/core_doc_wget-1.8.2+1.cpk: rebuilt.
-pkgs/core_util-linux-2.11z+1.cpk: upgraded.
-pkgs/core_textutils-2.1+1.cpk: rebuilt.
-  This required a change to /etc/man.conf.
-pkgs/optional/core_doc_textutils-2.1+1.cpk: rebuilt.
-  The oldest sh-utils has the newest coreutils.info file, but it is not
-  upgraded here. When sh-utils is upgraded, coreutils.info should be
-  provided by sh-utils, and the textutils version not provided.
-pkgs/core_texinfo-4.2+1.cpk: rebuilt.
-pkgs/optional/core_doc_texinfo-4.2+1.cpk: rebuilt.
-pkgs/core_tar-1.13.25+1.cpk: rebuilt.
-pkgs/optional/core_tar-1.13.25+1.cpk: rebuilt.
+  It appears 0.16.12 changes the name to dev86.
 pkgs/base/core_base-1+1.cpk: added.
   Move to base/ subdirectory to facilitate upgrade based installations,
   and to avoid clobbering existing installs by accident.
 
   Removed the root user profile aliases -i. As I filed with Red Hat, this is
-  harmful. It encourages the use of -f to avoid the forced interaction, and
-  this misses the warnings that would come from -r used without it. The
-  aliases are thus removed from /etc/profile. This should be consistent
-  for the base package and for the IUR CD-ROM's /etc/profile (which base
-  package installation is actually different from the installed
-  systems).
+  harmful, and Red Hat agreed though I didn't pursue traction with Fedora.
+  It encourages the use of -f to avoid the forced interaction, and this misses
+  the warnings that would come from -r used without it. The aliases are thus
+  removed from /etc/profile. This should be consistent for the base package
+  and for the IUR CD-ROM's /etc/profile (which base package installation is
+  actually different from the installed systems).
 
   The CorePKG metadata is distinct in its date and build values, which
   identifies the clear build change from the original Coredistro. The patch
@@ -84,16 +37,17 @@ pkgs/base/core_base-1+1.cpk: added.
   rebuilding or upgrading Bash. It was necessary to update /etc/passwd and
   the shebang lines of /etc/rc.d/ scripts.
 
+  Removed the lost+found/ directory. This should be at the base of a
+  writable file system. It is created when a file system is initialized,
+  but also has its own command for creating it when needed. Removing it
+  from the core_base package as inappropriate.
+
+  The rr_moved/ directory is related to CD-ROM configuration, and should
+  not be part of a base package.
+
   Modified /etc/man.conf to compensate for change of directory of less.
 
   Modified /etc/inittab to use /usr/bin/ path instead of /sbin/.
-
-  Removed the lost+found/ directory. This is a file system related
-  directory that should be at the base of a writable file system, thus
-  removing it from the IUR, but also removing it from the core_base
-  package as inappropriate. Also, the rr_moved/ directory exists but is
-  not needed due to ISO level used when making the image, which indicates
-  building the ISO should be done differently. It too is removed.
 
   The /usr/sbin/ directory is removed.
 
@@ -103,115 +57,136 @@ pkgs/base/core_base-1+1.cpk: added.
   toolchain is also sensitive to this and to Bash's placement. Glibc builds
   of ldconfig and sln are static and left in /sbin/, but init is symlinked
   for compatibility.
+
+  Supporting /dev/pts/, removed the ttyp# and ptyp# character devices, 
+  and added ptmx.
+
+  The fstab(5) and mount(8) manuals recommend proc be mounted as proc
+  not none. This is entirely arbitrary, but the mount(8) manual argument
+  that a device error of proc vs none is clearer make sense.
 pkgs/core_base-1+1.cpk: removed.
-pkgs/core_sysvinit-2.84+1.cpk: rebuilt.
-  It is necessary to change /etc/inittab references to sbin directories.
-pkgs/core_sysklogd-1.4.1+1.cpk: rebuilt.
-pkgs/core_sh-utils-2.0+1.cpk: rebuilt.
-pkgs/optional/core_doc_sh-utils-2.0+1.cpk: rebuilt.
-  The last patch of sh-utils had the newest coreutils.info file. Should
-  the package name be changed to coreutils-doc?
-pkgs/core_sed-4.0+1.cpk: rebuilt.
-pkgs/optional/core_doc_sed-4.0+1.cpk: rebuilt.
-pkgs/core_psmisc-21.2+1.cpk: rebuilt.
-pkgs/core_procps-3.0.4+1.cpk: rebuilt.
-pkgs/core_ppp-2.4.1+1.cpk: rebuilt.
-pkgs/core_patch-2.5.4+1.cpk: rebuilt.
-pkgs/core_netkit-0.17+1.cpk: rebuilt.
-pkgs/core_net-tools-1.60+1.cpk: rebuilt.
-pkgs/core_nasm-0.98.35+1.cpk: rebuilt.
-pkgs/core_nano-1.0.9+1.cpk: rebuilt.
-pkgs/optional/core_doc_nano-1.0.9+1.cpk: rebuilt.
-pkgs/core_modutils-2.4.21+1.cpk: rebuilt.
-pkgs/core_make-3.80+1.cpk: rebuilt.
-pkgs/optional/core_doc_make-3.80+1.cpk: rebuilt.
-pkgs/core_m4-1.4+1.cpk: rebuilt.
-pkgs/optional/core_doc_m4-1.4+1.cpk: rebuilt.
-pkgs/core_perl-5.8.0+1.cpk: rebuilt.
-pkgs/optional/core_doc_perl-5.8.0+1.cpk: rebuilt.
-pkgs/core_ncurses-5.3+1.cpk: rebuilt.
-  Moved libraries to /usr/lib/. Maintain /lib/ symlinks for now.
-
-  /usr/ was the original home directory, but an early research Unix DEC PDP
-  disk fill required a second drive and things not related to booting were
-  moved there under the idea of user land tools. Research Unix returned to
-  using /bin/ and /lib/, leaving /usr/ to include files and home directories,
-  but the idea of moving everything to /usr/ was in motion even in 2003. This
-  begins looking at that change as the norm.
-pkgs/optional/core_doc_ncurses-5.3+1.cpk: rebuilt.
-pkgs/optional/core_ncurses-terminfo-5.3+1.cpk: rebuilt.
-pkgs/core_gzip-1.2.4a+1.cpk: rebuilt.
-pkgs/optional/core_doc_gzip-1.2.4a+1.cpk: rebuilt.
-pkgs/core_grep-2.5+1.cpk: rebuilt.
-pkgs/optional/core_doc_grep-2.5+1.cpk: rebuilt.
-pkgs/core_gawk-3.1.1+1.cpk: rebuilt.
-pkgs/optional/core_doc_gawk-3.1.1+1.cpk: rebuilt.
-pkgs/core_flex-2.5.4a+1.cpk: rebuilt.
+pkgs/core_grep-2.5.3+1.cpk: upgraded.
+  It is observed the grep, egrep, and fgrep and now different binaries,
+  not symlinks to grep.
+pkgs/optional/core_doc_grep-2.5.3+1.cpk: upgraded.
+pkgs/core_gawk-3.1.6+1.cpk: upgraded.
+pkgs/optional/core_doc_gawk-3.1.6+1.cpk: upgraded.
 pkgs/core_findutils-4.1.20+1.cpk: upgraded.
-  The findutils 4.1 patches or download no longer exist. However, they do for
-  4.1.20, so an upgrade was provided here. 4.1 will not compile as-is on
-  Core without the patch: though I could have tried to figure it out from the
-  description, as with glibc, I decided to go the upgrade path.
 pkgs/optional/core_doc_findutils-4.1.20+1.cpk: upgraded.
-pkgs/core_file-3.39+1.cpk: rebuilt.
-pkgs/core_e2fsprogs-1.29+1.cpk: rebuilt.
-  This package uses /usr/bin/ for binaries, especially instead of /usr/sbin/.
+pkgs/core_diffutils-2.8.7+1.cpk: upgraded.
+pkgs/optional/core_doc_diffutils-2.8.7+1.cpk: upgraded.
+pkgs/core_make-3.81+1.cpk: upgraded.
+pkgs/optional/core_doc_make-3.81+1.cpk: upgraded.
+pkgs/core_pkgs/core_nano-2.0.7+1.cpk: upgraded.
+pkgs/optional/core_doc_nano-2.0.7+1.cpk: upgraded.
+pkgs/core_nasm-2.02+1.cpk: upgraded.
+pkgs/core_net-tools-1.60+1.cpk: rebuilt.
+pkgs/core_netkit-0.17+1.cpk: rebuilt.
+pkgs/core_patch-2.5.4+1.cpk: rebuilt.
+pkgs/core_ppp-2.4.4+1.cpk: upgraded.
+pkgs/core_psmisc-22.6+1.cpk: upgraded.
+pkgs/core_sed-4.1.5+1.cpk: upgraded.
+pkgs/optional/core_doc_sed-4.1.5+1.cpk: upgraded.
+pkgs/core_sysklogd-1.5+1.cpk: upgraded.
+pkgs/core_tar-1.19+1.cpk: upgraded.
+pkgs/optional/core_tar-1.19+1.cpk: upgraded.
+pkgs/core_m4-1.4.11+1.cpk: upgraded.
+pkgs/optional/core_doc_m4-1.4.11+1.cpk: upgraded.
+pkgs/core_texinfo-4.9.92+1.cpk: upgraded.
+pkgs/optional/core_doc_texinfo-4.9.92+1.cpk: upgraded.
+pkgs/core_fileutils-4.1.11+1.cpk: upgraded.
+pkgs/optional/core_doc_fileutils-4.1+1.cpk: removed.
+pkgs/core_sh-utils-2.0.15+1.cpk: upgraded.
+pkgs/optional/core_doc_sh-utils-2.0+1.cpk: rebuilt.
+  The last patch of sh-utils had the newest coreutils.info file.
+  Unfortunately, this conflicts with textutils and fileutils. Being the
+  newest, this one is preserved and the others removed. Renaming doesn't
+  help as the registered name is coreutils.
+pkgs/core_textutils-2.1+1.cpk: rebuilt.
+  This required a change to /etc/man.conf.
+pkgs/optional/core_doc_textutils-2.1+1.cpk: removed.
+pkgs/core_unzip-5.52+1.cpk: upgraded.
+pkgs/core_util-linux-2.11z+1.cpk: upgraded.
+pkgs/core_e2fsprogs-1.40.8+1.cpk: upgraded.
+pkgs/optional/e2fsprogs-doc-1.40.8+1.cpk: added.
+pkgs/pkgs/pkgs/core_wget-1.12+1.cpk: upgraded.
+pkgs/optional/core_doc_wget-1.12+1.cpk: upgraded.
+core_which-2.17+1.cpk: upgraded.
+pkgs/optional/core_doc_which-2.17+1.cpk: upgraded.
+  The dir file registration but still exists with this package, so 
+  remains broken. However, the man page is a complete duplicate.
+core_zip-2.32+1.cpk: upgraded.
+pkgs/core_bzip2-1.0.5+1.cpk: upgraded.
+pkgs/core_flex-2.5.35+1.cpk: upgraded.
+pkgs/optional/flex-doc-2.5.35+1.cpk: added.
+  I'm not partial to the core_ naming convention of Devan's Core.
+  However, it made sense to preserve the capability to upgrade in-place,
+  once I added this feature to CorePKG, and even provided an upgrade
+  script at one point.
 
-  The /usr/sbin/ directory is superfluous. The /sbin/ directory is required on
-  Linux by only a limited number of programs, (as one place checked by the
-  kernel for init). /sbin/ was originally static binaries moved from /etc/
-  for booting needs only. At this point, it too is superfluous, and rare
-  packges even build static binaries (e.g. glibc). /usr/bin/ is favored over
-  /bin/ with the expectation that /usr/ in general (e.g. not including
-  /usr/local/) should remain on the root file system. This also means that the
-  sbin/ directory restriction to execution by only the root user is
-  effectively deprecated, a change in Core practice.
-pkgs/core_diffutils-2.8.1+1.cpk: rebuilt.
-pkgs/optional/core_doc_diffutils-2.8.1+1.cpk: rebuilt.
-pkgs/core_bzip2-1.02+1.cpk: rebuilt.
+  Flex has added a GNU info manual, so that has been added to a new
+  flex documentation package that follows a simpler naming convention.
+pkgs/core_ncurses-5.6+1.cpk: upgraded.
+  Libraries are moved to /usr/lib/. Currently, symlinks in /lib/ are
+  provided for compatibility.
+pkgs/optional/core_doc_ncurses-5.6+1.cpk: upgraded.
+pkgs/optional/core_ncurses-terminfo-5.3+1.cpk: rebuilt.
+pkgs/core_perl-5.8.9+1.cpk: upgraded.
+pkgs/optional/core_doc_perl-5.8.9+1.cpk: upgraded.
+pkgs/core_procps-3.2.7+1.cpk: upgraded.
+pkgs/core_shadow-4.0.18.1+1.cpk: upgraded.
+pkgs/core_sysvinit-2.86+1.cpk: upgraded.
+  It is necessary to change /etc/inittab references from /sbin.
+pkgs/core_modutils-2.4.27+1.cpk: upgraded.
 pkgs/core_bison-1.75+1.cpk: rebuilt.
 pkgs/optional/core_doc_bison-1.75+1.cpk: rebuilt.
-pkgs/core_bash-2.05b.7+1.cpk: upgraded.
-  Move to /usr/bin/. Patches 8-13 break things so are not used.
-pkgs/optional/core_doc_bash-2.05b.7+1.cpk: upgraded.
-pkgs/core_gcc-3.2+1.cpk: rebuilt.
-  This is rebuilt to optimize for a newer glibc.
-pkgs/optional/core_doc_gcc-3.2+1.cpk: rebuilt.
-pkgs/core_binutils-2.13+1.cpk: rebuilt.
-  Manual pages and info manuals are uncompressed in Devan's Core. Switch to
-  Bzip2 compression for man pages, and Gzip for info manuals (due to lack of
-  built-in support for Bzip2 compression with info).
+pkgs/core_man-1.6f+1.cpk: upgraded.
+pkgs/core_groff-1.19.2+1.cpk: upgraded.
+pkgs/optional/core_doc_groff-1.19.2+1.cpk: upgraded.
+pkgs/core_gcc-3.4.6+1.cpk: upgraded.
+  Upgraded to the newest a Linux 2.4 kernel can handle, except that
+  W. Tarreau got this working with GCC 4, but we're not there yet.
 
-  In general, build scripts rely on the existing strip capability of the
-  Makefile (where recognized), or use --strip-unneeded as the common approach
-  to binary stripping of debug and related symbols. Optimizing is for size,
-  e.g. -Os: storage is a big deal for small systems.
-pkgs/optional/core_doc_binutils-2.13+1.cpk: rebuilt.
-pkgs/core_glibc-2.3.3+1.cpk: upgraded.
+  It's possible this might actually run a real i386, but don't hold your
+  breath.
+pkgs/optional/core_doc_gcc-3.4.6+1.cpk: upgraded.
+pkgs/core_glibc-2.3.4+1.cpk: upgraded.
   Version 2.3.1 can still be downloaded from the GNU project, but the LFS
-  patch needed to make it build with Coredistro is no longer available. The
-  benefit is that the ldconfig command breakage seems to be resolved, so that
-  the version from 2.3.0 wasn't required. 2.3.2 would not recognize GCC 3.2
-  as a minimum dependency so I moved to 2.3.3.
+  patch needed to make it build with Core is no longer available. The
+  benefit of an upgrade is that the ldconfig command breakage seems to
+  be resolved, so that the version from 2.3.0 wasn't required. 2.3.2 would
+  not recognize GCC 3.2. 2.3.6 is the oldest that will work with Linux
+  2.4 and threads, except that contributions for threading was provided
+  for 2.4 and 2.5 glibc. However, let's stay with what upstream
+  supported, and spend the effort after to move on to Linux 2.6, but not
+  yet.
 
   The /usr/sbin/ directory is removed and /usr/bin/ normalized for dynamic
   shared objects.
 
   Instead of a generic [info manual] reference, there is a singular info
   manual to install (even though there are several files) to the dir file,
-  this is explictly noted. This change will be a convention for future doc
-  packages.
-pkgs/optional/core_doc_glibc-2.3.3+1.cpk: upgraded.
-pkgs/optional/core_glibc-i18n-2.3.3+1.cpk: upgraded.
+  and thus is explictly noted.
+pkgs/optional/core_doc_glibc-2.3.4+1.cpk: upgraded.
+pkgs/optional/core_glibc-i18n-2.3.4+1.cpk: upgraded.
+pkgs/core_binutils-2.16.1+1.cpk: upgraded.
+  Manual pages and info manuals are uncompressed in Josh Devan's Core.
+  Switch to Bzip2 compression for man pages, and Gzip for info manuals
+  (due to lack of texinfo support for Bzip2 compression with info).
+
+  In general, build scripts rely on the existing strip capability of the
+  Makefile (where recognized), or use --strip-unneeded as the common approach
+  to binary stripping of debug and related symbols. Optimizing is for size,
+  e.g. -Os: storage is a big deal for small systems. LFS suggested
+  CC="gcc -s".
+pkgs/optional/core_doc_binutils-2.16.1+1.cpk: upgraded.
 boot/config: updated.
   Continuing the farce that this can actually run on a true, bare metal i386.
 boot/System.map: rebuilt.
 boot/bzImage: added.
-  For building a 2.4 kernel, the kernel source tarball needs to be extracted to
-  /usr/src/, which will create /usr/src/linux/. In /usr/include/ are a 'linux'
-  and 'asm' symlink that point to it. Run 'make dep' to prepare. Some programs
-  require /usr/include/linux/autoconf.h to exist, which means running
-  make menuconfig or equivalent and saving the new config file.
+  The /dev/pts/ mounted file system was added with kernel 2.6.4, which
+  is default in future kernels. This build adds the feature, which was
+  back ported to 2.4.
 boot/vmlinuz: removed.
 pkgs/core_corepkg-7+1.cpk: upgraded.
   Josh has graciously licensed CorePKG to me under the GPL, now hosted by the
@@ -220,3 +195,10 @@ pkgs/core_corepkg-7+1.cpk: upgraded.
   The -R flag in 'less' is not POSIX compliant and util-linux 'more' does
   this by default. For now, this is custom modified to use 'less -Rs' from
   upstream. 'more' is still a symlink to 'less' as with Devin's Core.
+/lost+found: removed.
+  The lost+found/ directory should be at the base of a writable extended
+  file system, not a read-only CD-ROM.
+/rr_moved: removed.
+  The rr_moved/ directory comes from using the -hide-rr-moved flag of
+  the mkisofs (or xorrisofs) command. It is effectively unused with
+  Core.

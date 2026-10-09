@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=m4
-VERSION=1.4
+VERSION=1.4.11
 ARCH=i386
 
 if test ! -w .
@@ -43,13 +43,13 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--prefix=/usr
 make || exit 6
 make check
 

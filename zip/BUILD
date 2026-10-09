@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=zip
-VERSION=2.3
+VERSION=2.32
 ARCH=i386
 
 if test ! -w .
@@ -29,17 +29,18 @@ then echo 'The core.info file is not present.' 1>&2
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xzf ${PKG}23.tar.gz || exit 4
+tar xjf ${PKG}232.tar.bz2 || exit 4
 cd $PKG-$VERSION/ || exit 5
 
-sed -i "s/-O2/-Os -march=$ARCH/" unix/Makefile
+sed -i "s/-O2/-Os -march=$ARCH/" unix/configure
+sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" unix/Makefile
 mkdir -p /tmp/$DIST-$PKG/
 make -f unix/Makefile generic_gcc || exit 7
 make -f unix/Makefile install \

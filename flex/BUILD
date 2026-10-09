@@ -1,6 +1,5 @@
-
 # CorePKG build script for flex.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=flex
-VERSION=2.5.4
+VERSION=2.5.35
 ARCH=i386
 
 if test ! -w .
@@ -31,6 +30,9 @@ fi
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
+if test -d /tmp/$DIST-$PKG-doc/
+then rm -r /tmp/$DIST-$PKG-doc/
+fi
 
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
@@ -38,13 +40,13 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-${VERSION}a.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--prefix=/usr \
+	$ARCH-$DIST-linux-gnu
 make || exit 6
 mkdir -p /tmp/$DIST-$PKG/usr/{bin,man}
 make install prefix=/tmp/$DIST-$PKG/usr
@@ -59,12 +61,22 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
+if test -f /tmp/$DIST-$PKG/usr/info/dir
+then rm /tmp/$DIST-$PKG/usr/info/dir
+fi
+mkdir -p /tmp/$DIST-$PKG-doc/usr/
+mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+
+find /tmp/$DIST-$PKG-doc/usr/info/ -type f -exec gzip -9 {} \;
+
 cd ..
 cp core.info /tmp/$DIST-$PKG/
+cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 if test $(id -u) -ne 0
-then echo $PKG has been installed to /tmp/$DIST-$PKG/
-	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
+then echo $PKG has been installed to /tmp/$DIST-$PKG*/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG*/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
+	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -fr $PKG-$VERSION/

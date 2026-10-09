@@ -9,7 +9,7 @@ n=1 # Start exit at 2
 for i in $*
 do
 	(echo "==== $i ===="; cd $i
-	 sed -i '/^BIN_DATE/ cBIN_DATE=apr 8 2025$' *.info
+	 sed -i '/^BIN_DATE/ cBIN_DATE=apr 23 2025$' *.info
 		bash BUILD) \
 			|| n="$(expr $n + 1)" exit $n
 done

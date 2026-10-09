@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=grep
-VERSION=2.5
+VERSION=2.5.3
 ARCH=i386
 
 if test ! -w .
@@ -43,14 +43,15 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
 	--disable-nls \
+	--infodir=/usr/info \
+        --mandir=/usr/man \
+	--prefix=/usr \
 	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
 
@@ -58,16 +59,17 @@ mkdir -p /tmp/$DIST-$PKG/usr/{bin,info,man/man1}/
 make install \
 	prefix=/tmp/$DIST-$PKG/usr \
 	bindir=/tmp/$DIST-$PKG/usr/bin \
+	infodir=/tmp/$DIST-$PKG-doc/usr/info \
 	mandir=/tmp/$DIST-$PKG/usr/man
 #make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-if test -f /tmp/$DIST-$PKG/usr/info/dir
-then rm -f /tmp/$DIST-$PKG/usr/info/dir
+#mkdir -p /tmp/$DIST-$PKG-doc/usr/
+#mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
+then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
 fi
-mkdir -p /tmp/$DIST-$PKG-doc/usr/
-mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \

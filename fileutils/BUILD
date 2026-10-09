@@ -49,8 +49,8 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# textutils and the newer coreutils.info file. The newset sh-utils would
-# possibly be newer.
+# textutils, fileutils, and sh-utils have coreutils.info files, and of
+# course coreutils. The newset would be from sh-utils (or coreutils):
 rm -r /tmp/$DIST-$PKG/usr/info/
 
 # This was added by Coredistro:
@@ -75,7 +75,7 @@ cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
-else chown -R root: /tmp/$DIST-$PKG{,-doc}/
+else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
 rm -fr $PKG-$VERSION/

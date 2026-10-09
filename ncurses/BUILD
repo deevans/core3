@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=ncurses
-VERSION=5.3
+VERSION=5.6
 ARCH=i386
 
 if test ! -w .

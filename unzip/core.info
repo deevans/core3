@@ -2,20 +2,20 @@ PKG=core_unzip$
 NAME=unzip$
 DESC=zip archive utilities$
 
-MAJOR=5.50$
+MAJOR=5.52$
 MINOR=1$
 
-SRC_URL=ftp://ftp.info-zip.org/pub/infozip/src/$
-SRC_DATE=feb 17 2002$
+SRC_URL=https//prdownloads.sf.net/infozip/$
+SRC_DATE=mar 9 2005$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 8 2025$
+BIN_DATE=apr 23 2025$
 
-COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
 INSTALL=$
 REMOVE=$
 
-NOTES=Includes LFS patches$
+NOTES=https://linuxfromscratch.org/patches/downloads/unzip/*-security*.patch$

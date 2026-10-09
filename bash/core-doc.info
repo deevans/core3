@@ -2,16 +2,16 @@ PKG=core_doc_bash$
 NAME=doc_bash$
 DESC=extra documentation for bash$
 
-MAJOR=3.0.17$
+MAJOR=3.1$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/bash/$
-SRC_DATE=sep 24 2014$
+SRC_DATE=dec 8 2005$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 8 2025$
+BIN_DATE=apr 23 2025$
 
-COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

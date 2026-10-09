@@ -58,10 +58,9 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-# This was the Coredistro placement:
-#mkdir -p /tmp/$DIST-$PKG/bin/
-#mv /tmp/$DIST-$PKG/usr/bin/{cat,head,tail} /tmp/$DIST-$PKG/bin/
-
+# This installs the coreutils.info file, duplicating that from
+# textutils, fileutils, and coreutils (sh-utils is the newest, though
+# the coreutils package consolidates and replaces the previous three):
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
@@ -81,6 +80,7 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/
 else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
-	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
+#	corepkg -c /tmp/$DIST-$PKG-doc/ && \
+	rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -fr $PKG-$VERSION/

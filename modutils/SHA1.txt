@@ -1,1 +1,1 @@
-0bc16b9741b0c70086a711863c86f53c0314b624  modutils-2.4.21.tar.gz
+fa268b48d98e0efab349d45fa7fb2372d58320c1  modutils-2.4.27.tar.bz2

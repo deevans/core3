@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=wget
-VERSION=1.8.2
+VERSION=1.12
 ARCH=i386
 
 if test ! -w .
@@ -44,7 +44,7 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xzf $PKG-$VERSION.tar.gz || exit 5
+tar xjf $PKG-$VERSION.tar.bz2 || exit 5
 cd $PKG-$VERSION/ || exit 6
 
 CFLAGS="-Os -march=$ARCH" ./configure \

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sh-utils
-VERSION=2.0
+VERSION=2.0.15
 ARCH=i386
 
 if test ! -w .
@@ -43,18 +43,18 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
+	--disable-nls \
+        --enable-no-install-program=kill,uptime \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu \
-	--host=$ARCH-$DIST-linux-gnu
+	--prefix=/usr \
+	--sbindir=/usr/bin \
+	$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -65,11 +65,12 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 # Provided by the shadow command:
 rm /tmp/$DIST-$PKG/usr/man/man1/su.1
 # Provided by procps:
-rm /tmp/$DIST-$PKG/usr/bin/uptime
+rm /tmp/$DIST-$PKG/usr/bin/{kill,su,uptime}
+rm /tmp/$DIST-$PKG/usr/man/man1/uptime.1
 
-for i in factor seq
-do cp ../$i.1 /tmp/$DIST-$PKG/usr/man/man1/
-done
+#for i in factor seq
+#do cp ../$i.1 /tmp/$DIST-$PKG/usr/man/man1/
+#done
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir

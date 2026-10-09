@@ -1,4 +1,3 @@
-
 # CorePKG build script for GCC.
 # Copyright 2010-2025 David Egan Evans
 #
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=gcc
-VERSION=3.2
+VERSION=3.4.6
 ARCH=i386
 
 if test ! -w .
@@ -41,36 +40,44 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
+if test -d $PKG-build/
+then rm -fr $PKG-build/
+fi
+
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
+tar xjf $PKG-$VERSION.tar.bz2 || exit 5
 
-tar xzf $PKG-$VERSION.tar.gz
-patch -p0 <gcc-3.2-glibc-2.3-compat.diff
+mkdir $PKG-build/
+cd $PKG-build/
 
-# unwind was originally disabled by Coredistro, but is needed by later glibc.
+# unwind was originally disabled by Core, but is needed by later glibc.
 # unwind is libgcc_{eh.a,so{,.1}} from __cxa_atexit (?):
-cd $PKG-$VERSION || exit 5
-CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
-	--enable-languages=c,c++ \
-	--enable-threads=posix \
-	--enable-__cxa_atexit \
-	--enable-clocale=gnu \
+CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
+../$PKG-$VERSION/configure \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-libiberty \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu \
+	--enable-__cxa_atexit \
+	--enable-languages=c,c++ \
+	--enable-threads=posix \
 	--host=$ARCH-$DIST-linux-gnu \
+	--libexecdir=/usr/lib \
+	--prefix=/usr \
 	--target=$ARCH-$DIST-linux-gnu
+
+#make bootstrap || exit 6
 make || exit 6
-make install prefix=/tmp/$DIST-$PKG/usr
-#make install DESTDIR=/tmp/$DIST-$PKG/
+make check || exit 7
+#make install prefix=/tmp/$DIST-$PKG/usr
+make install DESTDIR=/tmp/$DIST-$PKG/
 
 rm -r /tmp/$DIST-$PKG/usr/man/man7/
 rm /tmp/$DIST-$PKG/usr/bin/gccbug
 
 # This is provided by binutils:
-rm /tmp/$DIST-$PKG/usr/bin/c++filt
+#rm /tmp/$DIST-$PKG/usr/bin/c++filt
 rm /tmp/$DIST-$PKG/usr/lib/libiberty.a
 
 find /tmp/$DIST-$PKG/usr/ -name *.la -exec rm {} \;
@@ -79,6 +86,8 @@ find /tmp/$DIST-$PKG/ -name README -exec bzip2 -9 {} \;
 
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/c++.1
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-gcc.1
+echo .so man1/gcc.1 > \
+	/tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-gcc-$VERSION.1
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-g++.1
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-c++.1
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
@@ -105,3 +114,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -r $PKG-$VERSION/
+rm -r $PKG-build

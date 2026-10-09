@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=groff
-VERSION=1.18.1
+VERSION=1.19.2
 ARCH=i386
 
 if test ! -w .
@@ -51,13 +51,15 @@ PAGE=letter ./configure \
 	--prefix=/usr \
 	--infodir=/usr/info \
 	--build=$ARCH-$DIST-linux-gnu
+CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
 make || exit 6
 
 mkdir -p /tmp/$DIST-$PKG/usr/info
 make install prefix=/tmp/$DIST-$PKG/usr infodir=/tmp/$DIST-$PKG/usr/info
 
 rm -r /tmp/$DIST-$PKG/usr/share/doc/
-rm -r /tmp/$DIST-$PKG/usr/share/groff/site-tmac/
+# an-old.tmac needs this:
+#rm -r /tmp/$DIST-$PKG/usr/share/groff/site-tmac/
 
 cp ../grohtml /tmp/$DIST-$PKG/usr/bin/
 for i in p{re,ost}-grohtml
@@ -89,4 +91,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

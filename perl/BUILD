@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=perl
-VERSION=5.8.0
+VERSION=5.8.9
 ARCH=i386
 
 if test ! -w .
@@ -56,7 +56,7 @@ cd $PKG-$VERSION || exit 7
 	-Dprefix=/usr \
 	-Dinstallprefix=/tmp/$DIST-$PKG/usr \
 	-Uinstallusrbinperl \
-	-Dinc_version_list='5.8.0' \
+	-Dinc_version_list='5.8.9' \
 	-Doptimize="-Os -march=$ARCH" \
 	-Darchname=$ARCH-linux
 make || exit 8
@@ -65,10 +65,11 @@ make install #DESTDIR=/tmp/$DIST-$PKG/ || exit 10
 
 # Why was tmpfile.al excluded (by accident?) in Coredistro?
 # It's not clear how to suppress the installation of tmpfile.al:
-rm /tmp/$DIST-$PKG/usr/lib/perl5/5.8.0/$ARCH-linux/auto/POSIX/tmpfile.al
+#rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/auto/POSIX/tmpfile.al
 
-for i in perl{5.8.0,bug}
+for i in perl{bug,thanks}
 do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
 
 for i in CHANGE{S,LOG} ChangeLog Changes ReadMe.txt README TODO
@@ -78,10 +79,11 @@ for i in ChangeLog.* Changes.*
 do find /tmp/$DIST-$PKG/ -name $i -exec rm {} \;
 done
 rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Encode/README.e2x
-rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Net/README.libnet
-rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/unicore/README.perl
+#rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Net/README.libnet
+#rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/unicore/README.perl
 
 # Remove links:
+rm /tmp/$DIST-$PKG/usr/bin/perl${VERSION}
 for i in pstruct s2p
 do rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
@@ -112,13 +114,15 @@ mv /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/*.pod \
 	/tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 
 mkdir /tmp/$DIST-$PKG/usr/man/man1/
-for i in a2p c2ph dprofpp libnetcfg h2xs perl{,cc,doc,ivp} piconv pl2pm pod2*
+for i in a2p c2ph corelist cpan dprofpp enc2xs find2perl
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in enc2xs find2perl h2ph psed pod{checker,select} splain
+for i in h2{ph,xs} instmodsh libnetcfg perl{,cc,doc,ivp} piconv* pl2pm
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-mv /tmp/$DIST-$PKG-doc/usr/man/man1/xsubpp.1 /tmp/$DIST-$PKG/usr/man/man1/
+for i in pod{2*,checker,select} psed splain xsubpp
+do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
+done
 
 # See the above deletion of links:
 echo .so man1/c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
@@ -141,4 +145,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/
