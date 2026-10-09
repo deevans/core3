@@ -1,0 +1,21 @@
+PKG=core_unzip$
+NAME=unzip$
+DESC=zip archive utilities$
+
+MAJOR=5.50$
+MINOR=1$
+
+SRC_URL=ftp://ftp.info-zip.org/pub/infozip/src/$
+SRC_DATE=feb 17 2002$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=apr 5 2025$
+
+COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=Includes LFS patches$

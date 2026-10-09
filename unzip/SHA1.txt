@@ -1,0 +1,6 @@
+9c9ddb436d8b4a317f7a1dc539c87190bfe135f4  unzip-5.50-alt-iconv-v1.1.patch
+1907d5f4c295e218d6f253de52c529e0a2b2ff9d  unzip-5.50-dont_make_noise-1.patch
+689609579b3a55bd582e9525c929a1bba0847733  unzip-5.50-dotdot-1.patch
+23f30889386d8cb4eacc277dfd9c12eafa674316  unzip-5.50-fix_Makefile-1.patch
+760452154faea222878b87afbf5db5d2ade291f3  unzip-5.50-fix_libz-1.patch
+51034a8098eddc8facb4db9ea1a935e813dbdb73  unzip-5.50.tar.gz
