@@ -58,16 +58,16 @@ make || exit 6
 make gzip.info || exit 7
 #make install DESTDIR=/tmp/$DIST-$PKG/
 
+# Devan's Core renamed zdiff to zcmp. 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
 cp gzip /tmp/$DIST-$PKG/usr/bin/
 for i in gzexe zdiff zforce zgrep zmore znew
 do cp $i.in /tmp/$DIST-$PKG/usr/bin/$i
 done
 (cd /tmp/$DIST-$PKG/usr/bin/
-mv zdiff zcmp # Josh, what is this about?
 ln -s gzip gunzip
 ln -s gzip zcat
-ln -s zcmp zdiff
+ln -s zdiff zcmp
 )
 
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
@@ -75,14 +75,10 @@ for i in gzip gzexe zdiff zforce zgrep zmore znew
 do cp $i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
 
-# Because zcmp not zdiff? See above:
-mv /tmp/$DIST-$PKG/usr/man/man1/zdiff.1 /tmp/$DIST-$PKG/usr/man/man1/zcmp.1
-
 for i in gunzip zcat
 do echo .so man1/gzip.1 > /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
-# Maybe this should be an echo command?
-cp ../zdiff.1 /tmp/$DIST-$PKG/usr/man/man1/
+echo .so man1/zdiff.1 > /tmp/$DIST-$PKG/usr/man/man1/zcmp.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

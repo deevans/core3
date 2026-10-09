@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=file
-VERSION=3.39
+VERSION=3.41
 ARCH=i386
 
 if test ! -w .

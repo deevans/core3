@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=bash
-VERSION=2.05b
+VERSION=3.0.16
 ARCH=i386
 
 if test ! -w .
@@ -31,10 +30,10 @@ then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -fr /tmp/$DIST-$PKG/
+then rm -r /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
-then rm -fr /tmp/$DIST-$PKG-doc/
+then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
@@ -46,6 +45,7 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
+# Patch 018 and above will break things:
 for i in ../bash-patches/bash*-0??
 do patch -p0 <$i
 done
@@ -55,14 +55,12 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
         --mandir=/usr/man \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu \
-	--host=$ARCH-$DIST-linux-gnu \
-	--target=$ARCH-$DIST-linux-gnu
+	$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
 
 for i in bashbug
-do rm /tmp/$DIST-$PKG/usr/bin/$i
+do rm -f /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
 
@@ -86,7 +84,8 @@ if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/
 else chown -R root: /tmp/$DIST-$PKG{,-doc}/
-	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
+	corepkg -c /tmp/$DIST-$PKG/ && rm -fr /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -fr $PKG-$VERSION/
+

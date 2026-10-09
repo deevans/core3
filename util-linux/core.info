@@ -9,7 +9,7 @@ SRC_URL=https://ibiblio.org/pub/linux/system/misc/$
 SRC_DATE=jan 28 2003$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 5 2025$
+BIN_DATE=apr 8 2025$
 
 COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
 DEPENDS=$

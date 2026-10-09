@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=bzip2
-VERSION=1.0.2
+VERSION=1.0.5
 ARCH=i386
 
 if test ! -w .
@@ -55,10 +55,10 @@ do
 	)
 done
 (cd /tmp/$DIST-$PKG/usr/bin/
-	rm bzmore
-	ln -s bzless bzmore
-	rm bzdiff
-	ln -s bzcmp bzdiff
+	rm bzless
+	ln -s bzmore bzless
+	rm bzcmp
+	ln -s bzdiff bzcmp
 	rm bzcat bunzip2
 	ln -s bzip2 bzcat
 	ln -s bzip2 bunzip2

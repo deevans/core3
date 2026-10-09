@@ -25,15 +25,9 @@ fi
 if test ! -f core.info
 then echo "The core.info file is not present." 1>&2; exit 3
 fi
-if test ! -f core-doc.info
-then echo "The core-doc.info file is not present." 1>&2; exit 3
-fi
 
 if test -d /tmp/$DIST-$PKG/
 then rm -fr /tmp/$DIST-$PKG/
-fi
-if test -d /tmp/$DIST-$PKG-doc/
-then rm -fr /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/

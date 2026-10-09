@@ -1,1 +1,1 @@
-750cb7a22b0ffa490714420a7ab18259e9310543  nano-1.0.9.tar.gz
+e78d9c3f7795aca3b4e03eb5cea00c4490a4fb44  nano-1.2.5.tar.bz2

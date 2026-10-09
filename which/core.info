@@ -2,14 +2,14 @@ PKG=core_which$
 NAME=which$
 DESC=show full path of commands$
 
-MAJOR=2.14$
+MAJOR=2.17$
 MINOR=1$
 
-SRC_URL=http://www.xs4all.nl/~carlo17/which/$
-SRC_DATE=jul 26 2002$
+SRC_URL=ftp.gnu.org/gnu/which/$
+SRC_DATE=oct 10 2007$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 5 2025$
+BIN_DATE=apr 8 2025$
 
 COMPILE=linux 2.4.18, glibc 2.3.3, gcc 3.2, binutils 2.13$
 DEPENDS=$
