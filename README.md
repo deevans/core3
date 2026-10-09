@@ -39,3 +39,7 @@ great. This release is dedicated to Michael Scott Clyde, who used an old
 version of this back in 2010. This is a retrospective release, and the
 next that follows was one I had intended to build for him, but didn't get
 a chance.
+
+Gracious thanks to Ezra Pedersen for the hardware for this particular
+release, giving me something old enough to build on that was sane,
+but also enabling me to get that 80386 working with the release.
