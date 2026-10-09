@@ -1,0 +1,19 @@
+.TH GSHADOW 5 "" "Config Files" "Core Linux Distribution"
+
+.SH NAME
+gshadow - shadow group file
+
+.SH DESCRIPTION
+/etc/gshadow contains an encrypted password, group membership and
+administration information for groups. It contains the following
+fields:
+
+.TP
+[name]:[encrypted password]:[administrators]:[members]
+
+.TP
+A password of ! prevents users from joining the group. See passwd(1).
+
+.SH NOTE
+This man page was written for the Core Linux Distribution
+[http://coredistro.sf.net/]. Feel free to use it elsewhere.
