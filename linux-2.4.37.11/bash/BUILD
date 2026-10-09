@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=bash
-VERSION=4.1
+VERSION=4.2.53
 ARCH=i386
 
 if test ! -w .
@@ -42,7 +42,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 #for i in ../bash-patches/bash*-0??

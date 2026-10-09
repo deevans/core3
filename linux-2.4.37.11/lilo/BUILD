@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=lilo
-VERSION=22.8
+VERSION=24.2
 ARCH=i386
 
 if test ! -w .
@@ -36,18 +36,20 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.src.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
-make install \
-	MAN_DIR=/usr/man \
-	OPT="-Os -march=$ARCH" \
-	ROOT=/tmp/$DIST-$PKG \
-	SBIN_DIR=/usr/bin/ \
-	USRSBIN_DIR=/usr/bin/ || exit 6
-mv /tmp/$DIST-$PKG/usr/bin/keytab-lilo.pl /tmp/$DIST-$PKG/usr/bin/keytab-lilo
-cp ../keytab-lilo.8 /tmp/$DIST-$PKG/usr/man/man8/
+sed -i "/^OPT/ cOPT=-Os -march=$ARCH" make.vars
+make
+make -C src install DESTDIR=/tmp/$DIST-$PKG/ \
+	SBIN_DIR=/usr/bin/ USRSBIN_DIR=/usr/bin/ || exit 6
+make -C scripts install DESTDIR=/tmp/$DIST-$PKG/ \
+	USRSBIN_DIR=/usr/bin/ || exit 7
+make -C man install DESTDIR=/tmp/$DIST-$PKG/ \
+	MAN_DIR=/usr/man/ || exit 8
+
+rmdir /tmp/$DIST-$PKG/etc/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

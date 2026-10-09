@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=dev86
-VERSION=0.16.18
+VERSION=0.16.21
 ARCH=i386
 
 if test ! -w .
@@ -31,14 +31,14 @@ if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
 
-if test -d $PKG-$VERSION/
-then rm -fr $PKG-$VERSION/
+if test -d $PKG/
+then rm -fr $PKG/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf Dev86src-$VERSION.tar.gz
-cd $PKG-$VERSION || exit 5
+tar xjf $PKG-$VERSION.tar.bz2
+cd $PKG || exit 5
 
 sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
 sed -i "/^CFLAGS/ s/-O /-Os -march=$ARCH /" Makefile
@@ -76,4 +76,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -fr $PKG-$VERSION/
+rm -fr $PKG/

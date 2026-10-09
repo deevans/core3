@@ -30,3 +30,12 @@ The package info files give the general URL locations for downloading
 packages. Running this requires 32-bit Intel hardware with an IDE
 CD-ROM. Installation requires an IDE ATA drive. Contact me privately if
 an ISO is desired, as I no longer have a website to post to.
+
+This is the last 2.4 kernel, though I didn't include some of the later
+October patches from Willy. It is the last version I supported on 80386,
+mainly due to threading support changes, not kernel specific ones. It was
+tested on a real 80386 Intel with 8 MB of RAM, and it ran (and still runs)
+great. This release is dedicated to Michael Scott Clyde, who used an old
+version of this back in 2010. This is a retrospective release, and the
+next that follows was one I had intended to build for him, but didn't get
+a chance.

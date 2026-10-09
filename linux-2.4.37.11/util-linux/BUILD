@@ -1,6 +1,5 @@
-
 # CorePKG build script for util-linux.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,9 +15,9 @@
 # Place, Suite 330, Boston, MA 02111-1307 USA
 
 DIST=deevans
-PKG=util-linux-ng
-VERSION=2.13.1
-ARCH=i686
+PKG=util-linux
+VERSION=2.12r
+ARCH=i386
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2
@@ -41,15 +40,16 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2 || exit 4
 cd $PKG-$VERSION/ || exit 5
 
+# Since glibc 2.3.3 (and possibly 2.3.2?) is a swapon argument issue.
+# This is never fixed in 2.11 or 2.12.
+sed -i '17s/$/\n#include <fcntl.h>/' mount/swapon.c
+
+sed -i "/^CPU/ cCPU=$ARCH" MCONFIG
+sed -i 's/-O2/-Os/g' MCONFIG
+sed -i '/^USRSBIN_DIR/ s/sbin/bin/' MCONFIG
 CC=gcc CFLAGS="-Os -march=$ARCH" ./configure --prefix=/usr
 make all HAVE_KILL=yes HAVE_SLN=yes HAVE_WRITE=yes DISABLE_NIS=yes \
 	|| exit 7
-
-# This installs much more than desired:
-#make install HAVE_KILL=yes HAVE_SLN=yes HAVE_WRITE=yes DISABLE_NIS=yes \
-#	MAN_DIR=/usr/man DESTDIR=/tmp/$DIST-$PKG
-# Why didn't HAVE_SLN=yes remove this?
-#rm /tmp/$DIST-$PKG/usr/man/man8/sln.8
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
@@ -78,11 +78,11 @@ for i in {,u}mount losetup swapon
 do mv mount/$i /tmp/$DIST-$PKG/usr/bin/
 done
 
-# No longer uses rdev with i586 and later:
-for i in tunelp
+# rdev is not used with P5 and above:
+for i in rdev tunelp
 do mv sys-utils/$i /tmp/$DIST-$PKG/usr/bin/
 done
-for i in sys-utils/tunelp.8 disk-utils/{fdformat,{fsck,mkfs}.minix}.8
+for i in sys-utils/{rdev,tunelp}.8 disk-utils/{fdformat,{fsck,mkfs}.minix}.8
 do mv $i /tmp/$DIST-$PKG/usr/man/man8/
 done
 
@@ -99,15 +99,15 @@ mv hwclock/hwclock /tmp/$DIST-$PKG/usr/bin/
 echo .so man8/swapon.8 > /tmp/$DIST-$PKG/usr/man/man8/swapoff.8
 
 for i in cal mcookie whereis
-do mv misc-utils/$i /tmp/$DIST-$PKG/usr/bin/
+do cp misc-utils/$i /tmp/$DIST-$PKG/usr/bin/
 done
 for i in col{,crt,rm,umn} more
-do mv text-utils/$i /tmp/$DIST-$PKG/usr/bin/
+do cp text-utils/$i /tmp/$DIST-$PKG/usr/bin/
 done
+cp text-utils/more.1 /tmp/$DIST-$PKG/usr/man/man1/
 for i in misc-utils/{cal,mcookie,whereis}.1 text-utils/col{,crt,rm,umn}.1
 do cp $i /tmp/$DIST-$PKG/usr/man/man1/
 done
-cp text-utils/more.1 /tmp/$DIST-$PKG/usr/man/man1/
 mv mount/fstab.5 /tmp/$DIST-$PKG/usr/man/man5/
 
 mv getopt/getopt /tmp/$DIST-$PKG/usr/bin/

@@ -2,18 +2,18 @@ PKG=core_bash$
 NAME=bash$
 DESC=bourne-again shell$
 
-MAJOR=4.1$
+MAJOR=4.2.53$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/bash/$
-SRC_DATE=dec 31 2009$
+SRC_DATE=oct 5 2014$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=may 23 2025$
+BIN_DATE=may 24 2025$
 
 COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
-RELATED=which$
+RELATED=which, readline$
 
 INSTALL=$
 REMOVE=$

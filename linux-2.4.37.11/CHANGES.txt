@@ -66,12 +66,13 @@ pkgs/core_gzip-1.4+1.cpk: upgraded.
 pkgs/optional/core_doc_gzip-1.4+1.cpk: upgraded.
 pkgs/core_file-5.11+1.cpk: upgraded.
 pkgs/optional/file-doc-5.11+1.cpk: added.
-pkgs/core_bash-4.1+1.cpk: upgraded.
+pkgs/core_bash-4.2+1.cpk: upgraded.
   Move to /usr/bin/. Why do spectre/meltdown patches cause all 3.x and
   most 4.x Bash versions to malfunction?
-pkgs/optional/core_doc_bash-4.1+1.cpk: upgraded.
-pkgs/core_lilo-22.8+1.cpk: upgraded.
-pkgs/dev86-0.16.18+1.cpk: added.
+pkgs/optional/core_doc_bash-4.2+1.cpk: upgraded.
+pkgs/core_lilo-24.2+1.cpk: upgraded.
+  24.2 requires dev86 0.16.14 or better.
+pkgs/dev86-0.16.21+1.cpk: added.
   0.16.12 changes the name to dev86. Allow for inclusion of bcc and ELKS.
   This increases the x86 target footprint back to 8086. This build is
   for 80386, but it also makes a future i486-only foundation for

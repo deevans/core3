@@ -9,7 +9,7 @@ SRC_URL=https://dl.sv.nongnu.org/releases/sysvinit/$
 SRC_DATE=apr 14 2010$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=may 23 2025$
+BIN_DATE=may 24 2025$
 
 COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$

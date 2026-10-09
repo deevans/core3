@@ -1,12 +1,12 @@
-PKG=core_tar$
-NAME=tar$
-DESC=file archiver$
+PKG=core_util-linux$
+NAME=util-linux$
+DESC=various linux utilities$
 
-MAJOR=1.26$
+MAJOR=2.12r$
 MINOR=1$
 
-SRC_URL=ftp://ftp.gnu.org/gnu/tar/$
-SRC_DATE=mar 13 2011$
+SRC_URL=https://slackware.osuosl.org/slackware-11.0/source/a/util-linux/$
+SRC_DATE=sep 23 2005$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
 BIN_DATE=may 24 2025$
