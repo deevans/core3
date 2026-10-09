@@ -1,3 +1,1 @@
-41136e0530aba06f75ffab741c51edead5a3364e  findutils-4.1.20-missing_newlines-1.patch
-7cad6860f1a083de370bfb9e801bd21d3d823d2b  findutils-4.1.20-no_login_shell-1.patch
-9a2d5f8981f6f5bbdcfa956737658cb5e9051a17  findutils-4.1.20.tar.gz
+e8dd88fa2cc58abffd0bfc1eddab9020231bb024  findutils-4.4.2.tar.gz

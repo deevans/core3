@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gzip
-VERSION=1.3.12
+VERSION=1.4
 ARCH=i386
 
 if test ! -w .
@@ -39,8 +39,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
@@ -51,12 +51,16 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--disable-nls \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
 
+# uncompress and gunzip are the same linked shell script.
+# Devin's Core always used symlinks. However, the Unix researchers
+# saw them as a mistake, and removed them in Plan 9. The uncompress
+# link is in the same directory, so should not be a problem as a link:
 echo .so man1/gzip.1 >/tmp/$DIST-$PKG/usr/man/man1/uncompress.1
 echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zegrep.1
 echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zfgrep.1
@@ -68,7 +72,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

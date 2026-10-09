@@ -1,7 +1,7 @@
 # CorePKG build script for man.
 DIST=deevans
 PKG=man
-VERSION=1.6f
+VERSION=1.6g
 ARCH=i386
 
 if test ! -w .
@@ -61,4 +61,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-#rm -r $PKG-$VERSION/
+rm -r $PKG-$VERSION/

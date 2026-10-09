@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=nasm
-VERSION=2.02
+VERSION=2.09.04
 ARCH=i386
 
 if test ! -w .
@@ -33,8 +33,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5

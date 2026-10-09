@@ -2,16 +2,16 @@ PKG=core_gzip$
 NAME=gzip$
 DESC=file compression utilities$
 
-MAJOR=1.3.12$
+MAJOR=1.4$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/gzip/$
-SRC_DATE=apr 13 2007$
+SRC_DATE=feb 10 2011$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

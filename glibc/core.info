@@ -2,20 +2,20 @@ PKG=core_glibc$
 NAME=glibc$
 DESC=standard c library$
 
-MAJOR=2.3.4$
+MAJOR=2.3.6$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/libc/$
-SRC_DATE=jan 26 2005$
+SRC_DATE=nov 3 2005$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
-DEPENDS=gcc 3.4.6$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+DEPENDS=gcc$
 RELATED=$
 
 INSTALL=$
 REMOVE=$
 
-NOTES=man pages from Core as 2.3.1-2.3.4 didn't have any?$
+NOTES=man pages from Core as 2.3.x didn't have any?$

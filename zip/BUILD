@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=zip
-VERSION=2.32
+VERSION=30
 ARCH=i386
 
 if test ! -w .
@@ -36,11 +36,11 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xjf ${PKG}232.tar.bz2 || exit 4
-cd $PKG-$VERSION/ || exit 5
+tar xzf ${PKG}${VERSION}.tgz || exit 4
+cd $PKG$VERSION/ || exit 5
 
-sed -i "s/-O2/-Os -march=$ARCH/" unix/configure
-sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" unix/Makefile
+sed -i "s/-O3/-Os -march=$ARCH/" unix/configure
+sed -i "/^CFLAGS/ s/-O3/-Os -march=$ARCH/" unix/Makefile
 mkdir -p /tmp/$DIST-$PKG/
 make -f unix/Makefile generic_gcc || exit 7
 make -f unix/Makefile install \
@@ -63,4 +63,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+rm -r $PKG$VERSION/

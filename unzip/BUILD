@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=unzip
-VERSION=5.52
+VERSION=6.0
 ARCH=i386
 
 if test ! -w .
@@ -37,8 +37,8 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xzf ${PKG}*.tar.gz || exit 4
-cd $PKG-$VERSION/ || exit 5
+tar xzf ${PKG}*.tgz || exit 4
+cd ${PKG}*/ || exit 5
 
 for i in ../*.patch
 do patch -p1 <$i
@@ -66,4 +66,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+rm -r ${PKG}*/

@@ -9,13 +9,13 @@ SRC_URL=ftp://ftp.gnu.org/gnu/make/$
 SRC_DATE=apr 1 2006$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
-INSTALL=install-info /usr/info/make.info.gz /usr/info/dir$
-REMOVE=install-info --delete /usr/info/make.info.gz /usr/info/dir$
+INSTALL=install-info /usr/info/make.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/make.info.bz2 /usr/info/dir$
 
 NOTES=$

@@ -70,7 +70,6 @@ CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
 #make bootstrap || exit 6
 make || exit 6
 make check || exit 7
-#make install prefix=/tmp/$DIST-$PKG/usr
 make install DESTDIR=/tmp/$DIST-$PKG/
 
 rm -r /tmp/$DIST-$PKG/usr/man/man7/
@@ -97,7 +96,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=tar
-VERSION=1.19
+VERSION=1.26
 ARCH=i386
 
 if test ! -w .
@@ -46,13 +46,13 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" FORCE_UNSAFE_CONFIGURE=1 ./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-        --infodir=/usr/info \
+	--infodir=/usr/info \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin
 make || exit 6
@@ -67,7 +67,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

@@ -70,7 +70,7 @@ find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
 then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
 fi
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

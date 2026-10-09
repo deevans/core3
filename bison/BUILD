@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=bison
-VERSION=1.75
+VERSION=2.3
 ARCH=i386
 
 if test ! -w .
@@ -43,29 +43,30 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
 	--disable-nls \
+	--mandir=/usr/man \
+	--prefix=/usr \
 	--build=$ARCH-$DIST-linux-gnu
 
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-cp ../yacc.sh /tmp/$DIST-$PKG/usr/bin/yacc
 
 echo .so man1/bison.1 > /tmp/$DIST-$PKG/usr/man/man1/yacc.1
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+bzip2 -9 /tmp/$DIST-$PKG/usr/share/$PKG/README
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

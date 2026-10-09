@@ -1,4 +1,3 @@
-
 # CorePKG build script for binutils.
 # Copyright 2010-2025 David Egan Evans
 #
@@ -49,7 +48,11 @@ then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 
-mkdir binutils-build && cd binutils-build || exit 5
+cd $PKG-$VERSION
+<../CVE-2005-4807.patch patch -p0
+
+cd ..
+mkdir $PKG-build && cd $PKG-build || exit 5
 
 CC=gcc CFLAGS="-Os -march=$ARCH" ../$PKG-$VERSION/configure \
 	--disable-nls \
@@ -60,7 +63,7 @@ CC=gcc CFLAGS="-Os -march=$ARCH" ../$PKG-$VERSION/configure \
 
 make || exit 6
 make info || exit 7
-make install prefix=/tmp/$DIST-$PKG/usr
+make install DESTDIR=/tmp/$DIST-$PKG/
 
 cd ../$PKG-$VERSION/
 cp include/libiberty.h /tmp/$DIST-$PKG/usr/include/
@@ -92,7 +95,7 @@ mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
 then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
 fi
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 # Binaries are smaller in some cases with this than Core:
 find /tmp/$DIST-$PKG/ | xargs file | \

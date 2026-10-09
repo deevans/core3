@@ -1,1 +1,1 @@
-b05cfdd651137d46d97872dd646db0dd92077f0d  diffutils-2.8.7.tar.gz
+17fcdcd435ef6b424aa9c7a487ffde408d1a00e6  diffutils-3.0.tar.gz

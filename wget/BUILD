@@ -58,8 +58,9 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 
 rm -r /tmp/$DIST-$PKG/usr/etc/
 mkdir -pm 755 /tmp/$DIST-$PKG-doc/usr/
+rm /tmp/$DIST-$PKG/usr/info/dir
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 strip --strip-unneeded /tmp/$DIST-$PKG/usr/bin/*

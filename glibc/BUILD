@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=glibc
-VERSION=2.3.4
+VERSION=2.3.6
 ARCH=i386
 
 if test ! -w .
@@ -94,7 +94,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 mkdir -p /tmp/$DIST-$PKG-i18n/usr/{lib,share}/
 mv /tmp/$DIST-$PKG/usr/lib/gconv/ /tmp/$DIST-$PKG-i18n/usr/lib/

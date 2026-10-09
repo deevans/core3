@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=groff
-VERSION=1.19.2
+VERSION=1.21
 ARCH=i386
 
 if test ! -w .
@@ -48,14 +48,17 @@ cd $PKG-$VERSION || exit 5
 sed -i '1c#!/usr/bin/bash' configure
 CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
 PAGE=letter ./configure \
-	--prefix=/usr \
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
 	--infodir=/usr/info \
-	--build=$ARCH-$DIST-linux-gnu
-CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
-make || exit 6
+	--mandir=/usr/man \
+	--prefix=/usr \
+	--target=$ARCH-$DIST-linux-gnu
+CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" make || exit 6
 
 mkdir -p /tmp/$DIST-$PKG/usr/info
-make install prefix=/tmp/$DIST-$PKG/usr infodir=/tmp/$DIST-$PKG/usr/info
+#make install prefix=/tmp/$DIST-$PKG/usr infodir=/tmp/$DIST-$PKG/usr/info
+make install DESTDIR=/tmp/$DIST-$PKG
 
 rm -r /tmp/$DIST-$PKG/usr/share/doc/
 # an-old.tmac needs this:
@@ -75,7 +78,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

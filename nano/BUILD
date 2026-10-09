@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=nano
-VERSION=2.0.7
+VERSION=2.2.6
 ARCH=i386
 
 if test ! -w .
@@ -29,12 +29,18 @@ fi
 if test ! -f core-doc.info
 then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
+if test ! -f core-rc.info
+then echo "The core-rc.info file is not present." 1>&2; exit 3
+fi
 
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
 then rm -r /tmp/$DIST-$PKG-doc/
+fi
+if test -d /tmp/$DIST-$PKG-rc/
+then rm -r /tmp/$DIST-$PKG-rc/
 fi
 
 if test -d $PKG-$VERSION/
@@ -63,7 +69,11 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
+
+rm -r /tmp/$DIST-$PKG/usr/share/$PKG/man-html/
+mkdir -p /tmp/$DIST-$PKG-rc/usr/share/
+mv /tmp/$DIST-$PKG/usr/share/$PKG/ /tmp/$DIST-$PKG-rc/usr/share/
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
@@ -72,11 +82,13 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 cd ..
 cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
+cp core-rc.info /tmp/$DIST-$PKG-rc/core.info
 if test $(id -u) -ne 0
-then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
-	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/
-else chown -R root: /tmp/$DIST-$PKG{,-doc}/
+then echo $PKG has been installed to /tmp/$DIST-$PKG*/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG*/
+else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
+	corepkg -c /tmp/$DIST-$PKG-rc/ && rm -r /tmp/$DIST-$PKG-rc/
 fi
 rm -r $PKG-$VERSION/

@@ -1,1 +1,1 @@
-edcff14458bd83cd2eda040f2e82b9371c577858  texinfo-4.9.92.tar.bz2
+a1533cf8e03ea4fa6c443b73f4c85e4da04dead0  texinfo-4.13a.tar.gz

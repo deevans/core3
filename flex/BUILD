@@ -67,7 +67,7 @@ fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 
-find /tmp/$DIST-$PKG-doc/usr/info/ -type f -exec gzip -9 {} \;
+find /tmp/$DIST-$PKG-doc/usr/info/ -type f -exec bzip2 -9 {} \;
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/

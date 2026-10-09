@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sed
-VERSION=4.1.5
+VERSION=4.2.1
 ARCH=i386
 
 if test ! -w .
@@ -43,17 +43,18 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
-	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--infodir=/usr/info \
+	--libdir=/usr/lib \
+	--mandir=/usr/man \
+	--prefix=/usr \
+	--sbindir=/usr/bin
 make || exit 6
 make install-strip DESTDIR=/tmp/$DIST-$PKG/
 
@@ -64,7 +65,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/

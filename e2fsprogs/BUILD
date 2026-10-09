@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=e2fsprogs
-VERSION=1.40.8
+VERSION=1.41.14
 ARCH=i386
 
 if test ! -w .
@@ -40,23 +40,24 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+# Disable TLS on Linux 2.4:
+CC=gcc CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
+	--disable-tls \
 	--disable-uuidd \
 	--infodir=/usr/info \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
-	--sysconfdir=/etc \
-	--with-cc=gcc \
-	$ARCH-$DIST-linux-gnu
+	--sysconfdir=/etc
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 rm -r /tmp/$DIST-$PKG/etc/
 
 # Remove linked file names and replace with .so reference files:
-for i in mkfs.ext{2,3}
+for i in mkfs.ext{2,3,4{,dev}}
 do rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 	echo .so man8/mke2fs.8 > /tmp/$DIST-$PKG/usr/man/man8/$i.8
 	(cd /tmp/$DIST-$PKG/usr/bin/
@@ -64,13 +65,18 @@ do rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 		ln -s mke2fs $i
 	)
 done
-for i in fsck.ext{2,3}
+for i in fsck.ext{2,3,4}
 do rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 	echo .so man8/e2fsck.8 > /tmp/$DIST-$PKG/usr/man/man8/$i.8
 	(cd /tmp/$DIST-$PKG/usr/bin/
 		rm $i
 		ln -s e2fsck $i
 	)
+done
+# With Linux 2.4, remove ext4:
+for i in {fsck,mkfs}.ext4{,dev}
+do rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
+	rm /tmp/$DIST-$PKG/usr/bin/$i
 done
 for i in {find,tune2}fs
 do
@@ -90,6 +96,10 @@ if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm /tmp/$DIST-$PKG/usr/info/dir
 fi
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+for i in /tmp/$DIST-$PKG-doc/usr/info/*.gz
+do gzip -d $i
+done
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/

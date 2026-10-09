@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=which
-VERSION=2.17
+VERSION=2.20
 ARCH=i386
 
 if test ! -w .
@@ -50,17 +50,17 @@ tar xzf $PKG-$VERSION.tar.gz || exit 5
 cd $PKG-$VERSION/ || exit 6
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--infodir=/usr/info \
-	--mandir=/usr/man
+	--mandir=/usr/man \
+	--prefix=/usr
 make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
-#rm /tmp/$DIST-$PKG/usr/info/dir
+rm /tmp/$DIST-$PKG/usr/info/dir
 mkdir -pm 755 /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 strip --strip-unneeded /tmp/$DIST-$PKG/usr/bin/*
 

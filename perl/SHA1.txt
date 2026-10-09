@@ -1,1 +1,1 @@
-d5ba4f3c6903e3424bc16c2748848440e446cd54  perl-5.8.9.tar.gz
+adf73606dd5248af7ccdd735bcaa0e628ea75b3c  perl-5.10.0.tar.gz

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=file
-VERSION=3.41
+VERSION=4.24
 ARCH=i386
 
 if test ! -w .
@@ -30,27 +30,35 @@ fi
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
+if test -d /tmp/$DIST-$PKG-doc/
+then rm -r /tmp/$DIST-$PKG-doc/
+fi
 
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
-	--build=$ARCH-$DIST-linux-gnu
+	--mandir=/usr/man \
+	--prefix=/usr
 make -j 2 || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
 rmdir /tmp/$DIST-$PKG/usr/man/man5/ # Why does it install a blank directory?
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
+mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
+
+find /tmp/$DIST-$PKG/ -name *.la -exec rm {} \;
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
@@ -58,10 +66,12 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
+cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 if test $(id -u) -ne 0
-then echo $PKG has been installed to /tmp/$DIST-$PKG/
-	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
-else chown -R root: /tmp/$DIST-$PKG/
+then echo $PKG has been installed to /tmp/$DIST-$PKG*/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG*/
+else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
+	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
 rm -fr $PKG-$VERSION/

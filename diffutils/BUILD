@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=diffutils
-VERSION=2.8.7
+VERSION=3.0
 ARCH=i386
 
 if test ! -w .
@@ -47,10 +47,11 @@ cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-        --mandir=/usr/man \
-	--prefix=/usr \
-	--build=$ARCH-$DIST-linux-gnu
+	--infodir=/usr/info \
+	--mandir=/usr/man \
+	--prefix=/usr
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -61,7 +62,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

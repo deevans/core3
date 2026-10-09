@@ -2,16 +2,16 @@ PKG=core_psmisc$
 NAME=psmisc$
 DESC=process handling utilities$
 
-MAJOR=22.6$
+MAJOR=22.13$
 MINOR=1$
 
-SRC_URL=http://ftp2.osuosl.org/pub/clfs/conglomeration/psmisc/$
-SRC_DATE=nov 4 2007$
+SRC_URL=https://ftp.osuosl.org/pub/lfs/lfs-packages/6.8/$
+SRC_DATE=sep 6 2010$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

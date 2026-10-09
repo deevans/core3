@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=texinfo
-VERSION=4.9.92
+VERSION=4.13
 ARCH=i386
 
 if test ! -w .
@@ -42,28 +42,25 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-${VERSION}a.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--libdir=/usr/lib \
 	--infodir=/usr/info \
-        --mandir=/usr/man \
+	--libdir=/usr/lib \
+	--mandir=/usr/man \
 	--prefix=/usr \
-	--sbindir=/usr/bin \
-	--build=$ARCH-$DIST-linux-gnu
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-#cp ../infokey.1 /tmp/$DIST-$PKG/usr/man/man1/
 
-for i in texi2dvi texindex
+for i in texi{2{dvi,pdf},ndex} pdftexi2dvi
 do rm /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
-rm /tmp/$DIST-$PKG/usr/bin/pdftexi2dvi
-rm /tmp/$DIST-$PKG/usr/bin/texi2pdf
 rm -r /tmp/$DIST-$PKG/usr/man/man5/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
@@ -73,9 +70,8 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
-# The Coredistro binary size is smaller than this provides:
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f1 -d: | xargs strip --strip-unneeded

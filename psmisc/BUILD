@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=psmisc
-VERSION=22.6
+VERSION=22.13
 ARCH=i386
 
 if test ! -w .
@@ -34,8 +34,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
@@ -51,8 +51,8 @@ sed -i "/^CFLAGS/ s/-Wall/-Wall -Os -march=$ARCH/" src/Makefile
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Remove pstree.x11 symlink for now; use rewritten fuser only:
-rm /tmp/$DIST-$PKG/usr/bin/{oldfuser,pstree.x11}
+# Remove pstree.x11 symlink for now:
+rm /tmp/$DIST-$PKG/usr/bin/pstree.x11
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

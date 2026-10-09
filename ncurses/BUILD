@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=ncurses
-VERSION=5.6
+VERSION=5.7
 ARCH=i386
 
 if test ! -w .
@@ -46,15 +46,21 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
+# Fixes build error with later Bash and ncurses 5.6-5.9:
+sed -i '38s/`g/$(g/' include/MKhashsize.sh
+sed -i '38s/`$/)/' include/MKhashsize.sh
+
+# Add ticlib for tack, removed in 5.7:
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+	--mandir=/usr/man \
+	--prefix=/usr \
 	--sbindir=/usr/bin \
 	--with-shared \
-	--without-debug \
-	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--with-ticlib \
+	--without-debug
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -67,6 +73,8 @@ echo .so man1/tset.1 > /tmp/$DIST-$PKG/usr/man/man1/reset.1
 for i in captoinfo info{cmp,tocap} tic toe
 do mv /tmp/$DIST-$PKG/usr/man/man1/$i.1m /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
+
+find /tmp/$DIST-$PKG-doc/usr/man/ -type l -exec rm {} \;
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;

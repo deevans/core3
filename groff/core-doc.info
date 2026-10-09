@@ -2,20 +2,20 @@ PKG=core_doc_groff$
 NAME=doc_groff$
 DESC=extra documentation for groff$
 
-MAJOR=1.19.2$
+MAJOR=1.21$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/groff/$
-SRC_DATE=sep 4 2005$
+SRC_DATE=dec 31 2011$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
-INSTALL=install-info [info file] /usr/info/dir$
-REMOVE=install-info --delete [info file] /usr/info/dir$
+INSTALL=install-info /usr/info/groff.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/groff.info.bz2 /usr/info/dir$
 
 NOTES=$

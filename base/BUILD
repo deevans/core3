@@ -64,10 +64,17 @@ chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
 	ln -s bash sh
 )
 
+# When provided by util-linux, remove this:
+(cd /tmp/$DIST-$PKG/usr/bin/
+	ln -s less more
+)
+echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
+
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
 echo .so man1/bash.1 > /tmp/$DIST-$PKG/usr/man/man1/sh.1
+
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man{1,7}/*.?
-bzip2 -9 /tmp/$DIST-$PKG/usr/share/licenses/*
+bzip2 -9 /tmp/$DIST-$PKG/usr/share/licenses/*.txt
 
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0

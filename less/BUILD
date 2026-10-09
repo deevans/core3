@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=less
-VERSION=418
+VERSION=436
 ARCH=i386
 
 if test ! -w .
@@ -31,7 +31,7 @@ then rm -r /tmp/$DIST-$PKG/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
@@ -44,29 +44,28 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--build=$ARCH-$DIST-linux-gnu \
 	--host=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
-#make install DESTDIR=/tmp/$DIST-$PKG/
+make install DESTDIR=/tmp/$DIST-$PKG/
 
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-cp less /tmp/$DIST-$PKG/usr/bin/
+#mkdir -p /tmp/$DIST-$PKG/usr/bin/
+#cp less /tmp/$DIST-$PKG/usr/bin/
 
-# Remove this once util-linux takes over:
-(cd /tmp/$DIST-$PKG/usr/bin/
-	ln -s less more
-)
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
-
-cp lessecho lesskey /tmp/$DIST-$PKG/usr/bin/
-
+# more is provided by util-linux takes, but the symlink should come
+# from the core_base package:
+#(cd /tmp/$DIST-$PKG/usr/bin/
+#	ln -s less more
+#)
 #mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-cp less.nro /tmp/$DIST-$PKG/usr/man/man1/less.1
-cp lesskey.nro /tmp/$DIST-$PKG/usr/man/man1/lesskey.1
-cp lessecho.nro /tmp/$DIST-$PKG/usr/man/man1/lessecho.1
-#cp ../lessecho.1 /tmp/$DIST-$PKG/usr/man/man1/
+#echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
+
+#cp lessecho lesskey /tmp/$DIST-$PKG/usr/bin/
+
+#cp less.nro /tmp/$DIST-$PKG/usr/man/man1/less.1
+#cp lesskey.nro /tmp/$DIST-$PKG/usr/man/man1/lesskey.1
+#cp lessecho.nro /tmp/$DIST-$PKG/usr/man/man1/lessecho.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
@@ -82,4 +81,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

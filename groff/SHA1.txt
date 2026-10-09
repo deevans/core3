@@ -1,1 +1,1 @@
-cfad99a5c52933a6a9180e394bd94fbaec0ac956  groff-1.19.2.tar.gz
+a513aca4a7530a6e63325addd6ba2d282c8f1608  groff-1.21.tar.gz

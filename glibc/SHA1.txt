@@ -1,2 +1,2 @@
-c337e130b1409509d8d32ac942cbf9246adf3dfd  glibc-2.3.4.tar.bz2
-69391ed87d9afd1e124148a74e56267dec000532  glibc-linuxthreads-2.3.4.tar.bz2
+82d0487419f1bdbf2dee439c344e89d6af47e558  glibc-2.3.6.tar.bz2
+10190168bf948556afdfff46f87f9208402d810f  glibc-linuxthreads-2.3.6.tar.bz2

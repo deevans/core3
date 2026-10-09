@@ -1,6 +1,5 @@
-
 # CorePKG build script for GNU patch.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +16,7 @@
 
 DIST=deevans
 PKG=patch
-VERSION=2.5.4
+VERSION=2.6.1
 ARCH=i386
 
 if test ! -w .
@@ -38,19 +37,19 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
-	--disable-nls \
 	--build=$ARCH-$DIST-linux-gnu \
-	--host=$ARCH-$DIST-linux-gnu
+	--disable-nls \
+	--host=$ARCH-$DIST-linux-gnu \
+        --mandir=/usr/man \
+	--prefix=/usr
 make all || exit 6
 mkdir -m 755 -p /tmp/$DIST-$PKG/usr/bin/
-install -m 755 -o root -g root -s patch /tmp/$DIST-$PKG/usr/bin/
+install -m 755 -o root -g root -s src/patch /tmp/$DIST-$PKG/usr/bin/
 mkdir -m 755 -p /tmp/$DIST-$PKG/usr/man/man1/
 install -m 755 -o root -g root patch.man /tmp/$DIST-$PKG/usr/man/man1/patch.1
 

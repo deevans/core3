@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=bash
-VERSION=3.1
+VERSION=3.2
 ARCH=i386
 
 if test ! -w .
@@ -39,8 +39,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
@@ -49,7 +49,7 @@ cd $PKG-$VERSION || exit 5
 #do patch -p0 <$i
 #done
 
-CFLAGS="-march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--prefix=/usr \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
@@ -72,7 +72,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

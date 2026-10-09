@@ -2,16 +2,16 @@ PKG=core_ppp$
 NAME=ppp$
 DESC=point to point protocol utilities$
 
-MAJOR=2.4.4$
+MAJOR=2.4.5$
 MINOR=1$
 
 SRC_URL=https://download.samba.org/pub/ppp/$
-SRC_DATE=jun 28 2006$
+SRC_DATE=nov 17 2009$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

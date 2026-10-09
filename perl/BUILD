@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=perl
-VERSION=5.8.9
+VERSION=5.10.0
 ARCH=i386
 
 if test ! -w .
@@ -67,7 +67,7 @@ make install #DESTDIR=/tmp/$DIST-$PKG/ || exit 10
 # It's not clear how to suppress the installation of tmpfile.al:
 #rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/auto/POSIX/tmpfile.al
 
-for i in perl{bug,thanks}
+for i in perlbug
 do rm /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
@@ -79,8 +79,6 @@ for i in ChangeLog.* Changes.*
 do find /tmp/$DIST-$PKG/ -name $i -exec rm {} \;
 done
 rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Encode/README.e2x
-#rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Net/README.libnet
-#rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/unicore/README.perl
 
 # Remove links:
 rm /tmp/$DIST-$PKG/usr/bin/perl${VERSION}
@@ -114,10 +112,10 @@ mv /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/*.pod \
 	/tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 
 mkdir /tmp/$DIST-$PKG/usr/man/man1/
-for i in a2p c2ph corelist cpan dprofpp enc2xs find2perl
+for i in a2p c2ph config_data corelist cpan* dprofpp enc2xs find2perl
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in h2{ph,xs} instmodsh libnetcfg perl{,cc,doc,ivp} piconv* pl2pm
+for i in h2{ph,xs} instmodsh libnetcfg perl{,doc,ivp} piconv* pl2pm
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
 for i in pod{2*,checker,select} psed splain xsubpp

@@ -20,12 +20,13 @@ I never stopped using my version of Core, which I stylized as sinuhe's
 or D. E. Evans' Core, or Core 3. I later boot strapped it to AMD64 and
 called that Core64, but have treated it as a fork.
 
-So here are my boot scripts for rebuilding Devin's Core, refactored for
-improvements and consistency with Josh's approach. The goal is to keep the
-IUR, or live install version, small and consistent with Josh's original,
-making changes as package upgrades or more contemporary approaches force
-changes to the existing system.
+So here are the final versions of my boot scripts from rebuilding
+Devin's Core, refactored for improvements and consistency with Josh's
+approach. The goal is to keep the IUR, or live install version, small
+and consistent with Josh's original, making changes as package upgrades
+or more contemporary approaches force changes to the existing system.
 
 The package info files give the general URL locations for downloading
-packages. Installation requires old, 32-bit Intel hardware with a
-CD-ROM. Contact me privately if an ISO is desired.
+packages. Running this requires 32-bit Intel hardware with an IDE
+CD-ROM. Installation requires an IDE ATA drive. Contact me privately if
+an ISO is desired, as I no longer have a website to post to.

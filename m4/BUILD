@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=m4
-VERSION=1.4.11
+VERSION=1.4.15
 ARCH=i386
 
 if test ! -w .
@@ -61,7 +61,7 @@ bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/info/
 mv doc/m4.info* /tmp/$DIST-$PKG-doc/usr/info/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

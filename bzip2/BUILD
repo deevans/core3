@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=bzip2
-VERSION=1.0.5
+VERSION=1.0.6
 ARCH=i386
 
 if test ! -w .

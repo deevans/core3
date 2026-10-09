@@ -1,1 +1,1 @@
-d28017b0113ad85a4d62da22ab86b08894b149c7  bison-1.75.tar.gz
+7e489f35c6d8171f0cb0cad3dda0fb39f2cb0b62  bison-2.3.tar.bz2

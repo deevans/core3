@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=findutils
-VERSION=4.1.20
+VERSION=4.4.2
 ARCH=i386
 
 if test ! -w .
@@ -46,20 +46,22 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-for i in ../*.patch
-do patch -p1 <$i
-done
-
 CFLAGS="-Os -march=$ARCH" ./configure \
+	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
+	--infodir=/usr/info \
+	--libexecdir=/usr/libexec \
 	--localstatedir=/var \
+	--mandir=/usr/man 
 	--prefix=/usr
 make || exit 6
 
-mkdir -p /tmp/$DIST-$PKG/usr/{bin,libexec,man}
-make install prefix=/tmp/$DIST-$PKG/usr
-#make install DESTDIR=/tmp/$DIST-$PKG/
+#mkdir -p /tmp/$DIST-$PKG/usr/{bin,libexec,man}
+make install DESTDIR=/tmp/$DIST-$PKG/
+
+# No need to keep the old one around:
+rm /tmp/$DIST-$PKG/usr/bin/oldfind
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
@@ -68,7 +70,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 mv /tmp/$DIST-$PKG/usr/man/man5/ /tmp/$DIST-$PKG-doc/usr/man/
 
 find /tmp/$DIST-$PKG/ | xargs file | \

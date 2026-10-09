@@ -2,20 +2,20 @@ PKG=core_doc_nano$
 NAME=doc_nano$
 DESC=extra documentation for nano$
 
-MAJOR=2.0.7$
+MAJOR=2.2.6$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/nano/$
-SRC_DATE=dec 20 2007$
+SRC_DATE=nov 22 2010$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=apr 23 2025$
+BIN_DATE=may 14 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.4, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
-INSTALL=install-info /usr/info/nano.info.gz /usr/info/dir$
-REMOVE=install-info --delete /usr/info/nano.info.gz /usr/info/dir$
+INSTALL=install-info /usr/info/nano.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/nano.info.bz2 /usr/info/dir$
 
 NOTES=$

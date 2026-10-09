@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=shadow
-VERSION=4.0.18.1
+VERSION=4.1.4.3
 ARCH=i386
 
 if test ! -w .
@@ -42,20 +42,22 @@ cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
 	--sysconfdir=/etc \
-	--without-selinux \
-	$ARCH-$DIST-linux-gnu
+	--without-selinux
 
 make || exit 6
-make install DESTDIR=/tmp/$DIST-$PKG/
+make install-strip DESTDIR=/tmp/$DIST-$PKG/
 
 # Why doesn't this install automatically?
+mkdir -p /tmp/$DIST-$PKG/usr/lib/
 cp libmisc/libmisc.a /tmp/$DIST-$PKG/usr/lib/
+cp lib/.libs/libshadow.a /tmp/$DIST-$PKG/usr/lib/
 
 cp ../group.5 /tmp/$DIST-$PKG/usr/man/man5/
 
@@ -70,17 +72,13 @@ done
 
 rm -r /tmp/$DIST-$PKG/usr/man/man3/
 rm -r /tmp/$DIST-$PKG/etc/
-rm /tmp/$DIST-$PKG/usr/lib/*.la
+#rm /tmp/$DIST-$PKG/usr/lib/*.la
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-find /tmp/$DIST-$PKG/ | xargs file | \
-	grep -e "executable" -e "shared object" | \
-	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded
-
-for i in passwd su
-do chmod u+s /tmp/$DIST-$PKG/usr/bin/$i
-done
+#find /tmp/$DIST-$PKG/ | xargs file | \
+#	grep -e "executable" -e "shared object" | \
+#	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded
 
 # Because --sbindir= doesn't work?
 mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
@@ -92,7 +90,10 @@ cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
-else chown -R root: /tmp/$DIST-$PKG/
+else chown -R root: /tmp/$DIST-$PKG/ # This wipes out SUID
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{ch{age,fn,sh},su}
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{expiry,newgrp}
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{g,}passwd
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
 rm -r $PKG-$VERSION/
