@@ -1,0 +1,21 @@
+PKG=pcre-doc$
+NAME=pcre-doc$
+DESC=extra documentation for pcre$
+
+MAJOR=8.45$
+MINOR=1$
+
+SRC_URL=ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/$
+SRC_DATE=jun 22 2021$
+
+BIN_URL=http://oberon07.com/dee/software/linux/$
+BIN_DATE=sep 10 2022$
+
+COMPILE=linux 5.15.59, glibc 2.36, gcc 11.3.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

@@ -1,0 +1,21 @@
+PKG=core_doc_textutils$
+NAME=doc_textutils$
+DESC=extra documentation for textutils$
+
+MAJOR=2.1$
+MINOR=1$
+
+SRC_URL=ftp://alpha.gnu.org/gnu/fetish/$
+SRC_DATE=jul 31 2002$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=may 2 2025$
+
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/coreutils.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/coreutils.info.bz2 /usr/info/dir$
+
+NOTES=$

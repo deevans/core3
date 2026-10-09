@@ -1,0 +1,21 @@
+PKG=man$
+NAME=man$
+DESC=linux programmer's manual (man page) online viewer$
+
+MAJOR=1.6g$
+MINOR=6$
+
+SRC_URL=http://ibiblio.org/pub/linux/apps/doctools/man/$
+SRC_DATE=dec 31 2010$
+
+BIN_URL=http://oberon07.com/dee/Linux/$
+BIN_DATE=jan 2 2019$
+
+COMPILE=linux 4.9, glibc 2.28, gcc 6.5.0, binutils 2.31.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

@@ -1,0 +1,64 @@
+
+if ! (test -d "$1")
+then echo Directory "$1" does not exist 1>&2; exit 2
+fi
+
+if ! (test -d "$1/root")
+then mkdir "$1/root" || exit 3
+fi
+> "$1/root/upgrade.log" || exit 4
+
+echo Upgrade may take some time... 1>&2
+(
+chown root:root "$1" || exit 5
+chmod 755 "$1" || exit 6
+
+# This was added (or replaced) since Coredistro:
+corepkg -i /pkgs/readline-*.cpk "$1" || exit 7
+for i in core_{file,text,sh-}utils core_bin86
+do corepkg -r $i "$1" || exit 8
+done
+corepkg -i /pkgs/coreutils-*.cpk "$1" || exit 9
+corepkg -i /pkgs/dev86-*.cpk "$1" || exit 10
+# This was removed from ncurses (so needs to be added after its upgrade):
+corepkg -i /pkgs/tack-*.cpk "$1" || exit 12
+
+# This reinstalls above installed packages without harm:
+for cpk in /pkgs/*.cpk
+do corepkg -u $cpk "$1" || exit 11
+done
+unset cpk
+
+# Fix bin location changes:
+sed -i '/getty/ s:sbin:usr/bin:' "$1/etc/inittab"
+sed -i '/shutdown/ s:sbin:usr/bin:' "$1/etc/inittab"
+sed -i '/^CAT/ s:bin:usr/bin:' "$1/etc/man.conf"
+sed -i '/^CMP/ s:bin:usr/bin:' "$1/etc/man.conf"
+sed -i '/^COL/ s:bin:usr/bin:' "$1/etc/man.conf"
+sed -i '/^PAGER/ s:bin:usr/bin:' "$1/etc/man.conf"
+
+# The Bash package no longer has the sh symlink:
+(cd "$1/usr/bin"
+ ln -s /usr/bin/bash sh
+)
+
+# /bin/ should be empty:
+if test -d "$1"/bin/
+then rmdir "$1"/bin/
+fi
+ln -s /usr/bin "$1/bin"
+
+ldconfig -f "$1/etc/ld.so.conf" -C "$1/etc/ld.so.cache"
+
+# Use less (instead of util-linux more):
+sed -i '/more -s/ s/more -s/less -Rs/' "$1/usr/bin/corepkg"
+
+# For user chroot convience when running grub-install from CD:
+mount -t proc none "$1/proc"
+
+# The base package is not upgraded so as not to clobber local changes:
+corepkg -l "$1"
+echo 'Upgrade complete! Kernel and optional pkgs must be handled separately.' 1>&2
+echo 'Verify /boot/ and /etc/ files.' 1>&2
+
+) 2>&1 >>"$1/root/upgrade.log"

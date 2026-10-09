@@ -1,0 +1,21 @@
+PKG=mingetty$
+NAME=mingetty$
+DESC=Minimal virtual console getty$
+
+MAJOR=1.08$
+MINOR=6$
+
+SRC_URL=http://prdownloads.sf.net/mingetty/mingetty-1.08.tar.gz$
+SRC_DATE=jan 18 2008$
+
+BIN_URL=http://oberon07.com/dee/Linux/$
+BIN_DATE=dec 13 2017$
+
+COMPILE=linux 4.9, glibc 2.26, gcc 6.4.0, binutils 2.29.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

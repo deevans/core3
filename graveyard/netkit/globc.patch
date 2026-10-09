@@ -1,0 +1,54 @@
+--- netkit-ftp/ftp/glob.c
++++ netkit-ftp/ftp/glob.c
+@@ -54,10 +54,12 @@
+ #include "ftp_var.h"  /* for protos only */
+ #include "glob.h"
+ 
++#include <unistd.h>
++
+ #define	QUOTE 0200
+ #define	TRIM 0177
+ #define	eq(a,b)		(strcmp(a, b)==0)
+-#define	GAVSIZ		(ARG_MAX/6)
++#define	GAVSIZ		(sysconf(_SC_ARG_MAX)/6)
+ #define	isdir(d)	((d.st_mode & S_IFMT) == S_IFDIR)
+ 
+ const char *globerr;
+@@ -115,7 +117,7 @@
+ ftpglob(const char *v)
+ {
+ 	char agpath[BUFSIZ];
+-	entry agargv[GAVSIZ];
++	entry *agargv;
+ 	centry vv[2];
+ 	vv[0].text = v;
+ 	vv[1].text = NULL;
+@@ -133,6 +135,7 @@
+ 	/* added ()'s to sizeof, (ambigious math for the compiler) */
+ 	lastgpathp = agpath + (sizeof(agpath)- 2);
+ 
++	agargv = (entry *)malloc(sizeof (entry) * GAVSIZ);
+ 	ginit(agargv); 
+ 	globcnt = 0;
+ 	collect(v);
+@@ -156,7 +159,7 @@
+ 	gargv = agargv; 
+ 	sortbas = agargv; 
+ 	gargc = 0;
+-	gnleft = ARG_MAX - 4;
++	gnleft = sysconf(_SC_ARG_MAX) - 4;
+ }
+ 
+ static 
+@@ -672,8 +675,9 @@
+ void 
+ efree(entry *av) 
+ {
+-    int i;
+-    for (i=0; av[i].text; i++) free(av[i].text);
++	int i;
++	for (i=0; av[i].text; i++) free(av[i].text);
++	free((void *)av);
+ }
+ 
+ static

@@ -1,0 +1,21 @@
+PKG=core_netkit$
+NAME=netkit$
+DESC=networking clients$
+
+MAJOR=0.17$
+MINOR=1$
+
+SRC_URL=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/$
+SRC_DATE=jul 31 2000$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=dec 6 2024$
+
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.3.6, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=Build patch to add stdlib.h/string.h and modify configure$

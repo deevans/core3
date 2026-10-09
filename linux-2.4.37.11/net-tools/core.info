@@ -1,0 +1,21 @@
+PKG=core_net-tools$
+NAME=net-tools$
+DESC=networking utilities$
+
+MAJOR=1.60$
+MINOR=1$
+
+SRC_URL=http://www.tazenda.demon.co.uk/phil/net-tools/$
+SRC_DATE=apr 15 2001$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=may 18 2025$
+
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=Uses LFS patch for GCC 3.4$

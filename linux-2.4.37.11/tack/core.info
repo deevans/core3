@@ -1,0 +1,21 @@
+PKG=tack$
+NAME=tack$
+DESC=terminal control library$
+
+MAJOR=1.06$
+MINOR=1$
+
+SRC_URL=https://invisible-island.net/archives/ncurses/$
+SRC_DATE=aug 12 2007$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=may 18 2025$
+
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+DEPENDS=ncurses tic$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=1.01 was packaged in ncurses 5.6 and previous$

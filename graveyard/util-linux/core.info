@@ -1,0 +1,21 @@
+PKG=core_util-linux$
+NAME=util-linux$
+DESC=various linux utilities$
+
+MAJOR=2.12r$
+MINOR=1$
+
+SRC_URL=https://slackware.osuosl.org/slackware-11.0/source/a/util-linux/$
+SRC_DATE=sep 23 2005$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 15 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$
