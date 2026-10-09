@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=perl
-VERSION=5.10.1
+VERSION=5.12.5
 ARCH=i386
 
 if test ! -w .
@@ -57,7 +57,7 @@ cd $PKG-$VERSION || exit 7
 	-Dinstallprefix=/tmp/$DIST-$PKG/usr \
 	-Uinstallusrbinperl \
 	-Darchname=$ARCH-linux \
-	-Dinc_version_list='5.10.0' \
+	-Dinc_version_list='5.12.5' \
 	-Doptimize="-Os -march=$ARCH"
 make || exit 8
 make test #|| exit 9
@@ -117,6 +117,8 @@ done
 for i in pod{2*,checker,select} prove psed ptar{,diff} shasum splain xsubpp
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
+mv /tmp/$DIST-$PKG-doc/usr/man/man1/cpan{2dist,p}.1 \
+	/tmp/$DIST-$PKG/usr/man/man1/
 
 # See the above deletion of links:
 echo .so man1/c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1

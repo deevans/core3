@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=which
-VERSION=2.20
+VERSION=2.21
 ARCH=i386
 
 if test ! -w .
@@ -46,7 +46,7 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xzf $PKG-$VERSION.tar.gz || exit 5
+tar xjf $PKG-$VERSION.tar.bz2 || exit 5
 cd $PKG-$VERSION/ || exit 6
 
 CFLAGS="-Os -march=$ARCH" ./configure \

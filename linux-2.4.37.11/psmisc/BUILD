@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=psmisc
-VERSION=22.13
+VERSION=22.14
 ARCH=i386
 
 if test ! -w .
@@ -37,7 +37,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 ./configure \

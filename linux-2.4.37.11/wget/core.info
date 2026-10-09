@@ -2,16 +2,16 @@ PKG=core_wget$
 NAME=wget$
 DESC=http/ftp file downloader$
 
-MAJOR=1.12$
+MAJOR=1.13.4$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/wget/$
-SRC_DATE=sep 22 2009$
+SRC_DATE=sep 17 2011$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=may 18 2025$
+BIN_DATE=may 23 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=grep
-VERSION=2.5.3
+VERSION=2.9
 ARCH=i386
 
 if test ! -w .
@@ -38,7 +38,7 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
@@ -50,7 +50,7 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
 	--disable-nls \
 	--infodir=/usr/info \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
@@ -65,8 +65,6 @@ make install \
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-#mkdir -p /tmp/$DIST-$PKG-doc/usr/
-#mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
 then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
 fi
@@ -86,4 +84,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

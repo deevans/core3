@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=bash
-VERSION=4.0
+VERSION=4.1
 ARCH=i386
 
 if test ! -w .

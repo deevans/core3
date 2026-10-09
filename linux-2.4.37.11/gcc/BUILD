@@ -11,12 +11,11 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=gcc
-VERSION=3.4.6
+VERSION=4.0.4
 ARCH=i386
 
 if test ! -w .
@@ -40,47 +39,58 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -d $PKG-build/
-then rm -fr $PKG-build/
+if test -d build/
+then rm -fr build/
+fi
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
-fi
-tar xjf $PKG-$VERSION.tar.bz2 || exit 5
+tar xjf $PKG-$VERSION.tar.bz2
 
-mkdir $PKG-build/
-cd $PKG-build/
+cd $PKG-$VERSION || exit 5
+# GCC 4.0.x --disable-libiberty: libiberty.a comes from binutils:
+#sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
 
-# unwind was originally disabled by Core, but is needed by later glibc.
-# unwind is libgcc_{eh.a,so{,.1}} from __cxa_atexit (?):
-CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
+# GCC 4.0.x --disable-boostrap:
+#sed -i 's/^XCFLAGS -$/& -fomit-frame-pointer/' gcc/Makefile.in
+
+# GCC 4.0.x suppress fixincludes:
+#sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+
+# GCC 4.0.x suppress mktemp test:
+sed -i 's/@have_mktemp_command@/yes/' gcc/gccbug.in
+cd ../
+
+# unwind was originally disabled by Coredistro, but is needed by later glibc:
+mkdir build
+cd build
+CFLAGS="-Os -march=$ARCH" \
 ../$PKG-$VERSION/configure \
 	--build=$ARCH-$DIST-linux-gnu \
+	--disable-bootstrap \
 	--disable-libiberty \
 	--disable-nls \
-	--enable-__cxa_atexit \
 	--enable-languages=c,c++ \
 	--enable-threads=posix \
+	--enable-__cxa_atexit \
+	--enable-clocale=gnu \
 	--host=$ARCH-$DIST-linux-gnu \
 	--libexecdir=/usr/lib \
 	--prefix=/usr \
 	--target=$ARCH-$DIST-linux-gnu
-
-#make bootstrap || exit 6
 make || exit 6
-make check || exit 7
+make -k check #|| exit 7
+#make install prefix=/tmp/$DIST-$PKG/usr
 make install DESTDIR=/tmp/$DIST-$PKG/
-
 rm -r /tmp/$DIST-$PKG/usr/man/man7/
+# c++filt was removed by Coredistro, but is missing in later GCC versions.
 rm /tmp/$DIST-$PKG/usr/bin/gccbug
 
 # This is provided by binutils:
-#rm /tmp/$DIST-$PKG/usr/bin/c++filt
 rm /tmp/$DIST-$PKG/usr/lib/libiberty.a
 
 find /tmp/$DIST-$PKG/usr/ -name *.la -exec rm {} \;
-
 find /tmp/$DIST-$PKG/ -name README -exec bzip2 -9 {} \;
 
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/c++.1
@@ -112,5 +122,5 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
+rm -r build/
 rm -r $PKG-$VERSION/
-rm -r $PKG-build

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=tack
-VERSION=1.06
+VERSION=1.07
 ARCH=i386
 
 if test ! -w .

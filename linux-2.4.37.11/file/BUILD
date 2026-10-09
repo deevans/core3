@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=file
-VERSION=5.04
+VERSION=5.11
 ARCH=i386
 
 if test ! -w .
@@ -40,7 +40,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
@@ -52,7 +52,8 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 make -j 2 || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-rmdir /tmp/$DIST-$PKG/usr/man/man5/ # Why does it install a blank directory?
+# Why does it install a blank directory?
+#rmdir /tmp/$DIST-$PKG/usr/man/man5/
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/

@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=nasm
-VERSION=2.09.04
+VERSION=2.09.10
 ARCH=i386
 
 if test ! -w .
@@ -40,11 +40,11 @@ tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
+	--build=$ARCH-$DIST-linux-gnu \
 	--bindir=/usr/bin \
-        --mandir=/usr/man \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--mandir=/usr/man \
+	--prefix=/usr
 make || exit 6
 make strip || exit 7
 

@@ -73,8 +73,7 @@ chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
 echo .so man1/bash.1 > /tmp/$DIST-$PKG/usr/man/man1/sh.1
 
-bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
-bzip2 -9 /tmp/$DIST-$PKG/usr/share/licenses/*.txt
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*.1
 
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0

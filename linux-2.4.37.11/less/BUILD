@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=less
-VERSION=436
+VERSION=443
 ARCH=i386
 
 if test ! -w .
@@ -33,10 +33,10 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
@@ -49,23 +49,6 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
-
-#mkdir -p /tmp/$DIST-$PKG/usr/bin/
-#cp less /tmp/$DIST-$PKG/usr/bin/
-
-# more is provided by util-linux takes, but the symlink should come
-# from the core_base package:
-#(cd /tmp/$DIST-$PKG/usr/bin/
-#	ln -s less more
-#)
-#mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-#echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
-
-#cp lessecho lesskey /tmp/$DIST-$PKG/usr/bin/
-
-#cp less.nro /tmp/$DIST-$PKG/usr/man/man1/less.1
-#cp lesskey.nro /tmp/$DIST-$PKG/usr/man/man1/lesskey.1
-#cp lessecho.nro /tmp/$DIST-$PKG/usr/man/man1/lessecho.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

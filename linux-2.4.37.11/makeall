@@ -1,7 +1,7 @@
 PKGs0="bash binutils bison bzip2 coreutils dev86 diffutils e2fsprogs"
-PKGs1=" file findutils flex gawk gcc glibc grep groff gzip less"
-PKGs2=" lilo m4 make man mktemp modutils nano nasm ncurses net-tools"
-PKGs3=" netkit patch ppp procps psmisc sed shadow sysklogd"
+PKGs1=" file findutils flex gawk gcc glibc grep groff gzip inetutils"
+PKGs2=" less lilo m4 make man mktemp modutils nano nasm ncurses"
+PKGs3=" net-tools patch ppp procps psmisc sed shadow sysklogd"
 PKGs4=" sysvinit tack tar texinfo unzip util-linux wget which zip"
 
 function build {
@@ -9,8 +9,8 @@ n=1 # Start exit at 2
 for i in $*
 do
 	(echo "==== $i ===="; cd $i
-	 sed -i '/^BIN_DATE/ cBIN_DATE=may 18 2025$' *.info
-	 sed -i '/^COMPILE/ cCOMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$' *.info
+	 sed -i '/^BIN_DATE/ cBIN_DATE=may 23 2025$' *.info
+	 sed -i '/^COMPILE/ cCOMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$' *.info
 		bash BUILD) \
 			|| n="$(expr $n + 1)" exit $n
 done

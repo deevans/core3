@@ -1,6 +1,11 @@
 The following describes changes from Josh Devin's Core in ascending
 order. This file is influenced by Slackware.
 
+The switch from 2007 code to 2009-2011 code shows a jump in 30-40MB of
+binary size, even with -Os optimization and equivalent build configuration.
+GNU/Linux is getting bloated. Most of this is toolchain, though Perl is
+part of the bloat increase.
+
 pkgs/base/core_base-1+1.cpk: added.
   Move to base/ subdirectory to facilitate upgrade based installations,
   and to avoid clobbering existing installs by accident.
@@ -53,17 +58,18 @@ pkgs/base/core_base-1+1.cpk: added.
   not none. This is entirely arbitrary, but the mount(8) manual argument
   that a device error of proc vs none is clearer make sense.
 pkgs/core_base-1+1.cpk: removed.
-pkgs/core_less-436+1.cpk: upgraded.
-  This required a change to /etc/man.conf. The more symlink is removed,
-  and added to core_base.
+pkgs/core_less-443+1.cpk: upgraded.
+  This required a change to /etc/man.conf for /usr/bin/. The more
+  symlink is removed. It can be added to core_base, or the more from
+  util-linux can be used instead.
 pkgs/core_gzip-1.4+1.cpk: upgraded.
 pkgs/optional/core_doc_gzip-1.4+1.cpk: upgraded.
-pkgs/core_file-5.04+1.cpk: upgraded.
-pkgs/optional/file-doc-5.04+1.cpk: added.
-pkgs/core_bash-4.0+1.cpk: upgraded.
-  Move to /usr/bin/. Why do spectre/meltdown patches cause all 3.x Bash
-  versions to malfunction?
-pkgs/optional/core_doc_bash-4.0+1.cpk: upgraded.
+pkgs/core_file-5.11+1.cpk: upgraded.
+pkgs/optional/file-doc-5.11+1.cpk: added.
+pkgs/core_bash-4.1+1.cpk: upgraded.
+  Move to /usr/bin/. Why do spectre/meltdown patches cause all 3.x and
+  most 4.x Bash versions to malfunction?
+pkgs/optional/core_doc_bash-4.1+1.cpk: upgraded.
 pkgs/core_lilo-22.8+1.cpk: upgraded.
 pkgs/dev86-0.16.18+1.cpk: added.
   0.16.12 changes the name to dev86. Allow for inclusion of bcc and ELKS.
@@ -74,27 +80,32 @@ pkgs/dev86-0.16.18+1.cpk: added.
   Update the Core provided manuals with the name (and my URL) change.
   Also, add an ar86 manual. 
 pkgs/core_bin86-0.16.9+1.cpk: removed.
-pkgs/core_grep-2.5.3+1.cpk: upgraded.
-  It is observed the grep, egrep, and fgrep and now different binaries,
+pkgs/core_grep-2.9+1.cpk: upgraded.
+  It is observed grep, egrep, and fgrep and now distinct binaries,
   not symlinks to grep.
-pkgs/optional/core_doc_grep-2.5.3+1.cpk: upgraded.
+pkgs/optional/core_doc_grep-2.9+1.cpk: upgraded.
 pkgs/core_gawk-3.1.8+1.cpk: upgraded.
 pkgs/optional/core_doc_gawk-3.1.8+1.cpk: upgraded.
 pkgs/core_findutils-4.4.2+1.cpk: upgraded.
 pkgs/optional/core_doc_findutils-4.4.2+1.cpk: upgraded.
-pkgs/core_diffutils-3.0+1.cpk: upgraded.
-pkgs/optional/core_doc_diffutils-3.0+1.cpk: upgraded.
+pkgs/core_diffutils-3.2+1.cpk: upgraded.
+pkgs/optional/core_doc_diffutils-3.2+1.cpk: upgraded.
 pkgs/core_make-3.81+1.cpk: upgraded.
 pkgs/optional/core_doc_make-3.81+1.cpk: upgraded.
 pkgs/core_pkgs/core_nano-2.2.6+1.cpk: upgraded.
 pkgs/optional/core_doc_nano-2.2.6+1.cpk: upgraded.
 pkgs/optional/nano-rc-2.2.6+1.cpk: added.
-pkgs/core_nasm-2.09.04+1.cpk: upgraded.
+pkgs/core_nasm-2.09.10+1.cpk: upgraded.
 pkgs/core_net-tools-1.60+1.cpk: rebuilt.
-pkgs/core_netkit-0.17+1.cpk: rebuilt.
+pkgs/inetutils-1.8+cpk: added.
+  Replaces netkit. Only the equivalents are included.
+pkgs/optional/inetutils-doc-1.8+cpk: added.
+  This is a far bigger package, so there's lots of documentation here
+  for programs that are not included.
+pkgs/core_netkit-0.17+1.cpk: removed.
 pkgs/core_patch-2.6.1+1.cpk: upgraded.
 pkgs/core_ppp-2.4.5+1.cpk: upgraded.
-pkgs/core_psmisc-22.13+1.cpk: upgraded.
+pkgs/core_psmisc-22.14+1.cpk: upgraded.
 pkgs/core_sed-4.2.1+1.cpk: upgraded.
 pkgs/optional/core_doc_sed-4.2.1+1.cpk: upgraded.
 pkgs/core_sysklogd-1.5+1.cpk: upgraded.
@@ -105,7 +116,7 @@ pkgs/optional/core_doc_m4-1.4.15+1.cpk: upgraded.
 pkgs/core_texinfo-4.13a+1.cpk: upgraded.
 pkgs/optional/core_doc_texinfo-4.13a+1.cpk: upgraded.
 pkgs/mktemp-1.7+1.cpk: added.
-  Use this instead of from coreutils.
+  Use this from OpenBSD instead of from coreutils.
 pkgs/coreutils-8.13+1.cpk: added.
   coreutils replaces fileutils, sh-utils, and textutils.
 pkgs/optional/coreutils-doc-8.13+1.cpk: added.
@@ -118,15 +129,16 @@ pkgs/optional/core_doc_textutils-2.1+1.cpk: removed.
 pkgs/core_unzip-6.0+1.cpk: upgraded.
 pkgs/core_util-linux-2.12r+1.cpk: upgraded.
   Add util-linux more, which is POSIX compliant. This means no more
-  symlink to less, either in the core_less or core_base.
+  symlink to less, either in the core_less or core_base packages.
 pkgs/core_e2fsprogs-1.41.14+1.cpk: upgraded.
 pkgs/optional/e2fsprogs-doc-1.41.14+1.cpk: added.
-pkgs/pkgs/pkgs/core_wget-1.12+1.cpk: upgraded.
-pkgs/optional/core_doc_wget-1.12+1.cpk: upgraded.
-core_which-2.20+1.cpk: upgraded.
-pkgs/optional/core_doc_which-2.20+1.cpk: upgraded.
+pkgs/pkgs/pkgs/core_wget-1.13.4+1.cpk: upgraded.
+pkgs/optional/core_doc_wget-1.13.4+1.cpk: upgraded.
+core_which-2.21+1.cpk: upgraded.
+pkgs/optional/core_doc_which-2.21+1.cpk: upgraded.
   This fixes the dir file registration that was broken in earlier
-  editions. However, the man page is a complete duplicate anyway.
+  editions, but the man page is a complete duplicate anyway. With Bash
+  4.2, this will depend on readline.
 core_zip-3.0+1.cpk: upgraded.
 pkgs/core_bzip2-1.0.6+1.cpk: upgraded.
 pkgs/core_flex-2.5.35+1.cpk: upgraded.
@@ -138,21 +150,21 @@ pkgs/optional/flex-doc-2.5.35+1.cpk: added.
 
   Flex has added a GNU info manual, so that has been added to a new
   flex documentation package that follows a simpler naming convention.
-pkgs/copkgs/core_tack-1.06+1.cpk: added.
-  This was removed from ncurses 5.7, and is added here to preserve
-  compatibility.
-pkgs/core_ncurses-5.7+1.cpk: upgraded.
-  Libraries are moved to /usr/lib/. Currently, symlinks in /lib/ are
-  provided for compatibility.
-pkgs/optional/core_doc_ncurses-5.7+1.cpk: upgraded.
-pkgs/optional/core_ncurses-terminfo-5.7+1.cpk: upgraded.
-pkgs/core_perl-5.10.1+1.cpk: upgraded.
-pkgs/optional/core_doc_perl-5.10.1+1.cpk: upgraded.
+pkgs/copkgs/tack-1.07+1.cpk: added.
+  This was removed from ncurses 5.7, and this version is added here to
+  preserve compatibility with Devin's Core.
+pkgs/core_ncurses-5.9+1.cpk: upgraded.
+  Libraries are moved to /usr/lib/.
+pkgs/optional/core_doc_ncurses-5.9+1.cpk: upgraded.
+pkgs/optional/core_ncurses-terminfo-5.9+1.cpk: upgraded.
+pkgs/core_perl-5.12.5+1.cpk: upgraded.
+pkgs/optional/core_doc_perl-5.12.5+1.cpk: upgraded.
 pkgs/core_procps-3.2.8+1.cpk: upgraded.
 pkgs/core_shadow-4.1.3.4.1+1.cpk: upgraded.
   Going from 4.0 to 4.1 doubled the package size.
-pkgs/core_sysvinit-2.86+1.cpk: upgraded.
-  It is necessary to change /etc/inittab references from /sbin.
+pkgs/core_sysvinit-2.88+1.cpk: upgraded.
+  It is necessary to change /etc/inittab references from /sbin. utmpdump
+  now has a provided man page.
 pkgs/core_modutils-2.4.27+1.cpk: upgraded.
 pkgs/core_bison-2.4.3+1.cpk: upgraded.
 pkgs/optional/core_doc_bison-2.4.3+1.cpk: upgraded.
@@ -162,24 +174,10 @@ pkgs/core_man-1.6g+1.cpk: upgraded.
   with changes elsewhere, mainly regarding paths.
 pkgs/core_groff-1.21+1.cpk: upgraded.
 pkgs/optional/core_doc_groff-1.21+1.cpk: upgraded.
-pkgs/core_gcc-3.4.6+1.cpk: upgraded.
+pkgs/core_gcc-4.0.4+1.cpk: upgraded.
   Upgraded to the newest a Linux 2.4 kernel can handle. W. Tarreau got
-  this working with GCC 4, but we're not there yet.
-pkgs/optional/core_doc_gcc-3.4.6+1.cpk: upgraded.
-pkgs/core_glibc-2.3.6+1.cpk: upgraded.
-  2.3.6 is the oldest that will work with Linux 2.4 and threads by
-  upstream. Community contributions for threading was provided for 2.4
-  and 2.5 glibc, however, let's stay with what upstream supported, and
-  spend the effort after to move on to Linux 2.6, but not yet.
-
-  The /usr/sbin/ directory is removed and /usr/bin/ normalized for dynamic
-  shared objects.
-
-  Instead of a generic [info manual] reference, there is a singular info
-  manual to install (even though there are several files) to the dir file,
-  and thus is explictly noted.
-pkgs/optional/core_doc_glibc-2.3.6+1.cpk: upgraded.
-pkgs/optional/core_glibc-i18n-2.3.6+1.cpk: upgraded.
+  this working with GCC 4.
+pkgs/optional/core_doc_gcc-4.0.4+1.cpk: upgraded.
 pkgs/core_binutils-2.16.1+1.cpk: upgraded.
   Manual pages and info manuals are uncompressed in Josh Devan's Core.
   Switch to Bzip2 compression.
@@ -190,6 +188,20 @@ pkgs/core_binutils-2.16.1+1.cpk: upgraded.
   e.g. -Os: storage is a big deal for small systems. LFS suggested
   CC="gcc -s".
 pkgs/optional/core_doc_binutils-2.16.1+1.cpk: upgraded.
+pkgs/core_glibc-2.3.6+1.cpk: upgraded.
+  2.3.6 is the oldest that will work with Linux 2.4 and threads by
+  upstream. Community contributions for threading was provided for 2.4
+  and 2.5 glibc, however, let's stay with what upstream supported, and
+  spend the effort after to move on to Linux 2.6, (but not yet).
+
+  The /usr/sbin/ directory is removed and /usr/bin/ normalized for dynamic
+  shared objects.
+
+  Instead of a generic [info manual] reference, there is a singular info
+  manual to install (even though there are several files) to the dir file,
+  and thus is explictly noted.
+pkgs/optional/core_doc_glibc-2.3.6+1.cpk: upgraded.
+pkgs/optional/core_glibc-i18n-2.3.6+1.cpk: upgraded.
 boot/config: upgraded.
   Continuing to support true, bare metal i386.
 boot/System.map: upgraded.

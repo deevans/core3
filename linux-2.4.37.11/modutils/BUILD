@@ -38,6 +38,7 @@ if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
+<modutils-gcc40.patch patch -p0
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \

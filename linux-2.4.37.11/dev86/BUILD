@@ -15,8 +15,8 @@
 # Place, Suite 330, Boston, MA 02111-1307 USA
 
 DIST=deevans
-PKG=bin86
-VERSION=0.16.11
+PKG=dev86
+VERSION=0.16.18
 ARCH=i386
 
 if test ! -w .
@@ -34,31 +34,32 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf Dev86src-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
+sed -i "/^CFLAGS/ s/-O /-Os -march=$ARCH /" Makefile
+sed -i "/^CFLAGS/ s/-O/-Os -march=$ARCH/" Makefile
+sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" makefile.in
+sed -i "/^CFLAGS/ s/-O/-Os -march=$ARCH/" bcc/Makefile
+sed -i "/^CCFLAGS/ s/-O/-Os -march=$ARCH/" libc/Make.defs
 CC=gcc make DIST=/tmp/$DIST-$PKG LOCALPREFIX=/usr \
-	MANDIR=/usr/man BINDIR=/usr/bin LIBDIR=/usr/lib/bcc
-	# install install-man || exit 6
+	BINDIR=/usr/bin LIBDIR=/usr/lib/bcc install || exit 6
+CC=gcc make DIST=/tmp/$DIST-$PKG LOCALPREFIX=/usr \
+	MANDIR=/usr/man install-man || exit 6
 
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-for i in as86{,_encap} 
-do cp as/$i /tmp/$DIST-$PKG/usr/bin/
-done
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-cp man/*.1 /tmp/$DIST-$PKG/usr/man/man1/
-echo .so man1/as86.1 > /tmp/$DIST-$PKG/usr/man/man1/as86_encap.1
-for i in {ld,objdump}86
-do cp ld/$i /tmp/$DIST-$PKG/usr/bin/
+for i in {nm,size}86
+do rm /tmp/$DIST-$PKG/usr/bin/$i
 done
 (cd /tmp/$DIST-$PKG/usr/bin/
-	ln -s objdump nm86
-	ln -s objdump size86
+	ln -s objdump86 nm86
+	ln -s objdump86 size86
 )
+mv /tmp/$DIST-$PKG/usr/lib/bcc/as86_encap /tmp/$DIST-$PKG/usr/bin/
+echo man1/as86.1 > /tmp/$DIST-$PKG/usr/man/man1/as86_encap.1
 cp ../*.1 /tmp/$DIST-$PKG/usr/man/man1/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;

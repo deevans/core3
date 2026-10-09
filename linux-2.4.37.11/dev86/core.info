@@ -1,21 +1,21 @@
-PKG=core_bin86$
-NAME=bin86$
+PKG=dev86$
+NAME=dev86$
 DESC=x86 assembler$
 
-MAJOR=0.16.11$
+MAJOR=0.16.18$
 MINOR=1$
 
-SRC_URL=http://www.cix.co.uk/~mayday/$
-SRC_DATE=jan 29 2003$
+SRC_URL=http://www.debath.co.uk/dev86/$
+SRC_DATE=oct 23 2010$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=may 14 2025$
+BIN_DATE=may 23 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
 INSTALL=$
 REMOVE=$
 
-NOTES=$
+NOTES=Renamed from bin86$

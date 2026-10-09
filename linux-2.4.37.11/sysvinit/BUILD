@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sysvinit
-VERSION=2.86
+VERSION=2.88dsf
 ARCH=i386
 
 if test ! -w .
@@ -34,15 +34,14 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 
 cd $PKG-$VERSION/src || exit 5
-#sed -i '/^CC/ s/cc/gcc/' Makefile
 sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
-make || exit 6
+CC=gcc make || exit 6
 
 mkdir -m 755 -p /tmp/$DIST-$PKG/{s,usr/}bin/
 for i in halt init last killall5 mesg runlevel shutdown sulogin utmpdump wall
@@ -66,7 +65,7 @@ cp initreq.h /tmp/$DIST-$PKG/usr/include/
 cd ../man
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}
 cp *.1 /tmp/$DIST-$PKG/usr/man/man1/
-cp ../../utmpdump.1 /tmp/$DIST-$PKG/usr/man/man1/
+#cp ../../utmpdump.1 /tmp/$DIST-$PKG/usr/man/man1/
 cp *.5 /tmp/$DIST-$PKG/usr/man/man5/
 cp *.8 /tmp/$DIST-$PKG/usr/man/man8/
 

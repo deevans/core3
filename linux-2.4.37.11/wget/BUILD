@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=wget
-VERSION=1.12
+VERSION=1.13.4
 ARCH=i386
 
 if test ! -w .
@@ -47,11 +47,13 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2 || exit 5
 cd $PKG-$VERSION/ || exit 6
 
+# Are we getting to a point yet where TLS is a necessary dependency?
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
+	--disable-nls \
 	--infodir=/usr/info \
 	--mandir=/usr/man \
-	--disable-nls \
+	--prefix=/usr \
+	--with-ssl=no \
 	$ARCH-$DIST-linux-gnu
 make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/

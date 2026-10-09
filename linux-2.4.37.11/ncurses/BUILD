@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=ncurses
-VERSION=5.7
+VERSION=5.9
 ARCH=i386
 
 if test ! -w .
@@ -43,7 +43,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tar.gz
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 # Fixes build error with later Bash and ncurses 5.6-5.9:
@@ -55,6 +55,7 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
+	--libdir=/usr/lib \
 	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
@@ -67,14 +68,25 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/man/man{3,5,7}/ /tmp/$DIST-$PKG-doc/usr/man/
 
-rm /tmp/$DIST-$PKG/usr/man/man1/reset.1
-echo .so man1/tset.1 > /tmp/$DIST-$PKG/usr/man/man1/reset.1
+if test -L /tmp/$DIST-$PKG/usr/man/man1/reset.1
+then rm /tmp/$DIST-$PKG/usr/man/man1/reset.1
+	echo .so man1/tset.1 > /tmp/$DIST-$PKG/usr/man/man1/reset.1
+fi
+
+#if test -L /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#then rm /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#	echo .so man1/adacurses-config.1 > \
+#		/tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#fi
+rm /tmp/$DIST-$PKG/usr/man/man1/adacurses{,-config}.1
 
 for i in captoinfo info{cmp,tocap} tic toe
 do mv /tmp/$DIST-$PKG/usr/man/man1/$i.1m /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
 
-find /tmp/$DIST-$PKG-doc/usr/man/ -type l -exec rm {} \;
+# Should the 3x manuals be deleted?
+#find /tmp/$DIST-$PKG-doc/usr/man/ -type l -exec rm {} \;
+rm /tmp/$DIST-$PKG-doc/usr/man/man3/*.3x
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;
@@ -112,14 +124,15 @@ mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/x/xterm \
 	/tmp/$DIST-$PKG/usr/share/terminfo/x/
 
 chmod a+x /tmp/$DIST-$PKG/usr/lib/*.so.5*
-mkdir /tmp/$DIST-$PKG/lib/
-for i in lib{form,menu,ncurses,panel}
-do 
-	(cd /tmp/$DIST-$PKG/lib/
-		ln -s ../usr/lib/$i.so.$VERSION $i.so.$VERSION
-		ln -s ../usr/lib/$i.so.$VERSION $i.so.5
-	)
-done
+# This was for preserving /lib/ compatibility, no longer needed:
+#mkdir /tmp/$DIST-$PKG/lib/
+#for i in lib{form,menu,ncurses,panel}
+#do 
+#	(cd /tmp/$DIST-$PKG/lib/
+#		ln -s ../usr/lib/$i.so.$VERSION $i.so.$VERSION
+#		ln -s ../usr/lib/$i.so.$VERSION $i.so.5
+#	)
+#done
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
