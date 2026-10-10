@@ -1,0 +1,21 @@
+PKG=core_ncurses-terminfo$
+NAME=ncurses-terminfo$
+DESC=extra terminfo descriptions for ncurses$
+
+MAJOR=5.9$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/ncurses/$
+SRC_DATE=apr 4 2011$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 1 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.7, gcc 4.3.6, binutils 2.18$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

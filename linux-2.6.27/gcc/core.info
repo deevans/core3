@@ -1,0 +1,21 @@
+PKG=core_gcc$
+NAME=gcc$
+DESC=gnu compiler collection$
+
+MAJOR=4.3.6$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/gcc/$
+SRC_DATE=jun 27 2011$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 1 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.7, gcc 4.3.6, binutils 2.18$
+DEPENDS=gmp, mfpr$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

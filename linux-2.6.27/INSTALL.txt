@@ -1,0 +1,15 @@
+Installation: run fdisk, then mke2fs -j. It can use a label with -L but
+mkswap cannot. Follow the tune2fs recommendations (disable with -c 0 -i 0),
+as needed, then mount the root file system to /mnt/root/. Run
+
+	install_core /mnt/root/
+
+then edit the /mnt/etc/fstab to match the disk configuration. Edit
+/mnt/etc/lilo.conf. Build the kernel, or if desired copy over the CD's
+/boot/{System.map,vmlinuz,config} to /mnt/boot/. The bzImage files
+include inhancements for more modern systems. Run
+
+	mount --bind /proc /mnt/root/proc
+	mount --bind /sys /mnt/root/sys
+
+then chroot to /mnt/root/ and run lilo. Reboot.

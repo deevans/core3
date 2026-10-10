@@ -1,0 +1,21 @@
+PKG=core_make$
+NAME=make$
+DESC=maintain groups of programs$
+
+MAJOR=3.81$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/make/$
+SRC_DATE=apr 1 2006$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 1 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.7, gcc 4.3.6, binutils 2.18$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

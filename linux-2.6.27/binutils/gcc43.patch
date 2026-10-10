@@ -1,0 +1,31 @@
+Essentially, Randy McMurch's GCC 4.3 patch for binutils 2.18.
+
+--- ld/testsuite/ld-shared/sh1.c.bkp
++++ ld/testsuite/ld-shared/sh1.c
+@@ -71,12 +71,6 @@
+ {
+   return shlib_overriddencall2 ();
+ }
+-
+-int
+-shlib_overriddencall2 ()
+-{
+-  return 7;
+-}
+ #endif
+ 
+ /* This function calls a function defined by the main program.  */
+--- ld/testsuite/ld-shared/sh2.c.bkp
++++ ld/testsuite/ld-shared/sh2.c
+@@ -12,3 +12,11 @@
+ {
+   return 5
+ }
++ 
++#ifndef %COFF_TEST
++int
++shlib_ocerriddencall2 ()
++{
++  return 7;
++}
++#endif

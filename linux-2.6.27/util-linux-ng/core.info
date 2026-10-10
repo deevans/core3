@@ -1,0 +1,21 @@
+PKG=util-linux-ng$
+NAME=util-linux-ng$
+DESC=various linux utilities$
+
+MAJOR=2.13.1$
+MINOR=1$
+
+SRC_URL=https://kernel.org/pub/linux/utils/util-linux/$
+SRC_DATE=jan 16 2008$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 1 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.7, gcc 4.3.6, binutils 2.18$
+DEPENDS=e2fsprogs$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

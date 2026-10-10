@@ -1,0 +1,14 @@
+Based on Matt Burgess's LFS Texinfo patch for binutils 2.18.
+
+--- configure.bkp
++++ configure
+@@ -6128,7 +6128,8 @@
+     # For an installed makeinfo, we require it to be from texinfo 4.4 or
+     # higher, else we use the "missing" dummy.
+     if ${MAKEINFO} --version \
+-       | egrep 'texinfo[^0-9]*([1-3][0-9]|4\.[4-9]|[5-9])' >/dev/null 2>&1; then
++       | grep -E 'texinfo[^0-9]*(4\.([4-9]|[1-9][0-9])|([5-9]|[1-9]|[0-9])' >/dev/null 
++2>&1; then
+       :
+     else
+       MAKEINFO="$MISSING makeinfo"

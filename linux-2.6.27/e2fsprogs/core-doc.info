@@ -1,0 +1,21 @@
+PKG=e2fsprogs-doc$
+NAME=e2fsprogs-doc$
+DESC=extra documentation for e2fsprogs$
+
+MAJOR=1.41.14$
+MINOR=1$
+
+SRC_URL=http://prdownloads.sf.net/e2fsprogs/$
+SRC_DATE=dec 22 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 1 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.7, gcc 4.3.6, binutils 2.18$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/libext2fs.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/libext2fs.info.bz2 /usr/info/dir$
+
+NOTES=$
