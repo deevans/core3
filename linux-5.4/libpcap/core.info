@@ -1,0 +1,21 @@
+PKG=libpcap$
+NAME=libpcap$
+DESC=user level packet capture library$
+
+MAJOR=1.10.4$
+MINOR=1$
+
+SRC_URL=https://tcpdump.org/release/$
+SRC_DATE=apr 7 2023$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=ppp$
+
+INSTALL=ldconfig$
+REMOVE=ldconfig$
+
+NOTES=$

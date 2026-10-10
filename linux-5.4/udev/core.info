@@ -1,0 +1,21 @@
+PKG=udev$
+NAME=udev$
+DESC=manage devices in userland$
+
+MAJOR=182$
+MINOR=1$
+
+SRC_URL=http://kernel.org/pub/linux/utils/kernel/hotplug/$
+SRC_DATE=mar 18 2012$
+
+BIN_URL=http://oberon07.com/dee/coredistro$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=kmod$
+RELATED=$
+
+INSTALL=$
+REMOVE=rm /usr/lib/udev/devices/{std{in,out,err},core,fd}$
+
+NOTES=$

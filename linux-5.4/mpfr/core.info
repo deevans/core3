@@ -1,0 +1,21 @@
+PKG=mpfr$
+NAME=mpfr$
+DESC=multiple-precision floating-point with correct rounding$
+
+MAJOR=4.1.1$
+MINOR=1$
+
+SRC_URL=http://mpfr.org/mpfr-current/$
+SRC_DATE=nov 17 2022$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=gmp$
+RELATED=mpc$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

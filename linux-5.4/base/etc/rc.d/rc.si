@@ -1,0 +1,46 @@
+#!/usr/bin/bash
+
+echo "-- /etc/rc.d/rc.si --"
+
+# check and mount filesystems
+fsck -AaCs
+mount -nvwo remount /
+> /etc/mtab
+
+# For now, do nothing; see shutdown(8):
+#if test -f /fastboot
+#then rm /fastboot
+#fi
+#if test -f /forcefsck
+#then rm /forcefsck
+#fi
+mount -av
+
+# setup modules
+depmod -a
+# modprobe foo
+
+# setup hardware
+mount -nt devtmpfs devtmpfs /dev/ -o mode=755,nosuid
+cp -a /usr/lib/udev/devices/ /dev/
+/usr/lib/udev/udevd --daemon
+udevadm trigger
+udevadm settle
+
+# enable swap
+swapon -a
+
+# setup network [internet connections go in rc.mu]
+hostname localhost
+ifconfig lo 127.0.0.1
+route add -net 127.0.0.0 netmask 255.0.0.0 lo
+
+# maintenance
+rm -r /tmp
+mkdir -m 1777 /tmp
+
+echo -n > /var/log/syslog
+echo -n > /var/log/wtmp
+echo -n > /run/utmp
+
+ldconfig

@@ -1,0 +1,21 @@
+PKG=core_doc_which$
+NAME=doc_which$
+DESC=extra documentation for which$
+
+MAJOR=2.23$
+MINOR=1$
+
+SRC_URL=ftp.gnu.org/gnu/which/$
+SRC_DATE=feb 1 2025$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/which.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/which.info.bz2 /usr/info/dir$
+
+NOTES=$

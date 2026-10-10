@@ -1,0 +1,21 @@
+PKG=core_doc_binutils$
+NAME=doc_binutils$
+DESC=extra documentation for binutils$
+
+MAJOR=2.39$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/binutils/$
+SRC_DATE=aug 5 2022$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info [info file] /usr/info/dir$
+REMOVE=install-info --delete [info file] /usr/info/dir$
+
+NOTES=$

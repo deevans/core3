@@ -1,0 +1,21 @@
+PKG=core_lilo$
+NAME=lilo$
+DESC=linux boot loader$
+
+MAJOR=24.2$
+MINOR=1$
+
+SRC_URL=https://www.joonet.de/sources/lilo/$
+SRC_DATE=nov 22 2015$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=dev86 0.16.18$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=Slackware GCC 10 patch$

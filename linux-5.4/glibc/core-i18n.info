@@ -1,0 +1,21 @@
+PKG=core_glibc-i18n$
+NAME=glibc-i18n$
+DESC=standard c library internationalization stuff$
+
+MAJOR=2.36$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/libc/$
+SRC_DATE=aug 1 2022$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

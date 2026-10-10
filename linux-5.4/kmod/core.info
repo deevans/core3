@@ -1,0 +1,21 @@
+PKG=kmod$
+NAME=kmod$
+DESC=kernel module utilities$
+
+MAJOR=26$
+MINOR=1$
+
+SRC_URL=https://ftp.kernel.org/pub/linux/utils/kernel/kmod/$
+SRC_DATE=feb 7 2019$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=xz$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

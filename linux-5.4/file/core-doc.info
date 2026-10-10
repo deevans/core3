@@ -1,0 +1,21 @@
+PKG=file-doc$
+NAME=file-doc$
+DESC=extra files for file$
+
+MAJOR=5.39$
+MINOR=1$
+
+SRC_URL=http://ftp.astron.com/pub/file/$
+SRC_DATE=jun 15 2020$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

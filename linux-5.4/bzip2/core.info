@@ -1,0 +1,21 @@
+PKG=core_bzip2$
+NAME=bzip2$
+DESC=file compression utilities$
+
+MAJOR=1.0.6$
+MINOR=1$
+
+SRC_URL=http://bzip2.org/1.0.6/$
+SRC_DATE=sep 20 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

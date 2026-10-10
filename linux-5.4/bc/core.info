@@ -1,0 +1,21 @@
+PKG=bc$
+NAME=bc$
+DESC=arbitrary precision numeric processing language$
+
+MAJOR=1.07.1$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/bc/$
+SRC_DATE=apr 9 2017$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=LFS patch to avoid ed as dependency$

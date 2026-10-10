@@ -1,0 +1,21 @@
+PKG=mpfr-doc$
+NAME=mpfr-doc$
+DESC=extra documentation for mpfr$
+
+MAJOR=4.1.1$
+MINOR=1$
+
+SRC_URL=https://mpfr.org/mpfr-current/$
+SRC_DATE=nov 17 2022$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/mpfr.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/mpfr.info.bz2 /usr/info/dir$
+
+NOTES=$

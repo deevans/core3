@@ -1,0 +1,21 @@
+PKG=zlib-doc$
+NAME=zlib-doc$
+DESC=extra documentation for zlib$
+
+MAJOR=1.2.8$
+MINOR=1$
+
+SRC_URL=https://prdownloads.sf.net/libpng/$PKG/$VERSION/$PKG-$VERSION.tar.xz$
+SRC_DATE=apr 28 2013$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

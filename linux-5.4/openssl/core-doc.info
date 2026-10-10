@@ -1,0 +1,21 @@
+PKG=openssl-doc$
+NAME=openssl-doc$
+DESC=extra documentation for openssl$
+
+MAJOR=1.1.1w$
+MINOR=1$
+
+SRC_URL=https://openssl.org/source/openssl-$MAJOR.tar.gz$
+SRC_DATE=sep 11 2023$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 18 2025$
+
+COMPILE=linux 5.4, glibc 2.36, gcc 10.5.0, binutils 2.39$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$
