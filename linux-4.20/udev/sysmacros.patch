@@ -1,0 +1,10 @@
+--- src/libudev.h
++++ src/libudev.h.new
+@@ -15,6 +15,7 @@
+ #include <stdarg.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {

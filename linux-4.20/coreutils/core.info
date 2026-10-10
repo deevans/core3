@@ -1,0 +1,21 @@
+PKG=coreutils$
+NAME=coreutils$
+DESC=file and text manipulation, and shell, utilities$
+
+MAJOR=8.32$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/coreutils/$
+SRC_DATE=mar 5 2020$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

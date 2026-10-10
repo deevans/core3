@@ -1,0 +1,21 @@
+PKG=linux$
+NAME=linux$
+DESC=kernel headers and boot files$
+
+MAJOR=4.20$
+MINOR=1$
+
+SRC_URL=https://kernel.org/pub/linux/kernel/v3.x/longterm/v3.10/$ 
+SRC_DATE=dec 24 2018$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=bc$
+RELATED=$
+
+INSTALL=Run lilo if upgrading this package$
+REMOVE=$
+
+NOTES=$

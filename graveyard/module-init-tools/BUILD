@@ -1,27 +1,23 @@
-# CorePKG build script for module-init-tools.
-# Copyright 2011, 2022 David Egan Evans
+# CorePKG build script for modutils.
+# Copyright David Egan Evans
 #
-# This software is provided 'as-is', without any express or implied
-# warranty. In no event will the authors be held liable for any damages
-# arising from the use of this software.
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
-# 1. The origin of this software must not be misrepresented; you must
-# not claim that you wrote the original software. If you use this
-# software in a product, an acknowledgment in the product documentation
-# would be appreciated but is not required.
-#
-# 2. Altered source versions must be plainly marked as such, and must 
-# not be misrepresented as being the original software.
-#
-# 3. This notice may not be removed or altered from any source distribution.
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA 02111-1307 USA
 
 DIST=deevans
 PKG=module-init-tools
-VERSION=3.12
+VERSION=3.16
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -34,46 +30,48 @@ fi
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
-if test -d /tmp/$DIST-$PKG-doc/
-then rm -r /tmp/$DIST-$PKG-doc/
-fi
 
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-tar xjf $PKG-$VERSION.tar.bz2 || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
+fi
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-# Because of a weird rebuild thing in 3.2:
-echo '.so modprobe.conf.5' > modprobe.d.5
-
-./configure \
+# --disable-zlib was needed with 3.15:
+CFLAGS="-Os -march=$ARCH" \
+DOCBOOKTOMAN=true ./configure \
+	--build=$ARCH-$DIST-linux-gnu \
+	--mandir=/usr/man \
 	--prefix=/usr \
-	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
-        --mandir=/usr/man
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Because --mandir doesn't (or at least didn't) work:
 mv /tmp/$DIST-$PKG/usr/share/man/ /tmp/$DIST-$PKG/usr/
 rmdir /tmp/$DIST-$PKG/usr/share/
 
-find /tmp/$DIST-$PKG/usr/man/ -type f -exec gzip -9 {} \;
-for i in $(find /tmp/$DIST-$PKG/usr/man/ -type l)
-do ln -s $(readlink "$i").gz "$i".gz
-	rm "$i"
-done
+# Core did not include .2 manuals:
+#rm -r /tmp/$DIST-$PKG/usr/man/man2/
+
+find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+mkdir /tmp/$DIST-$PKG/sbin/
+mv /tmp/$DIST-$PKG/usr/bin/insmod.static /tmp/$DIST-$PKG/sbin/insmod
+chmod 750 /tmp/$DIST-$PKG/sbin/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
-	grep ELF | cut -f1 -d: | xargs strip 2> /dev/null
+	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION
+rm -r $PKG-$VERSION/

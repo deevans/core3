@@ -1,0 +1,21 @@
+PKG=core_texinfo$
+NAME=texinfo$
+DESC=info document viewer$
+
+MAJOR=6.1$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/texinfo/$
+SRC_DATE=feb 6 2016$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

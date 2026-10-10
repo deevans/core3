@@ -1,0 +1,21 @@
+PKG=core_man$
+NAME=man$
+DESC=man page viewer$
+
+MAJOR=1.6g$
+MINOR=1$
+
+SRC_URL=https://ftp2.osuosl.org/pub/clfs/conglomeration/man/$
+SRC_DATE=dec 31 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

@@ -1,0 +1,21 @@
+PKG=mpc-doc$
+NAME=mpc-doc$
+DESC=extra documentation for mpc$
+
+MAJOR=1.0.3$
+MINOR=1$
+
+SRC_URL=https://www.multiprecision.org/mpc/download/$
+SRC_DATE=feb 16 2015$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/mpc.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/mpc.info.bz2 /usr/info/dir$
+
+NOTES=$

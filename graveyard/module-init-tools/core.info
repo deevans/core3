@@ -2,16 +2,16 @@ PKG=module-init-tools$
 NAME=module-init-tools$
 DESC=kernel module utilities$
 
-MAJOR=3.12$
-MINOR=2$
+MAJOR=3.16$
+MINOR=1$
 
-SRC_URL=ftp://ftp.kernel.org/pub/linux/utils/kernel/module-init-tools/$
-SRC_DATE=jun 7 2010$
+SRC_URL=https://kernel.org/pub/linux/utils/kernel/module-init-tools/$
+SRC_DATE=jun 2 2011$
 
-BIN_URL=http://oberon07.com/dee/software/linux/$
-BIN_DATE=may 2 2011$
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 3 2025$
 
-COMPILE=linux 2.6.27.62, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
+COMPILE=linux 4.20, glibc 2.28, gcc 6.5.0, binutils 2.31.1$
 DEPENDS=$
 RELATED=$
 

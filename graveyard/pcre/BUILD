@@ -1,24 +1,19 @@
 # CorePKG build script for pcre.
-# Copyright 2011-2012, 2015-2016 David Egan Evans
+# Copyright David Egan Evans
 #
-# This software is provided 'as-is', without any express or implied
-# warranty. In no event will the authors be held liable for any damages
-# arising from the use of this software.
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
 #
-# Permission is granted to anyone to use this software for any purpose,
-# including commercial applications, and to alter it and redistribute it
-# freely, subject to the following restrictions:
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
-# 1. The origin of this software must not be misrepresented; you must
-# not claim that you wrote the original software. If you use this
-# software in a product, an acknowledgment in the product documentation
-# would be appreciated but is not required.
-#
-# 2. Altered source versions must be plainly marked as such, and must 
-# not be misrepresented as being the original software.
-#
-# 3. This notice may not be removed or altered from any source distribution.
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
+ARCH=i486
 DIST=deevans
 PKG=pcre
 VERSION=8.45
@@ -42,7 +37,7 @@ fi
 if test -f SHA256.txt
 then sha256sum -c SHA256.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2 || exit 4
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 ./configure \
@@ -55,28 +50,25 @@ cd $PKG-$VERSION || exit 5
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG
 
-find /tmp/$DIST-$PKG/usr/man/ -type f -exec gzip -9 {} \;
 for i in $(find /tmp/$DIST-$PKG/usr/man/ -type l)
-do ln -s $(readlink "$i").gz "$i".gz
+do #ln -s $(readlink "$i").gz "$i".gz
 	rm "$i"
 done
+find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+rm /tmp/$DIST-$PKG/usr/lib/*.la
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f1 -d: | xargs strip 2> /dev/null
 
-rm /tmp/$DIST-$PKG/usr/share/$PKG/{COPY*,*.txt,README,ChangeLog,NEWS,AUTHORS}
+rm -r /tmp/$DIST-$PKG/usr/share/
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
-mv /tmp/$DIST-$PKG/usr/share/ /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
-rm /tmp/$DIST-$PKG-doc/usr/share/$PKG/LICENCE
-gzip -9 /tmp/$DIST-$PKG-doc/usr/share/$PKG/html/*.txt
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
-chmod -R u+w,go+r-w,a-s /tmp/$DIST-$PKG*/
-find /tmp/$DIST-$PKG*/ -type d -exec chmod ugo+x {} \;
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/

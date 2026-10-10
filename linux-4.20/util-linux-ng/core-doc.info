@@ -1,0 +1,21 @@
+PKG=util-linux-ng-doc$
+NAME=util-linux-ng-doc$
+DESC=extra documentation for util-linux-ng$
+
+MAJOR=2.28.2$
+MINOR=1$
+
+SRC_URL=https://kernel.org/pub/linux/utils/util-linux/$
+SRC_DATE=apr 12 2016$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 6 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=e2fsprogs$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$
