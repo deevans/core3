@@ -1,0 +1,25 @@
+PKGs0="binutils glibc gcc bison flex m4 ncurses shadow bash"
+PKGs1=" bc bzip2 coreutils dev86 diffutils e2fsprogs file"
+PKGs2=" findutils gawk gmp grep groff gzip inetutils less"
+PKGs3=" lilo make man mktemp module-init-tools mpfr nano nasm net-tools"
+PKGs4=" patch pkg-config ppp procps-ng psmisc sed sysklogd sysvinit"
+PKGs5=" tack tar texinfo unzip util-linux-ng wget which zip linux"
+
+function build {
+n=1 # Start exit at 2
+for i in $*
+do
+	(echo "==== $i ===="; cd $i
+	 sed -i '/^BIN_DATE/ cBIN_DATE=jul 20 2025$' *.info
+	 sed -i '/^COMPILE/ cCOMPILE=linux 3.10.108, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$' *.info
+		bash BUILD) \
+			|| n="$(expr $n + 1)" exit $n
+done
+unset n i
+}
+
+build $PKGs{0..5}
+
+#(echo "==== base ===="; cd base; ./BUILD) || exit 103
+#(echo "==== corepkg ===="; cd corepkg; ./BUILD) || exit 104
+#(echo "==== perl ===="; cd perl; ./BUILD) || exit 105

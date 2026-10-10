@@ -1,0 +1,21 @@
+PKG=gmp$
+NAME=gmp$
+DESC=library for arbitrary precision arithmetic$
+
+MAJOR=6.1.0$
+MINOR=1$
+
+SRC_URL=htp://ftp.gnu.org/gnu/gmp/$
+SRC_DATE=nov 1 2015$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 20 2025$
+
+COMPILE=linux 3.10.108, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$
