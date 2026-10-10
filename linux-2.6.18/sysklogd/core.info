@@ -1,0 +1,21 @@
+PKG=core_sysklogd$
+NAME=sysklogd$
+DESC=system/kernel logging daemons$
+
+MAJOR=1.5$
+MINOR=1$
+
+SRC_URL=https://www.ibiblio.org/pub/Linux/system/daemons/$
+SRC_DATE=july 29 2007$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

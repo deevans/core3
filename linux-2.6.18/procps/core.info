@@ -1,0 +1,21 @@
+PKG=core_procps$
+NAME=procps$
+DESC=process handling utilities$
+
+MAJOR=3.2.8$
+MINOR=1$
+
+SRC_URL=http://procps.sf.net/procps-$MAJOR.tar.gz$
+SRC_DATE=may 10 2008$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

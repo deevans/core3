@@ -1,0 +1,249 @@
+Top-level files:
+===============
+
+NOTICE.txt	General distribution license.
+CHANGES.txt	Changes from the original Coredistro.
+MANIFEST.txt	This file.
+README.txt	Installation instructions.
+
+Packages:
+========
+
+base
+   Core Linux base, primarily file system skeleton with device files
+   and configuration files and scripts.
+
+bash
+   Bash is the command shell of the GNU System, the Bourne Again SHell.
+   Bash provides a "complete implementation of the IEEE POSIX and Open
+   Group shell specification with interactive command line editing,
+   job control on architectures that support it, csh-like features
+   such as history substitution and brace expansion, and a slew of
+   other features".
+
+bin86
+   bin86 tools provide the 8086 assembler and loader for i386 processors.
+   bin86 is incompatible with GNU binutils.
+
+binutils
+   The GNU assembler, linker and binary utilities. The programs in this
+   package are used to assemble, link and manipulate binary and object files.
+   They may be used in conjunction with a compiler and various libraries 
+   to build programs. 
+bison
+   Bison is an upwardly compatible replacement for the parser generator
+   `yacc', with more features. The file "README" gives instructions for
+   compiling Bison; the files `bison.1' (a man page) and `bison.texinfo'
+   (a GNU Texinfo file) give instructions for using it.
+
+bzip2
+   A patent free, open-source compression tool.
+
+corepkg
+   Gzip tar based package management system.
+
+coreutils
+   GNU file manipulation, shell, and text processing tools.
+
+diffutils
+   `diff' compares files showing line-by-line changes in several flexible
+   formats. GNU `diff' is much faster than the traditional Unix
+   versions. This distribution includes `diff', `diff3', `sdiff', and
+   `cmp'. Instructions for compiling these are in the "README" file.
+
+e2fsprogs (non-gnu)
+   The Ext2 Filesystem Utilities contain all of the standard utilities
+   for creating, fixing, configuring, and debugging ext2/3 filesystems.
+
+file
+   MIME what? This is the Unix way to identify file types.
+
+findutils
+   This is a POSIX compliant implementation (with many extensions) of
+   `find', a program used for searching filesystems for files that match
+   certain criteria and performing operations (like showing the path)
+   when they are found. Also included in this distribution are `xargs'
+   and `locate'.
+
+flex
+   This is a faster, but not completely compatible replacement for `lex',
+   a lexical-analyzer-compiler. Instructions for compiling `flex' are in
+   the file "README".
+
+gawk
+   The GNU awk implimentation.
+
+gcc
+   This is the GNU C Compiler collection. In addition to supporting
+   ANSI C, GCC Version 4 includes support for the programming
+   languages C++, Objective C, Fortran, and Java, among others.
+
+glibc
+   The GNU C library is primarily designed to be a portable and high
+   performance C library.
+
+   It follows all relevant standards (ISO C 99, POSIX.1c, POSIX.1j,
+   POSIX.1d, Unix98, Single Unix Specification). It is also
+   internationalized and has one of the most complete
+   internationalization interfaces known.
+
+grep
+   This package contains the GNU implementations of `grep', `egrep', and
+   `fgrep'. They are similar to their Unix counterparts, but are usually
+   faster. Instructions for compiling them are in the file "README".
+
+groff
+   Groff is a document formatting system, which includes drivers for
+   Postscript, TeX `dvi' format, and typewriter-like devices, as well as
+   implementations of `eqn', `nroff', `pic', `refer', `tbl', `troff', and
+   the `man', `ms', and `mm' macros. Groff's `mm' macro package is
+   almost compatible with the DWB `mm' macros and has several extensions.
+   Also included is a modified version of the Berkeley `me' macros and an
+   enhanced version of the X11 `xditview' previewer.  
+
+gzip
+   Gzip is the standard GNU Project file compression program.  
+
+inetutils
+   telnet, ping, ftp
+
+less
+   less is backwards more.
+
+lilo
+   The Linux Loader, a boot loader.
+
+Linux
+   Linux is a portable, monolithic kernel, and a collection of device
+   drivers, that can currently runs on hundreds of different computer
+   platforms, including microcontrollers and other embedded systems.
+   It is also the trademarked name of the POSIX Unix system by
+   Linus Torvalds.
+
+m4
+   GNU `m4' is a macro processor, in the sense that in copies its input
+   to the output, expanding macros as it goes. Macros are either built-in
+   or user-defined, and can take any number of arguments. Besides just
+   doing macro expansion, `m4' has built-in functions for including named
+   files, running Unix commands, doing integer arithmetic, manipulating
+   text in various ways, recursion, etc. Instructions for building m4
+   are in the "README" file.
+
+make
+   This is GNU Make. GNU Make supports many more options and features
+   than the Unix make. Instructions for using GNU Make are in the file
+   "make.texinfo". See the file "README" for installation instructions.
+
+man
+   nroff documentation reader. The default documentation system for
+   Unix and Linux systems.
+
+module-init-tools
+   Module handling, depedency, and info for Linux 2.6, replacing modutils.
+
+nano
+   Free pico.
+
+nasm
+   Yet another assembler.
+
+ncurses
+   ncurses implements the Unix `curses' API for developing
+   screen-based programs that are terminal independent.
+
+net-tools
+   Linux networking utilities to connect to a network.
+
+patch
+   `patch' will take a patch file containing any of the four forms of
+   difference listing produced by the `diff' program and apply those
+   differences to an original file, producing a patched version.
+
+perl
+   Perl is intended as a faster replacement for sed, awk, and similar
+   languages.
+
+pkg-config
+   Library discovery and information tool.
+
+ppp
+   Linux dial-up networking.
+
+procps
+   procps is the package that has a bunch of small useful utilities that
+   give information about processes using the /proc filesystem. The
+   package includes the programs ps, top, vmstat, etc.
+
+psmisc
+   Miscellaneous tools to work with processes.
+
+readline
+   Command line editing library for Bash.
+
+sed
+   `sed' is a stream editor, useful for doing ed-like editing operations
+   noninteractively on selected subsets of lines in an input stream.
+
+shadow
+   Provide Linux shadow password database for login authentication.
+
+sysklogd
+   syslog implementation.
+
+sysvinit
+   init and related rc runlevel scripts.
+
+tack
+   terminal control library, split from ncurses.
+
+tar
+   Tar is a program used for archiving many files in a single file, which
+   makes them easier to transport.
+
+   GNU tar includes multivolume support, the ability to archive sparse
+   files, automatic archive compression/decompression, remote archives,
+   and special features to allow tar to be used for incremental and full
+   backups. Unfortunately GNU tar implements an early draft of the POSIX
+   1003.1 `ustar standard which is different from the final standard.
+   Adding support for the new changes in a backward-compatible fashion is
+   not trivial.
+
+texinfo
+   This package contains a set of utilities related to Texinfo, which is
+   used to generate printed manuals and online hypertext-style manuals
+   (called `info'). Programs and interfaces for writing, reading, and
+   formatting texinfo files are available both as standalone programs and
+   as GNU Emacs interfaces. See the file "README" for directions on how
+   to use the various parts of this package.
+
+unzip
+   PKZIP extraction tool from Info-Zip.
+
+util-linux-ng
+   These are the standard Linux administrative and system utilities.
+   util-linux-ng takes over from util-linux.
+
+wget
+   Wget [formerly known as Geturl] is a freely available network utility
+   to retrieve files from the World Wide Web using HTTP and FTP, the two
+   most widely used Internet protocols. It works non-interactively, thus
+   enabling work in the background, after having logged off.
+
+   The recursive retrieval of HTML pages, as well as FTP sites is
+   supported. Use Wget to make mirrors of archives and home pages, or
+   traverse the web like a WWW robot (Wget understands /robots.txt).
+
+   Wget works exceedingly well on slow or unstable connections, keeping
+   getting the document until it is fully retrieved. Re-getting files
+   from where it left off works on servers (both HTTP and FTP) that
+   support it. Matching of wildcards and recursive mirroring of
+   directories are available when retrieving via FTP. Both HTTP and FTP
+   retrievals can be time-stamped, thus Wget can see if the remote file
+   has changed since last retrieval and automatically retrieve the new
+   version if it has.
+
+which
+   Which shows the full path of one or more commands.
+
+zip
+   PKZIP compression tool from Info-Zip.

@@ -1,0 +1,13 @@
+
+# base, corepkg, and perl should be built and handled separately
+rm -f linux-$(uname -r)/base/*.cpk
+
+mv -f linux-$(uname -r)/*/core_doc_*-*.cpk $HOME/pkgs/optional/
+mv -f linux-$(uname -r)/*/*-doc-*.cpk $HOME/pkgs/optional/
+mv -f linux-$(uname -r)/glibc/core_glibc-i18n-*.cpk $HOME/pkgs/optional/
+mv -f linux-$(uname -r)/ncurses/core_ncurses-terminfo-*.cpk $HOME/pkgs/optional/
+mv -f linux-$(uname -r)/nano/nano-rc-*.cpk $HOME/pkgs/optional/
+# No optional packages should be left:
+mv -f linux-$(uname -r)/*/*.cpk $HOME/pkgs/
+# This should be in base/:
+rm -f $HOME/pkgs/core_base-*.cpk

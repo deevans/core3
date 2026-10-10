@@ -1,5 +1,6 @@
+
 # CorePKG build script for textutils.
-# Copyright 2010-2025 David Egan Evans
+# Copyright 2010-2024 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,12 +12,13 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, see <https://www.gnu.org/licenses>.
+# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+# Place, Suite 330, Boston, MA 02111-1307 USA
 
 DIST=deevans
 PKG=textutils
 VERSION=2.1
-ARCH=i386
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -45,22 +47,25 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS=-march=$ARCH ./configure \
 	--prefix=/usr \
 	--bindir=/usr/bin \
 	--sbindir=/usr/bin \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
 	--disable-nls \
-	--build=$ARCH-$DIST-linux-gnu
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-# This installs the coreutils.info file, duplicating that from
-# textutils, fileutils, and coreutils (sh-utils is the newest, though
-# the coreutils package consolidates and replaces the previous three):
+# This was the Coredistro placement:
+#mkdir -p /tmp/$DIST-$PKG/bin/
+#mv /tmp/$DIST-$PKG/usr/bin/{cat,head,tail} /tmp/$DIST-$PKG/bin/
+
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
@@ -80,7 +85,6 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/
 else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
-#	corepkg -c /tmp/$DIST-$PKG-doc/ && \
-	rm -r /tmp/$DIST-$PKG-doc/
+	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -fr $PKG-$VERSION/
+rm -r $PKG-$VERSION/

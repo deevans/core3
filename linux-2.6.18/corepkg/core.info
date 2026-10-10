@@ -1,0 +1,21 @@
+PKG=core_corepkg$
+NAME=corepkg$
+DESC=core package [.cpk] handler$
+
+MAJOR=7$
+MINOR=1$
+
+SRC_URL=http://download.savannah.gnu.org/releases/corepkg/$
+SRC_DATE=jul 24 2020$
+
+BIN_URL=http://nongnu.org/corepkg$
+BIN_DATE=may 4 2024$
+
+COMPILE=$
+DEPENDS=awk basename grep more nroff sed sh tar$
+RELATED=coreutils$
+
+INSTALL=mkdir -m 755 /etc/core$
+REMOVE=$
+
+NOTES=Repackaged for core_ and bz2 manual$

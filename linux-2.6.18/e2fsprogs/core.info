@@ -1,0 +1,21 @@
+PKG=core_e2fsprogs$
+NAME=e2fsprogs$
+DESC=ext2/3 filesystem utilities$
+
+MAJOR=1.41.14$
+MINOR=1$
+
+SRC_URL=http://prdownloads.sf.net/e2fsprogs/$
+SRC_DATE=dec 22 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=util-linux-ng, pkg-config$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

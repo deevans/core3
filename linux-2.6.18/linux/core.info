@@ -1,0 +1,21 @@
+PKG=linux$
+NAME=linux$
+DESC=linux headers and boot directory files$
+
+MAJOR=2.6.18$
+MINOR=1$
+
+SRC_URL=https://kernel.org/pub/linux/kernel/v2.6/$
+SRC_DATE=sep 20 2006$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 15 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=core_base can not be removed$

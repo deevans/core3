@@ -1,0 +1,21 @@
+PKG=core_doc_wget$
+NAME=doc_wget$
+DESC=extra documentation for wget$
+
+MAJOR=1.13.4$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/wget/$
+SRC_DATE=sep 17 2011$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/wget.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/wget.info.bz2 /usr/info/dir$
+
+NOTES=$

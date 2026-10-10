@@ -2,14 +2,14 @@ PKG=core_sh-utils$
 NAME=sh-utils$
 DESC=shell utilities$
 
-MAJOR=2.0.15$
-MINOR=1$
+MAJOR=2.0$
+MINOR=2$
 
-SRC_URL=ftp://alpha.gnu.org/gnu/fetish/$
-SRC_DATE=aug 8 2002$
+SRC_URL=ftp://ftp.gnu.org/gnu/sh-utils/$
+SRC_DATE=aug 15 1999$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=may 2 2025$
+BIN_DATE=nov 9 2024$
 
 COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.4.6, binutils 2.16.1$
 DEPENDS=$

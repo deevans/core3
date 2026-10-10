@@ -1,5 +1,6 @@
+
 # CorePKG build script for sh-utils.
-# Copyright 2010-2025 David Egan Evans
+# Copyright 2010-2024 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,8 +17,8 @@
 
 DIST=deevans
 PKG=sh-utils
-VERSION=2.0.15
-ARCH=i386
+VERSION=2.0
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -43,34 +44,33 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS=-mcpu=$ARCH ./configure \
+	--prefix=/usr \
 	--bindir=/usr/bin \
-	--disable-nls \
-        --enable-no-install-program=kill,uptime \
+	--sbindir=/usr/bin \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--prefix=/usr \
-	--sbindir=/usr/bin \
-	$ARCH-$DIST-linux-gnu
+	--disable-nls \
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# The kernel build process requires the /bin/ path (is it symlinked?):
+# The tool chain build process requires the /bin/ path (is it symlinked?):
 #mkdir /tmp/$DIST-$PKG/bin/
 #mv /tmp/$DIST-$PKG/usr/bin/pwd /tmp/$DIST-$PKG/bin/
 
 # Provided by the shadow command:
 rm /tmp/$DIST-$PKG/usr/man/man1/su.1
 # Provided by procps:
-rm /tmp/$DIST-$PKG/usr/bin/{kill,su,uptime}
-rm /tmp/$DIST-$PKG/usr/man/man1/uptime.1
+rm /tmp/$DIST-$PKG/usr/bin/uptime
 
-#for i in factor seq
-#do cp ../$i.1 /tmp/$DIST-$PKG/usr/man/man1/
-#done
+for i in factor seq
+do cp ../$i.1 /tmp/$DIST-$PKG/usr/man/man1/
+done
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
@@ -78,7 +78,7 @@ then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
+gzip -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 # test and expr from Coredistro are smaller:
 find /tmp/$DIST-$PKG/ | xargs file | \

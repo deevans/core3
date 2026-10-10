@@ -1,0 +1,21 @@
+PKG=readline-doc$
+NAME=readline-doc$
+DESC=extra documentation for readline$
+
+MAJOR=6.1.2$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/readline/$
+SRC_DATE=feb 22 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info [info file] /usr/info/dir$
+REMOVE=install-info --delete [info file] /usr/info/dir$
+
+NOTES=ldconfig$

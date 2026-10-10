@@ -1,0 +1,20 @@
+# This distribution of software comes with packages built from 3rd party
+# sources, under a variety of licenses. Please check the documentation
+# accompanying the package for the license that applies to it.
+#
+# D. E. Evans' Core Distribution, a basic GNU/Linux system
+# Copyright 2010-2024 David Egan Evans
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <https://www.gnu.org/licenses/>.
+#
+# David can be contacted at sinuhe@gnu.org

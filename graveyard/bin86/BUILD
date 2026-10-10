@@ -1,5 +1,6 @@
+
 # CorePKG build script for bin86.
-# Copyright 2010-2025 David Egan Evans
+# Copyright 2010-2024 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +18,7 @@
 DIST=deevans
 PKG=bin86
 VERSION=0.16.11
-ARCH=i386
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -40,7 +41,7 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
+sed -i "/CFLAGS/ s/$/ -march=$ARCH/" Makefile
 CC=gcc make DIST=/tmp/$DIST-$PKG LOCALPREFIX=/usr \
 	MANDIR=/usr/man BINDIR=/usr/bin LIBDIR=/usr/lib/bcc
 	# install install-man || exit 6

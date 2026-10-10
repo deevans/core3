@@ -1,3 +1,0 @@
-/dev/hda1 /        ext2   defaults       1 1
-proc      /proc    proc   defaults       0 0
-devpts    /dev/pts devpts gid=2,mode=620 0 0

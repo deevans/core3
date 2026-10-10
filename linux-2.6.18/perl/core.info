@@ -1,0 +1,21 @@
+PKG=core_perl$
+NAME=perl$
+DESC=practical extraction and report language$
+
+MAJOR=5.12.5$
+MINOR=1$
+
+SRC_URL=https://cpan.org/src/$
+SRC_DATE=nov 10 2012$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=mar 20 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

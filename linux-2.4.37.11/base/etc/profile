@@ -1,9 +1,0 @@
-export LD_LIBRARY_PATH=""
-export LESS="-iM"
-export PATH="/usr/bin"
-export TERM="linux"
-export PS1="[\w]$ "
-
-alias ls="ls -F --color=auto"
-
-umask 022

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+echo "-- /etc/rc.d/rc.si --"
+
+# check and mount filesystems
+fsck -AaCs
+mount -nvwo remount /
+rm /etc/mtab
+mount -av
+
+# enable swap
+swapon -a
+
+# setup modules
+depmod -a
+# modprobe foo
+
+# setup hardware
+
+# setup network [internet connections go in rc.mu]
+hostname localhost
+ifconfig lo 127.0.0.1
+route add -net 127.0.0.0 netmask 255.0.0.0 lo
+
+# maintenance
+rm -r /tmp
+mkdir -m 1777 /tmp
+
+echo -n > /var/log/syslog
+echo -n > /var/log/wtmp
+echo -n > /var/run/utmp
+
+ldconfig
