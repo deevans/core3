@@ -1,0 +1,21 @@
+PKG=core_glibc$
+NAME=glibc$
+DESC=standard c library$
+
+MAJOR=2.11.1$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/libc/$
+SRC_DATE=dec 29 2009$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 14 2025$
+
+COMPILE=linux 2.6.27.62, glibc 2.11.1, gcc 4.4.7, binutils 2.19.1$
+DEPENDS=gcc$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=man pages from Core as Glibc since 2.3 didn't have any?$
