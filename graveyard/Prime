@@ -1,0 +1,63 @@
+#Post Prime GNU/Linux script.
+#Extract tar backup first.
+(
+chmod o+t /tmp/ # Seriously?
+sed -i '/^#MD5/ s/no/yes/;/^#MD5/ s/^#//' /etc/login.defs # See shadow package.
+sed -i '1,2d' /etc/profile # Remove flawed PS1.
+sed -i 's/^#//' /etc/profile # Enable commented PS1.
+>/etc/issue # Remove Prime branding (and invalid URL).
+echo /bin/sh >/etc/shells
+echo /bin/bash >>/etc/shells
+echo /sbin/nologin >>/etc/shells
+pwconv # Enable /etc/shadow.
+makewhatis
+
+cat >> /etc/mke2fs.conf <<EOF
+	ext3 = {
+		features = has_journal
+	}
+EOF
+
+for i in /var/log/{kernel,messages,secure,mail,cron,emergency,boot,wtmp,btmp}
+do touch $i; chmod 600 $i; chmod 644 /var/log/emergency
+done
+chgrp utmp /var/log/wtmp
+chgrp utmp /var/log/btmp
+#chgrp utmp /var/run/utmp
+chmod 660 /var/log/wtmp
+chmod 600 /var/log/btmp
+#chmod 664 /var/run/utmp
+
+echo syslogd >>/etc/rc.d/rc.3
+echo klogd >>/etc/rc.d/rc.3
+groupadd -g 34 mail
+
+# SSH Configuration
+mkdir -m 700 /var/lib/sshd
+chown root:sys /var/lib/sshd
+groupadd -g 50 sshd
+useradd -c 'sshd PrivSep' -d /var/lib/sshd -g sshd -s /sbin/nologin -u 50 sshd
+echo /usr/sbin/sshd >> /etc/rc.d/rc.3
+sed -i '/rsa_key/ s/^#//' /etc/ssh/sshd_config
+sed -i '/dsa_key/ s/^#//' /etc/ssh/sshd_config
+sed -i '/#PermitRoot/ cPermitRootLogin no' /etc/ssh/sshd_config
+sed -i '/#Pass/ cPasswordAuthentication no' /etc/ssh/sshd_config
+
+usermod -s /sbin/nologin nobody
+
+cat >/etc/hosts <<EOF
+127.0.0.1 localhost.localhost localhost
+EOF
+
+# Adjust to local time zone:
+cp /usr/share/zoneinfo/MST7MDT /etc/localtime
+
+(umask 077; >/root/README)
+cat >/root/README <<EOF
+Install the Prime CorePKG /etc/core/ directory
+Install CorePKG.
+Remove vim, inetutils (or convert to core.info)
+EOF
+) 2>&1 | tee /root/Prime.log
+chmod 600 /root/Prime.log
+
