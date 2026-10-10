@@ -1,5 +1,5 @@
 # CorePKG build script for Bash.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=bash
 VERSION=4.2.53
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -32,10 +30,10 @@ then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
-then rm -r /tmp/$DIST-$PKG-doc/
+then rm -fr /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
@@ -52,21 +50,20 @@ cd $PKG-$VERSION || exit 5
 #done
 
 CFLAGS="-Os -march=$ARCH" ./configure \
+	--prefix=/usr \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
-	--host=$TARGET-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
 	--infodir=/usr/info \
         --mandir=/usr/man \
-	--prefix=/usr \
-	--target=$TARGET-$DIST-linux-gnu \
-	--with-installed-readline
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
 
 for i in bashbug
-do rm /tmp/$DIST-$PKG/usr/bin/$i
-	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
+do rm -f /tmp/$DIST-$PKG/usr/bin/$i
+	rm -f /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
@@ -89,9 +86,8 @@ if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc}/
 else chown -R root: /tmp/$DIST-$PKG{,-doc}/
-	chmod a+x /tmp/$DIST-$PKG/usr/bin/*
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/
 

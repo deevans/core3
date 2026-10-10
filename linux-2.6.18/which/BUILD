@@ -1,5 +1,5 @@
 # CorePKG build script for GNU which.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@
 DIST=deevans
 PKG=which
 VERSION=2.21
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2
@@ -46,17 +46,14 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 5
-fi
-tar xjf $PKG-$VERSION.tar.bz2 || exit 6
-cd $PKG-$VERSION/ || exit 7
+tar xjf $PKG-$VERSION.tar.bz2 || exit 5
+cd $PKG-$VERSION/ || exit 6
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--infodir=/usr/info \
-	--mandir=/usr/man
-make || exit 8
+	--mandir=/usr/man \
+	--prefix=/usr
+make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 

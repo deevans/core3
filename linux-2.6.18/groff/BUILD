@@ -1,5 +1,5 @@
 # CorePKG build script for GNU roff.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=groff
 VERSION=1.21
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -41,25 +39,29 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-sed -i '1s:/sh:/bash:' configure
+sed -i '1c#!/usr/bin/bash' configure
 CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" \
 PAGE=letter ./configure \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
 	--infodir=/usr/info \
 	--mandir=/usr/man \
-	--prefix=/usr
+	--prefix=/usr \
+	--target=$ARCH-$DIST-linux-gnu
 CFLAGS="-Os -march=$ARCH" CXXFLAGS="-Os -march=$ARCH" make || exit 6
+
+mkdir -p /tmp/$DIST-$PKG/usr/info
+#make install prefix=/tmp/$DIST-$PKG/usr infodir=/tmp/$DIST-$PKG/usr/info
 make install DESTDIR=/tmp/$DIST-$PKG
 
-# Coredistro did not included these:
 rm -r /tmp/$DIST-$PKG/usr/share/doc/
-# an-old.tmac loads this, so how was it ignored in Coredistro? 
+# an-old.tmac needs this:
 #rm -r /tmp/$DIST-$PKG/usr/share/groff/site-tmac/
 
 cp ../grohtml /tmp/$DIST-$PKG/usr/bin/
@@ -92,4 +94,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

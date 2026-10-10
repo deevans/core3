@@ -6,16 +6,16 @@ MAJOR=7$
 MINOR=1$
 
 SRC_URL=http://download.savannah.gnu.org/releases/corepkg/$
-SRC_DATE=jul 24 2020$
+SRC_DATE=24 July 2020$
 
 BIN_URL=http://nongnu.org/corepkg$
-BIN_DATE=may 4 2024$
+BIN_DATE=may 2 2025$
 
 COMPILE=$
-DEPENDS=awk basename grep more nroff sed sh tar$
+DEPENDS=awk basename grep less nroff sed sh tar$
 RELATED=coreutils$
 
 INSTALL=mkdir -m 755 /etc/core$
 REMOVE=$
 
-NOTES=Repackaged for core_ and bz2 manual$
+NOTES=$

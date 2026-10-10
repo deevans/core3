@@ -1,5 +1,5 @@
 # CorePKG build script for shadow
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=shadow
 VERSION=4.1.4.3
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -35,15 +34,15 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
@@ -51,54 +50,50 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--sbindir=/usr/bin \
 	--sysconfdir=/etc \
 	--without-selinux
+
 make || exit 6
-# Coredistro had libshadow.a:
-make install DESTDIR=/tmp/$DIST-$PKG/
+make install-strip DESTDIR=/tmp/$DIST-$PKG/
+
+# Why doesn't this install automatically?
+mkdir -p /tmp/$DIST-$PKG/usr/lib/
+cp libmisc/libmisc.a /tmp/$DIST-$PKG/usr/lib/
+cp lib/.libs/libshadow.a /tmp/$DIST-$PKG/usr/lib/
 
 cp ../group.5 /tmp/$DIST-$PKG/usr/man/man5/
-#cp man/dpasswd.8 /tmp/$DIST-$PKG/usr/man/man8/
 
-rm -r /tmp/$DIST-$PKG/etc/
-
-# Because --sbindir= isn't supported before version 4.8:
-mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
-rmdir /tmp/$DIST-$PKG/usr/sbin/
-
-for i in vi{gr,pw} groups
-do rm /tmp/$DIST-$PKG/usr/bin/$i
+for i in vi{gr,pw}
+do rm /tmp/$DIST-$PKG/usr/sbin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 done
-rm /tmp/$DIST-$PKG/usr/man/man1/groups.1
-rm /tmp/$DIST-$PKG/usr/man/man8/vi{gr,pw}.8
+for i in groups
+do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
+done
 
 rm -r /tmp/$DIST-$PKG/usr/man/man3/
-#rm /tmp/$DIST-$PKG/usr/man/man8/adduser.8
+rm -r /tmp/$DIST-$PKG/etc/
 #rm /tmp/$DIST-$PKG/usr/lib/*.la
-
-# Because --disable-nls doesn't work:
-#for i in cs de fr hu id it ja ko pl pt_BR
-#do rm -r /tmp/$DIST-$PKG/usr/man/$i/
-#done
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-find /tmp/$DIST-$PKG/ | xargs file | \
-	grep -e "executable" -e "shared object" | \
-	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded
+#find /tmp/$DIST-$PKG/ | xargs file | \
+#	grep -e "executable" -e "shared object" | \
+#	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded
 
-# getty gets confused:
-#mkdir -p /tmp/$DIST-$PKG/bin/
-#mv /tmp/$DIST-$PKG/usr/bin/login /tmp/$DIST-$PKG/bin/
+# Because --sbindir= doesn't work?
+mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
+rmdir /tmp/$DIST-$PKG/usr/sbin/
+#chmod o-rwx /tmp/$DIST-$PKG/usr/sbin/*
 
 cd ..
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG/
-	echo set UID for {ch{age,fn,sh},expiry,newgrp,{,g}passwd} su
-else chown -R root: /tmp/$DIST-$PKG/ # This whipes out SUID.
-	for i in {ch{age,fn,sh},expiry,newgrp,{,g}passwd} su
-	do chmod u+s /tmp/$DIST-$PKG/usr/bin/$i
-	done
+else chown -R root: /tmp/$DIST-$PKG/ # This wipes out SUID
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{ch{age,fn,sh},su}
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{expiry,newgrp}
+	chmod u=rwxs,g=x,o=x /tmp/$DIST-$PKG/usr/bin/{g,}passwd
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
 rm -r $PKG-$VERSION/

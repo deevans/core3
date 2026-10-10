@@ -1,0 +1,4 @@
+d1f610efa3320ecac75c2f13df8a45c84fc7d448  netkit-base-0.17.tar.gz
+815541a33bf02a43b5b41194389b8435e7890935  netkit-ftp-0.17.tar.gz
+2bd24bb946e79cc695d65a4f00d400f97d02d06c  netkit-telnet-0.17.patch
+41213dedaf242126b54a3ac51b905a351eb22b15  netkit-telnet-0.17.tar.gz

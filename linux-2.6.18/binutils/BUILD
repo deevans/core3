@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=binutils
 VERSION=2.16.1
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -41,66 +40,68 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -d $PKG-build/
+then rm -fr $PKG-build/
+fi
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
-cd $PKG-$VERSION || exit 5
 
-patch -p0 <../*.patch
-CC=gcc CFLAGS="-Os -march=$ARCH" \
-	./configure \
-	--build=$TARGET-$DIST-linux-gnu \
+cd $PKG-$VERSION
+<../CVE-2005-4807.patch patch -p0
+
+cd ..
+mkdir $PKG-build && cd $PKG-build || exit 5
+
+CC=gcc CFLAGS="-Os -march=$ARCH" ../$PKG-$VERSION/configure \
 	--disable-nls \
-	--enable-shared \
 	--enable-gprof \
-	--enable-targets=$TARGET-$DIST-linux-gnu \
-	--host=$TARGET-$DIST-linux-gnu \
-	--libdir=/usr/lib \
-	--mandir=/usr/man \
+	--enable-shared \
 	--prefix=/usr \
-	--target=$TARGET-$DIST-linux-gnu
+	$ARCH-$DIST-linux-gnu
 
-CC=gcc make || exit 6
+make || exit 6
 make info || exit 7
-# Post-2.13 installed ldscripts/. It seems harmless to remove them with
-# a localized build environment, but toolchains are tricky, and this is 
-# one place I'm more cautious about trimming.
-make install DESTDIR=/tmp/$DIST-$PKG || exit 8
+make install DESTDIR=/tmp/$DIST-$PKG/
 
-if ! test -d /tmp/$DIST-$PKG/usr/include/
-then mkdir -p /tmp/$DIST-$PKG/usr/include/
-fi
+cd ../$PKG-$VERSION/
 cp include/libiberty.h /tmp/$DIST-$PKG/usr/include/
+cd ..
 
-# Remove Windows/Novell specific manuals:
+# Though LFS suggests tooldir=/usr to get rid of this, for compatiblity with
+# Devin's Core, let's keep the lib reference files, but link the native cmds.
+# Shamelessly stolen from Slackware:
+(cd /tmp/$DIST-$PKG/usr/$ARCH-$DIST-linux-gnu/bin/
+	for i in *
+	do
+		if test -r "/usr/bin/$i"
+		then rm $i
+			ln -fs /usr/bin/$i .
+		fi
+	done
+	unset i
+)
+
 for i in windres nlmconv dlltool
 do rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
-
 find /tmp/$DIST-$PKG/usr/lib/ -name *.la -exec rm {} \;
-
-mkdir -p /tmp/$DIST-$PKG/usr/info/
-cp binutils/doc/binutils.info* /tmp/$DIST-$PKG/usr/info/
-cp bfd/doc/bfd.info* /tmp/$DIST-$PKG/usr/info/
-cp gas/doc/as.info* /tmp/$DIST-$PKG/usr/info/
-cp gprof/gprof.info* /tmp/$DIST-$PKG/usr/info/
-cp ld/ld.info* /tmp/$DIST-$PKG/usr/info/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-if test -f /tmp/$DIST-$PKG/usr/info/dir
-then rm -f /tmp/$DIST-$PKG/usr/info/dir
-fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
+then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
+fi
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
+# Binaries are smaller in some cases with this than Core:
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
-cd ..
 cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 if test $(id -u) -ne 0
@@ -110,4 +111,5 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/
+rm -fr $PKG-build/

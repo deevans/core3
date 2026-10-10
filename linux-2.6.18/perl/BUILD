@@ -1,5 +1,5 @@
-# CorePKG build for perl
-# Copyright 2010-2024 David Egan Evans
+# CorePKG build script for Perl.
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,13 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=perl
 VERSION=5.12.5
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -36,14 +35,14 @@ then echo It is recommended to uninstall Perl before building Perl
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
-then rm -r /tmp/$DIST-$PKG-doc/
+then rm -fr /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 6
@@ -57,18 +56,17 @@ cd $PKG-$VERSION || exit 7
 	-Dprefix=/usr \
 	-Dinstallprefix=/tmp/$DIST-$PKG/usr \
 	-Uinstallusrbinperl \
-	-Dinc_version_list='5.12.5' \
 	-Darchname=$ARCH-linux \
+	-Dinc_version_list='5.12.5' \
 	-Doptimize="-Os -march=$ARCH"
 make || exit 8
 make test #|| exit 9
 make install #DESTDIR=/tmp/$DIST-$PKG/ || exit 10
 
-# perlthanks is no longer part of 10:
-for i in perl{bug,thanks} perl$VERSION
+for i in perl{bug,thanks}
 do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
-rm /tmp/$DIST-$PKG/usr/man/man1/perlbug.1
 
 for i in CHANGE{S,LOG} ChangeLog Changes ReadMe.txt README TODO
 do find /tmp/$DIST-$PKG/ -name $i -exec rm {} \;
@@ -79,6 +77,7 @@ done
 rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Encode/README.e2x
 
 # Remove links:
+rm /tmp/$DIST-$PKG/usr/bin/perl${VERSION}
 for i in pstruct s2p
 do rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
@@ -108,34 +107,25 @@ mkdir -p /tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 mv /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/*.pod \
 	/tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 
-# perlcc no longer appears to be a thing
 mkdir /tmp/$DIST-$PKG/usr/man/man1/
 for i in a2p c2ph config_data corelist cpan* dprofpp enc2xs find2perl
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in h2ph h2xs instmodsh libnetcfg perl{,doc,ivp} piconv pl2pm psed
+for i in h2{ph,xs} instmodsh libnetcfg perl{,doc,ivp} piconv pl2pm
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in pod{checker,select} pod2* prove ptar{,diff} shasum splain xsubpp
+for i in pod{2*,checker,select} prove psed ptar{,diff} shasum splain xsubpp
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
+mv /tmp/$DIST-$PKG-doc/usr/man/man1/cpan{2dist,p}.1 \
+	/tmp/$DIST-$PKG/usr/man/man1/
 
 # See the above deletion of links:
 echo .so man1/c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
-echo .so man1/psed.1 > /tmp/$DIST-$PKG/usr/man/man1/s2p.1
-
-# Shouldn't cpanp-run-perl be in libexec or with CPANPLUS?
-# Should this be in man1/?
-echo .so man3/CPANPLUS::Config.3 > \
-	/tmp/$DIST-$PKG-doc/usr/man/man3/cpanp-run-perl.3
+echo .so man1/psed.1 > /tmp/$DIST-$PKG/usr/man/man1/s2p
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;
-
-# Why did cpan* above not catch this?
-mv /tmp/$DIST-$PKG-doc/usr/man/man1/cpanp.1.bz2 /tmp/$DIST-$PKG/usr/man/man1/
-mv /tmp/$DIST-$PKG-doc/usr/man/man1/cpan2dist.1.bz2 \
-	/tmp/$DIST-$PKG/usr/man/man1/
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
@@ -151,4 +141,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

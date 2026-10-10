@@ -1,5 +1,5 @@
 # CorePKG build script for LILO.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,13 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=lilo
 VERSION=24.2
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -28,7 +27,7 @@ then echo "The core.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 
 if test -d $PKG-$VERSION/
@@ -37,7 +36,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-${VERSION}.tar.bz2
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
@@ -49,8 +48,6 @@ make -C scripts install DESTDIR=/tmp/$DIST-$PKG/ \
 	USRSBIN_DIR=/usr/bin/ || exit 7
 make -C man install DESTDIR=/tmp/$DIST-$PKG/ \
 	MAN_DIR=/usr/man/ || exit 8
-#mv /tmp/$DIST-$PKG/usr/bin/keytab-lilo.pl /tmp/$DIST-$PKG/usr/bin/keytab-lilo
-#cp ../keytab-lilo.8 /tmp/$DIST-$PKG/usr/man/man8/
 
 rmdir /tmp/$DIST-$PKG/etc/
 
@@ -64,4 +61,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

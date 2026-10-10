@@ -1,5 +1,5 @@
-# CorePKG build script for Info-ZIP zip.
-# Copyright 2010-2024 David Egan Evans
+# CorePKG build script for Info-Zip zip.
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,13 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=zip
 VERSION=30
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2
@@ -30,28 +29,29 @@ then echo 'The core.info file is not present.' 1>&2
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 
-if test -d ${PKG}$VERSION/
-then rm -r ${PKG}$VERSION/
+if test -d $PKG-$VERSION/
+then rm -r $PKG-$VERSION/
 fi
 
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
-fi
-tar xjf ${PKG}$VERSION.tar.bz2 || exit 5
-cd ${PKG}$VERSION || exit 6
+tar xzf ${PKG}${VERSION}.tgz || exit 4
+cd $PKG$VERSION/ || exit 5
 
+sed -i "s/-O3/-Os -march=$ARCH/" unix/configure
+sed -i "/^CFLAGS/ s/-O3/-Os -march=$ARCH/" unix/Makefile
 mkdir -p /tmp/$DIST-$PKG/
-sed -i "s/-O3/-Os -march=$ARCH/g" unix/configure
 make -f unix/Makefile generic_gcc || exit 7
 make -f unix/Makefile install \
-	prefix=/tmp/$DIST-$PKG/usr \
+	prefix=/tmp/$DIST-$PKG \
 	BINDIR=/tmp/$DIST-$PKG/usr/bin \
 	MANDIR=/tmp/$DIST-$PKG/usr/man/man1
 
-bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*.1
+for i in zip{cloak,note,split}
+do echo .so man1/zip.1 > /tmp/$DIST-$PKG/usr/man/man1/$i.1
+done
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 strip --strip-unneeded /tmp/$DIST-$PKG/usr/bin/*
 
@@ -63,4 +63,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r ${PKG}$VERSION/
+rm -r $PKG$VERSION/

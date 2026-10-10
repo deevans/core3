@@ -1,6 +1,5 @@
-
 # CorePKG build script for $PKG.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -40,37 +39,41 @@ mkdir -m 0755 -p /tmp/$DIST-$PKG/
 # Follow the /usr/ merge from freedesktop.org:
 #ln -s /usr/bin /tmp/$DIST-$PKG/sbin
 ln -s /usr/bin /tmp/$DIST-$PKG/bin
-#ln -s /usr/lib /tmp/$DIST-$PKG/lib
+if ! test -L lib
+then ln -s /usr/lib lib
+fi
 
 # Create a skeleton for empty directories not added by packages:
 for i in boot home proc sys
 do mkdir /tmp/$DIST-$PKG/$i
 done
-mkdir -p /tmp/$DIST-$PKG/usr/lib/modules/
+mkdir -p /tmp/$DIST-$PKG/lib/modules/
 mkdir -m 1777 -p /tmp/$DIST-$PKG/tmp/
-mkdir -m 755 -p /tmp/$DIST-$PKG/etc/modprobe.d/
 
-for i in cdrom floppy remote usb
+for i in cdrom floppy remote
 do mkdir -p /tmp/$DIST-$PKG/mnt/$i
 done
 
-# /etc/mtab is removed as reinstalling core_base breaks it (use mount -af).
-# This should be in the installer for the initial file. Same with the 
-# ld.so.cache file. /var/locatedb is removed similarly, as updatedb will build
-# it anew without warning.
 cp -Rdp etc/ dev/ root/ usr/ var/ /tmp/$DIST-$PKG/
 mkdir -m 700 -p /tmp/$DIST-$PKG/var/lock/
-# Kernel 2.6.26 /proc/mounts is complete and should use a symlink:
-# ln -s /proc/mounts /tmp/$DIST-$PKG/etc/mtab
+mkdir -m 755 /tmp/$DIST-$PKG/dev/pts/
+chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
 
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
+# This assumes the move of bash from /bin/bash to /usr/bin/bash:
 (cd /tmp/$DIST-$PKG/usr/bin/
- ln -s /usr/bin/bash sh
+	ln -s bash sh
 )
+
+# When provided by util-linux, remove this:
+#(cd /tmp/$DIST-$PKG/usr/bin/
+#	ln -s less more
+#)
+#echo .so man1/less.1 > /tmp/$DIST-$PKG/usr/man/man1/more.1
 
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
 echo .so man1/bash.1 > /tmp/$DIST-$PKG/usr/man/man1/sh.1
-bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/sh.1
+
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*.1
 
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0

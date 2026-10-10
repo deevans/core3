@@ -1,16 +1,14 @@
-To install, run fdisk, then mke2fs -j. Use a label with -L (mkswap too). Follow
-the tune2fs recommendations (disable with -c 0 -i 0), as needed, then mount
-the root file system to /mnt/root/. Run install_core /mnt/root/, then edit the
-/mnt/root/etc/fstab to match the disk configuration. Edit /mnt/etc/lilo.conf.
-Copy over the CD's /boot/{System.map,bzImage,config} files to /mnt/root/boot/. 
-The bzImage files include inhancements for more modern systems. chroot to
-/mnt/root/ and run lilo. Exit and reboot. /mnt/root/proc/ should be mounted,
-but if not run: mount -t proc proc /mnt/root/proc/.
+Installation: run fdisk, then mke2fs -j. It can use a label with -L but
+mkswap cannot. Follow the tune2fs recommendations (disable with -c 0 -i 0),
+as needed, then mount the root file system to /mnt/root/. Run
 
-To build a kernel, extract the /pkgs/kernel/ tarball to /usr/src/ and symlink
-it to linux for the /usr/include/ symlinks:
+	install_core /mnt/root/
 
-	ln -s /usr/src/linux-2.6.18/ /usr/src/linux
+then edit the /mnt/etc/fstab to match the disk configuration. Edit
+/mnt/etc/lilo.conf. Build the kernel, or if desired copy over the CD's
+/boot/{System.map,vmlinuz,config} to /mnt/boot/. The bzImage files
+include inhancements for more modern systems. Run
 
-cd to /usr/src/linux/ and run: make include/linux/version.h 
+	mount --bind /proc /mnt/proc
 
+then chroot to /mnt/ and run lilo. Reboot.

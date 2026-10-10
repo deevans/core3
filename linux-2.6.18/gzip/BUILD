@@ -1,5 +1,5 @@
 # CorePKG build script for gzip.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=gzip
 VERSION=1.4
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -32,53 +30,42 @@ then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -r /tmp/$DIST-$PKG/
+then rm -fr /tmp/$DIST-$PKG/
 fi
 if test -d /tmp/$DIST-$PKG-doc/
-then rm -r /tmp/$DIST-$PKG-doc/
+then rm -fr /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
 
-# These have gloriously been replaced with shell scripts:
-#(cd /tmp/$DIST-$PKG/usr/bin/
-#mv zdiff zcmp # Josh, what is this about?
-#ln -s gzip gunzip
-#ln -s gzip zcat
-#ln -s zcmp zdiff
-#)
-# Because zcmp not zdiff? See above:
-#mv /tmp/$DIST-$PKG/usr/man/man1/zdiff.1 /tmp/$DIST-$PKG/usr/man/man1/zcmp.1
-
-# These have gloriously been done by the new version:
-#echo .so man1/gzip.1 >/tmp/$DIST-$PKG/usr/man/man1/gunzip.1
-#echo .so man1/gzip.1 >/tmp/$DIST-$PKG/usr/man/man1/zcat.1
-#echo .so man1/zcmp.1 >/tmp/$DIST-$PKG/usr/man/man1/zdiff.1
+# uncompress and gunzip are the same linked shell script.
+# Devin's Core always used symlinks. However, the Unix researchers
+# saw them as a mistake, and removed them in Plan 9. The uncompress
+# link is in the same directory, so should not be a problem as a link:
+echo .so man1/gzip.1 >/tmp/$DIST-$PKG/usr/man/man1/uncompress.1
 echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zegrep.1
 echo .so man1/zgrep.1 >/tmp/$DIST-$PKG/usr/man/man1/zfgrep.1
 
-cp ../uncompress.1 /tmp/$DIST-$PKG/usr/man/man1/
-
-find /tmp/$DIST-$PKG/usr/man/ -type f -exec gzip -9 {} \;
+find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
@@ -87,7 +74,6 @@ mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
-# This provides a bigger binary (less optimized) than Coredistro's:
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded

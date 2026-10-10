@@ -1,5 +1,5 @@
 # CorePKG build script for modutils.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=modutils
 VERSION=2.4.27
-ARCH=pentium3
-TARGET=i686
+ARCH=i386
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,22 +38,20 @@ if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
+<modutils-gcc40.patch patch -p0
 cd $PKG-$VERSION || exit 5
-patch -p2 <../modutils-gcc40.patch
 
-CFLAGS="-Os -march=$ARCH" \
-./configure \
+CFLAGS="-Os -march=$ARCH" ./configure \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+        --mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
-        --mandir=/usr/man \
-	--disable-nls \
-	--build=$TARGET-$DIST-linux-gnu \
-	--host=$TARGET-$DIST-linux-gnu \
-	--target=$TARGET-$DIST-linux-gnu 
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Coredistro did not include the .2 manuals (modutils-doc?):
+# Does not include the .2 manuals:
 rm -r /tmp/$DIST-$PKG/usr/man/man2/
 
 echo .so man8/insmod.8 > /tmp/$DIST-$PKG/usr/man/man8/insmod_ksymoops_clean.8

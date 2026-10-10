@@ -1,5 +1,5 @@
 # CorePKG build script for net-tools.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@
 DIST=deevans
 PKG=net-tools
 VERSION=1.60
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -34,22 +34,20 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
+
+patch -p0 <$PKG-$VERSION-gcc34-3.patch
 cd $PKG-$VERSION || exit 5
+cp ../config.h .
 
 # Because Coredistro has /bin/env:
-#sed -i '1s:usr/::' configure.sh
+sed -i '1s:usr/::' configure.sh
 
-sed -i "/^COPTS/ s/-O2/-Os -march=$ARCH/" Makefile
-cp ../config.h .
-<../*.patch patch -p 1
-
-# With Linux 2.6:
 sed -i '80s/x25_address/struct x25_address/' lib/x25_sr.c
-
+sed -i "/^COPTS/ s/-O2/-Os -march=$ARCH/" Makefile
 CC=gcc make || exit 6
 
 #make install BASEDIR=/tmp/$DIST-$PKG/

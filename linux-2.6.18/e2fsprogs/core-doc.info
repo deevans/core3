@@ -9,13 +9,13 @@ SRC_URL=http://prdownloads.sf.net/e2fsprogs/$
 SRC_DATE=dec 22 2010$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=mar 19 2025$
+BIN_DATE=jun 19 2025$
 
 COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 
-INSTALL=install-info /usr/info/libext2fs.info.gz /usr/info/dir$
-REMOVE=install-info --delete /usr/info/libext2fs.info.gz /usr/info/dir$
+INSTALL=install-info /usr/info/libext2fs.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/libext2fs.info.bz2 /usr/info/dir$
 
 NOTES=$

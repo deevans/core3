@@ -1,5 +1,5 @@
 # CorePKG build script for GNU grep.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=grep
 VERSION=2.9
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,31 +38,29 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" \
-./configure \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
 	--disable-nls \
-	--host=$TARGET-$DIST-linux-gnu \
 	--infodir=/usr/info \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
-	--target=$TARGET-$DIST-linux-gnu
+	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
+
 mkdir -p /tmp/$DIST-$PKG/usr/{bin,info,man/man1}/
 make install \
 	prefix=/tmp/$DIST-$PKG/usr \
 	bindir=/tmp/$DIST-$PKG/usr/bin \
-	mandir=/tmp/$DIST-$PKG/usr/man \
-	infodir=/tmp/$DIST-$PKG-doc/usr/info
+	infodir=/tmp/$DIST-$PKG-doc/usr/info \
+	mandir=/tmp/$DIST-$PKG/usr/man
 #make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
@@ -71,8 +68,6 @@ find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
 then rm -f /tmp/$DIST-$PKG-doc/usr/info/dir
 fi
-#mkdir -p /tmp/$DIST-$PKG-doc/usr/
-#mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
 find /tmp/$DIST-$PKG/ | xargs file | \
@@ -89,4 +84,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

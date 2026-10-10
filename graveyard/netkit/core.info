@@ -9,9 +9,9 @@ SRC_URL=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/$
 SRC_DATE=jul 31 2000$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=dec 6 2024$
+BIN_DATE=may 20 2025$
 
-COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 3.3.6, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

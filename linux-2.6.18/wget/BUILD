@@ -1,5 +1,5 @@
 # CorePKG build script for wget.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses>.
 
 DIST=deevans
 PKG=wget
 VERSION=1.13.4
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2
@@ -38,7 +36,6 @@ fi
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
 fi
-
 if test -d /tmp/$DIST-$PKG-doc/
 then rm -r /tmp/$DIST-$PKG-doc/
 fi
@@ -47,30 +44,26 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 5
-fi
-tar xjf $PKG-$VERSION.tar.bz2 || exit 6
-cd $PKG-$VERSION/
+tar xjf $PKG-$VERSION.tar.bz2 || exit 5
+cd $PKG-$VERSION/ || exit 6
 
+# Are we getting to a point yet where TLS is a necessary dependency?
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--build=$TARGET-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
 	--mandir=/usr/man \
 	--prefix=/usr \
-	--with-ssl=no
+	--with-ssl=no \
+	$ARCH-$DIST-linux-gnu
 make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/
-bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 rm -r /tmp/$DIST-$PKG/usr/etc/
 mkdir -pm 755 /tmp/$DIST-$PKG-doc/usr/
+rm /tmp/$DIST-$PKG/usr/info/dir
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-if test -f /tmp/$DIST-$PKG-doc/usr/info/dir
-then rm /tmp/$DIST-$PKG-doc/usr/info/dir
-fi
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
+bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 strip --strip-unneeded /tmp/$DIST-$PKG/usr/bin/*
 

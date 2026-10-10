@@ -6,10 +6,10 @@ MAJOR=2.16.1$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/binutils/$
-SRC_DATE=jun 12 2005$
+SRC_DATE=aug 16 2002$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=mar 19 2025$
+BIN_DATE=jun 19 2025$
 
 COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
@@ -18,4 +18,4 @@ RELATED=$
 INSTALL=$
 REMOVE=$
 
-NOTES=patched for CVE-2005-4807 and CVE-2005-4808$
+NOTES=Patched for CVE-2005-4807$

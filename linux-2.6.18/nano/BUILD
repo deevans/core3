@@ -1,5 +1,5 @@
 # CorePKG build script for GNU nano.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=nano
 VERSION=2.2.6
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -30,6 +29,9 @@ fi
 if test ! -f core-doc.info
 then echo "The core-doc.info file is not present." 1>&2; exit 3
 fi
+if test ! -f core-rc.info
+then echo "The core-rc.info file is not present." 1>&2; exit 3
+fi
 
 if test -d /tmp/$DIST-$PKG/
 then rm -r /tmp/$DIST-$PKG/
@@ -37,21 +39,23 @@ fi
 if test -d /tmp/$DIST-$PKG-doc/
 then rm -r /tmp/$DIST-$PKG-doc/
 fi
+if test -d /tmp/$DIST-$PKG-rc/
+then rm -r /tmp/$DIST-$PKG-rc/
+fi
 
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" \
-./configure \
-	--disable-nls \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
 	--infodir=/usr/info \
         --mandir=/usr/man \
 	--prefix=/usr
@@ -60,16 +64,16 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-rm -r /tmp/$DIST-$PKG/usr/share/$PKG/man-html/
-mkdir -p /tmp/$DIST-$PKG-rc/usr/share/
-mv /tmp/$DIST-$PKG/usr/share/$PKG/ /tmp/$DIST-$PKG-rc/usr/share/
-
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
 mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
+
+rm -r /tmp/$DIST-$PKG/usr/share/$PKG/man-html/
+mkdir -p /tmp/$DIST-$PKG-rc/usr/share/
+mv /tmp/$DIST-$PKG/usr/share/$PKG/ /tmp/$DIST-$PKG-rc/usr/share/
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
@@ -80,9 +84,9 @@ cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 cp core-rc.info /tmp/$DIST-$PKG-rc/core.info
 if test $(id -u) -ne 0
-then echo $PKG has been installed to /tmp/$DIST-$PKG{,-{doc,rc}}/
-	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-{doc,rc}}/
-else chown -R root: /tmp/$DIST-$PKG{,-{doc,rc}}/
+then echo $PKG has been installed to /tmp/$DIST-$PKG*/
+	echo Before packaging: chown -R root: /tmp/$DIST-$PKG*/
+else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 	corepkg -c /tmp/$DIST-$PKG-rc/ && rm -r /tmp/$DIST-$PKG-rc/

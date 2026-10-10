@@ -1,5 +1,5 @@
 # CorePKG build script for glibc.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=glibc
 VERSION=2.3.6
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -37,86 +36,85 @@ fi
 if test -d /tmp/$DIST-$PKG-doc/
 then rm -r /tmp/$DIST-$PKG-doc/
 fi
+if test -d /tmp/$DIST-$PKG-i18n/
+then rm -r /tmp/$DIST-$PKG-i18n/
+fi
 
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
 if test -d $PKG-build/
-then rm -r $PKG-build/
+then rm -fr $PKG-build/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
-cd $PKG-$VERSION || exit 5
+<linux_types.patch patch -p0
 
-# For Linux 2.4 only:
-#tar xjf ../$PKG-linuxthreads-$VERSION.tar.bz2
+#cd $PKG-$VERSION || exit 5
+#tar xjf ../$PKG-libidn-$VERSION.tar.bz2
+#cd timezone
+#tar xjf ../../tzdata*.tar.bz2
+#chmod 755 yearistype.sh
+#tar xjf ../../tzcode*.tar.bz2
+#sed -i 's:/usr/local:$(pwd):g' Makefile
+#sed -i '/^cc/ s/cc$/gcc/' Makefile
+#sed -i '/^GCC_DEBUG_FLAGS/ s/O3/Os/' Makefile
+#make
+#make install DESTDIR=/tmp/$DIST-$PKG/
+#(cd /tmp/$DIST-$PKG/usr/share/zoneinfo/
+#ln -s /usr/share/zoneinfo posix
+#ln -s /usr/share/zoneinfo/zoneinfo-leaps right
+#rm -f localtime && ln -sf /etc/localtime .
+#)
+#cd ../../
 
-tar xjf ../$PKG-libidn-$VERSION.tar.bz2
-cd timezone
-tar xzf ../../tzdata*.tar.bz2
-mv yearistype.sh yearistype
-chmod 755 yearistype
-mkdir tzcode
-cd tzcode
-tar xzf ../../../tzcode*.tar.bz2
-# -a is not POSIX:
-cp -a *.c *.h ../
-
-cd ../../..
 mkdir $PKG-build/
 cd $PKG-build
 
-sed -i '1c#! /bin/bash' configure
-CFLAGS="-Os -g -march=$ARCH" \
-AWK=gawk ../$PKG-$VERSION/configure \
+CFLAGS="-Os -march=$ARCH" ../$PKG-$VERSION/configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-profile \
-	--disable-werror \
-	--enable-kernel=2.6.18 \
-	--enable-add-ons=libidn,nptl \
-	--host=$TARGET-$DIST-linux-gnu \
-	--libdir=/usr/lib \
+	--enable-kernel=2.4.21 \
+	--enable-add-ons=nptl \
+	--host=$ARCH-$DIST-linux-gnu \
 	--mandir=/usr/man \
 	--prefix=/usr \
-	--target=$TARGET-$DIST-linux-gnu \
-	--with-tls \
-	--without-cvs \
-	--with-__thread
+	--sbindir=/sbin \
+	--target=$ARCH-$DIST-linux-gnu \
+	--without-selinux
 
-SHELL=/bin/bash make || exit 6
-SHELL=/bin/bash make install install_root=/tmp/$DIST-$PKG/
+make || exit 6
+make install install_root=/tmp/$DIST-$PKG/
+
+# Does --sbindir fix this?
+#mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
+#rmdir /tmp/$DIST-$PKG/usr/sbin/
+chmod o-rwx /tmp/$DIST-$PKG/sbin/*
 
 rm -r /tmp/$DIST-$PKG/etc/
 rm -r /tmp/$DIST-$PKG/usr/share/locale/
-for i in glibcbug xtrace
-do
-	if test -f /tmp/$DIST-$PKG/usr/bin/$i
-	then rm /tmp/$DIST-$PKG/usr/bin/$i
-	fi
-done
+# glibcbug was removed in 2.3.4:
+rm /tmp/$DIST-$PKG/usr/bin/xtrace
 
-# For some reason, man pages were not installed for Glibc 2.3.x. These 
-# are taken from Coredistro:
+# For some reason, man pages were not installed for Glibc 2.3:
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
 cp ../manuals/*.1 /tmp/$DIST-$PKG/usr/man/man1/
 cp ../manuals/*.5 /tmp/$DIST-$PKG/usr/man/man5/
 cp ../manuals/*.8 /tmp/$DIST-$PKG/usr/man/man8/
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
-if test -d /tmp/$DIST-$PKG/usr/sbin/
-then mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
-	rmdir /tmp/$DIST-$PKG/usr/sbin/
-fi
-#mv /tmp/$DIST-$PKG/sbin/* /tmp/$DIST-$PKG/usr/bin/
-#rmdir /tmp/$DIST-$PKG/sbin/
-chmod 750 /tmp/$DIST-$PKG/sbin/*
-
 # /lib/ symlinks are relative and break moved to /usr/lib/:
 #mv /tmp/$DIST-$PKG/lib/* /tmp/$DIST-$PKG/usr/lib/
+#(cd /tmp/$DIST-$PKG/lib/
+# ln -s /usr/lib/ld-2.3.6.so ld-linux.so.2
+#)
 #rmdir /tmp/$DIST-$PKG/lib/
+
+mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
+rmdir /tmp/$DIST-$PKG/usr/sbin/
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
@@ -134,6 +132,10 @@ find /tmp/$DIST-$PKG/ | xargs file | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
 
 cd ..
+mkdir -p /tmp/$DIST-$PKG/usr/share/$PKG/
+cp $PKG-$VERSION/LICENSES /tmp/$DIST-$PKG/usr/share/$PKG/LICENSES.txt
+bzip2 -9 /tmp/$DIST-$PKG/usr/share/$PKG/LICENSES.txt
+
 cp core.info /tmp/$DIST-$PKG/
 cp core-doc.info /tmp/$DIST-$PKG-doc/core.info
 cp core-i18n.info /tmp/$DIST-$PKG-i18n/core.info
@@ -146,5 +148,5 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc,-i18n}/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 	corepkg -c /tmp/$DIST-$PKG-i18n/ && rm -r /tmp/$DIST-$PKG-i18n/
 fi
-rm -r $PKG-$VERSION/
-rm -r $PKG-build/
+rm -fr $PKG-$VERSION/
+rm -fr $PKG-build/

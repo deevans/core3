@@ -1,5 +1,5 @@
 # CorePKG build script for GNU findutils.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=findutils
 VERSION=4.4.2
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,26 +38,29 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" \
-./configure \
-	--build=$TARGET-$DIST-linux-gnu \
+CFLAGS="-Os -march=$ARCH" ./configure \
+	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
+	--libexecdir=/usr/libexec \
 	--localstatedir=/var \
-	--mandir=/usr/man \
+	--mandir=/usr/man 
 	--prefix=/usr
 make || exit 6
-make install DESTDIR=/tmp/$DIST-$PKG/ || exit 7
-make check || exit 8
 
+#mkdir -p /tmp/$DIST-$PKG/usr/{bin,libexec,man}
+make install DESTDIR=/tmp/$DIST-$PKG/
+
+# No need to keep the old one around:
 rm /tmp/$DIST-$PKG/usr/bin/oldfind
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;

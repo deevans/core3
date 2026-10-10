@@ -1,6 +1,5 @@
-
 # CorePKG build script for tack.
-# Copyright 2024 David Egan Evans
+# Copyright 2024, 2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -18,7 +17,7 @@
 DIST=deevans
 PKG=tack
 VERSION=1.07
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -35,20 +34,22 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tgz
 cd $PKG-$VERSION || exit 5
 
 CPPFLAGS="-Os -march=$ARCH" CFLAGS="-Os -march=$ARCH" \
 LIBS="-ltic" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
-	--sbindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+	--host=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
-	--disable-nls
+	--mandir=/usr/man \
+	--prefix=/usr \
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 

@@ -1,5 +1,5 @@
 # CorePKG build script for e2fsprogs.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,13 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=e2fsprogs
 VERSION=1.41.14
 ARCH=pentium3
-TARGET=i686
+TARGET=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -38,7 +37,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 # disable-tls on Linux 2.4 but not 2.6:
@@ -102,6 +101,9 @@ mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
 
 mv /tmp/$DIST-$PKG/usr/{info,share}/ /tmp/$DIST-$PKG-doc/usr/
+
+# Remove pkg-config files for now:
+rm -r /tmp/$DIST-$PKG/usr/lib/pkgconfig/
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

@@ -1,4 +1,3 @@
-
 # CorePKG build script for util-linux.
 # Copyright 2010-2025 David Egan Evans
 #
@@ -12,13 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=util-linux-ng
 VERSION=2.13.1
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2
@@ -41,11 +39,16 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2 || exit 4
 cd $PKG-$VERSION/ || exit 5
 
-CC=gcc CFLAGS="-Os -march=$ARCH" ./configure --prefix=/usr
-make all HAVE_KILL=yes HAVE_WRITE=yes DISABLE_NIS=yes || exit 7
+CC=gcc CFLAGS="-Os -march=$ARCH" \
+./configure \
+	--enable-rdev \
+	--prefix=/usr \
+	--sbindir=/usr/bin
+make all HAVE_KILL=yes HAVE_WRITE=yes DISABLE_NIS=yes \
+	|| exit 7
 
 # This installs much more than desired:
-#make install HAVE_KILL=yes HAVE_SLN=yes HAVE_WRITE=yes DISABLE_NIS=yes \
+#make install HAVE_KILL=yes HAVE_WRITE=yes DISABLE_NIS=yes \
 #	MAN_DIR=/usr/man DESTDIR=/tmp/$DIST-$PKG
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
@@ -54,7 +57,10 @@ mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
 for i in dmesg renice
 do mv sys-utils/$i /tmp/$DIST-$PKG/usr/bin/
 done
-for i in sys-utils/{dmesg,renice}.1 misc-utils/setterm.1
+for i in sys-utils/renice.1 misc-utils/setterm.1
+do mv $i /tmp/$DIST-$PKG/usr/man/man1/
+done
+for i in sys-utils/dmesg.1
 do mv $i /tmp/$DIST-$PKG/usr/man/man1/
 done
 mv misc-utils/setterm /tmp/$DIST-$PKG/usr/bin/
@@ -73,10 +79,10 @@ do mv mount/$i /tmp/$DIST-$PKG/usr/bin/
 done
 
 # No longer uses rdev with i586 and later:
-for i in tunelp
+for i in tunelp rdev
 do mv sys-utils/$i /tmp/$DIST-$PKG/usr/bin/
 done
-for i in sys-utils/tunelp.8 disk-utils/{fdformat,{fsck,mkfs}.minix}.8
+for i in sys-utils/{tunelp,rdev}.8 disk-utils/{fdformat,{fsck,mkfs}.minix}.8
 do mv $i /tmp/$DIST-$PKG/usr/man/man8/
 done
 
@@ -123,4 +129,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+#rm -r $PKG-$VERSION/

@@ -1,5 +1,5 @@
 # CorePKG build script for GNU tar.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=tar
 VERSION=1.26
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,24 +38,23 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" \
-FORCE_UNSAFE_CONFIGURE=1 ./configure \
-	--build=$TARGET-$DIST-linux-gnu \
+CFLAGS="-Os -march=$ARCH" FORCE_UNSAFE_CONFIGURE=1 ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
+	--mandir=/usr/man \
 	--prefix=/usr \
-	--sbindir=/usr/bin \
-        --mandir=/usr/man
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -85,4 +83,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

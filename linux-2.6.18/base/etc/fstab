@@ -1,2 +1,4 @@
-/dev/hda1 /     ext3 defaults 1 1
-none      /proc proc defaults 0 0
+/dev/hda1 /        ext2   defaults       1 1
+proc      /proc    proc   defaults       0 0
+devpts    /dev/pts devpts gid=2,mode=620 0 0
+sysfs     /sys     sysfs  defaults       0 0

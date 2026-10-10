@@ -1,5 +1,5 @@
 # CorePKG build script for GCC.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=gcc
 VERSION=4.0.4
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -40,6 +38,9 @@ fi
 
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
+fi
+if test -d build/
+then rm -fr build/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
@@ -64,19 +65,20 @@ cd ../
 # unwind was originally disabled by Coredistro, but is needed by later glibc:
 mkdir build
 cd build
-CFLAGS="-march=$ARCH" \
+CFLAGS="-Os -march=$ARCH" \
 ../$PKG-$VERSION/configure \
-	--prefix=/usr \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-bootstrap \
+	--disable-libiberty \
+	--disable-nls \
 	--enable-languages=c,c++ \
 	--enable-threads=posix \
 	--enable-__cxa_atexit \
 	--enable-clocale=gnu \
-	--disable-bootstrap \
-	--disable-libiberty \
-	--disable-nls \
-	--build=$TARGET-$DIST-linux-gnu \
-	--host=$TARGET-$DIST-linux-gnu \
-	--target=$TARGET-$DIST-linux-gnu
+	--host=$ARCH-$DIST-linux-gnu \
+	--libexecdir=/usr/lib \
+	--prefix=/usr \
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
 make -k check #|| exit 7
 #make install prefix=/tmp/$DIST-$PKG/usr
@@ -89,11 +91,14 @@ rm /tmp/$DIST-$PKG/usr/bin/gccbug
 rm /tmp/$DIST-$PKG/usr/lib/libiberty.a
 
 find /tmp/$DIST-$PKG/usr/ -name *.la -exec rm {} \;
+find /tmp/$DIST-$PKG/ -name README -exec bzip2 -9 {} \;
 
 echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/c++.1
-echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$TARGET-$DIST-linux-gnu-gcc.1
-echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$TARGET-$DIST-linux-gnu-g++.1
-echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$TARGET-$DIST-linux-gnu-c++.1
+echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-gcc.1
+echo .so man1/gcc.1 > \
+	/tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-gcc-$VERSION.1
+echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-g++.1
+echo .so man1/gcc.1 > /tmp/$DIST-$PKG/usr/man/man1/$ARCH-$DIST-linux-gnu-c++.1
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir

@@ -9,9 +9,9 @@ SRC_URL=https://slackware.osuosl.org/slackware-11.0/source/a/util-linux/$
 SRC_DATE=sep 23 2005$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=mar 15 2025$
+BIN_DATE=jun 16 2025$
 
-COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+COMPILE=linux 2.4.37.11, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$
 RELATED=$
 

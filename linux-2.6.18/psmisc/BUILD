@@ -1,5 +1,5 @@
 # CorePKG build script for psmisc.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=psmisc
 VERSION=22.14
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -41,13 +40,14 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+./configure \
+	--prefix=/usr \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
-	--disable-nls \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
-	--prefix=/usr
+	--disable-nls \
+	--build=$ARCH-$DIST-linux-gnu
+sed -i "/^CFLAGS/ s/-Wall/-Wall -Os -march=$ARCH/" src/Makefile
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 

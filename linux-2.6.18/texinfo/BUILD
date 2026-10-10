@@ -1,5 +1,5 @@
 # CorePKG build script for texinfo.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses>.
 
 DIST=deevans
 PKG=texinfo
 VERSION=4.13
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -41,29 +39,28 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
-tar xjf $PKG-${VERSION}a.tar.bz2
+tar xzf $PKG-${VERSION}a.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--build=$TARGET-$DIST-linux-gnu \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Coredistro didn't have these; texi2dvi etc need tex:
-rm /tmp/$DIST-$PKG/usr/bin/texi{2{dvi,pdf},ndex}
-rm /tmp/$DIST-$PKG/usr/man/man1/texi{2{dvi,pdf},ndex}.1
-rm /tmp/$DIST-$PKG/usr/bin/pdftexi2dvi
-rm /tmp/$DIST-$PKG/usr/man/man1/pdftexi2dvi.1
+for i in texi{2{dvi,pdf},ndex} pdftexi2dvi
+do rm /tmp/$DIST-$PKG/usr/bin/$i
+	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
+done
 rm -r /tmp/$DIST-$PKG/usr/man/man5/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;

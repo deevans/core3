@@ -1,6 +1,5 @@
-
 # CorePKG build script for ncurses.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -18,8 +17,7 @@
 DIST=deevans
 PKG=ncurses
 VERSION=5.9
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -48,21 +46,22 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-sed -i '1c#! /usr/bin/bash' configure
-# Add ticlib for tack (which was removed in 5.7):
-CFLAGS="-Os -march=$ARCH" \
-./configure \
-	--prefix=/usr \
+# Fixes build error with later Bash and ncurses 5.6-5.9:
+sed -i '38s/`g/$(g/' include/MKhashsize.sh
+sed -i '38s/`$/)/' include/MKhashsize.sh
+
+# Add ticlib for tack, removed in 5.7:
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
+	--prefix=/usr \
 	--sbindir=/usr/bin \
 	--with-shared \
 	--with-ticlib \
-	--without-ada \
-	--without-debug \
-	--disable-nls \
-	--build=$TARGET-$DIST-linux-gnu
+	--without-debug
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -74,21 +73,23 @@ then rm /tmp/$DIST-$PKG/usr/man/man1/reset.1
 	echo .so man1/tset.1 > /tmp/$DIST-$PKG/usr/man/man1/reset.1
 fi
 
-if test -L /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-then rm /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-	echo .so man1/adacurses-config.1 >\
-		/tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-fi
+#if test -L /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#then rm /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#	echo .so man1/adacurses-config.1 > \
+#		/tmp/$DIST-$PKG/usr/man/man1/adacurses.1
+#fi
+rm /tmp/$DIST-$PKG/usr/man/man1/adacurses{,-config}.1
 
 for i in captoinfo info{cmp,tocap} tic toe
 do mv /tmp/$DIST-$PKG/usr/man/man1/$i.1m /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
 
+# Should the 3x manuals be deleted?
+#find /tmp/$DIST-$PKG-doc/usr/man/ -type l -exec rm {} \;
+rm /tmp/$DIST-$PKG-doc/usr/man/man3/*.3x
+
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;
-# Remove symlinks (is it worth the .so man3/foo.3x entries?):
-# find /tmp/$DIST-$PKG-doc/usr/man/ -type l exec rm {} \;
-rm /tmp/$DIST-$PKG-doc/usr/man/man3/*.3x
 
 mkdir -p /tmp/$DIST-$PKG-terminfo/usr/share/
 mv /tmp/$DIST-$PKG/usr/share/terminfo/ /tmp/$DIST-$PKG-terminfo/usr/share/
@@ -123,11 +124,10 @@ mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/x/xterm \
 	/tmp/$DIST-$PKG/usr/share/terminfo/x/
 
 chmod a+x /tmp/$DIST-$PKG/usr/lib/*.so.5*
-
-# This is for /lib/ build compatibilty:
+# This was for preserving /lib/ compatibility, no longer needed:
 #mkdir /tmp/$DIST-$PKG/lib/
 #for i in lib{form,menu,ncurses,panel}
-#do
+#do 
 #	(cd /tmp/$DIST-$PKG/lib/
 #		ln -s ../usr/lib/$i.so.$VERSION $i.so.$VERSION
 #		ln -s ../usr/lib/$i.so.$VERSION $i.so.5
@@ -150,4 +150,4 @@ else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 	corepkg -c /tmp/$DIST-$PKG-terminfo/ && rm -r /tmp/$DIST-$PKG-terminfo/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

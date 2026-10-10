@@ -1,0 +1,21 @@
+PKG=mktemp$
+NAME=mktemp$
+DESC=safe /tmp/ file creation from shell scripts.$
+
+MAJOR=1.7$
+MINOR=1$
+
+SRC_URL=http://www.mktemp.org/mktemp/dist/$
+SRC_DATE=apr 25 2010$
+
+BIN_URL=http://oberon07.com/dee/Linux/$
+BIN_DATE=jun 19 2025$
+
+COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
+DEPENDS=$
+RELATED=coreutils$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

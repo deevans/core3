@@ -1,5 +1,5 @@
 # CorePKG build script for file.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=file
 VERSION=5.11
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -44,21 +43,23 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" \
-./configure \
+CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu \
+	--build=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
+	--mandir=/usr/man \
 	--prefix=/usr
-make || exit 6
+make -j 2 || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-rm /tmp/$DIST-$PKG/usr/lib/*.la
-
+# Why does it install a blank directory?
+#rmdir /tmp/$DIST-$PKG/usr/man/man5/
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
+
+find /tmp/$DIST-$PKG/ -name *.la -exec rm {} \;
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
@@ -74,4 +75,4 @@ else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

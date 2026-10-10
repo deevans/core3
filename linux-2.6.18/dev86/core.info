@@ -9,7 +9,7 @@ SRC_URL=https://github.com/ikundrak/dev86/$
 SRC_DATE=mar 13 2014$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=mar 19 2025$
+BIN_DATE=jun 19 2025$
 
 COMPILE=linux 2.6.18, glibc 2.3.6, gcc 4.0.4, binutils 2.16.1$
 DEPENDS=$

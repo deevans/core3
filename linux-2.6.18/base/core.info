@@ -6,10 +6,10 @@ MAJOR=1$
 MINOR=1$
 
 SRC_URL=https://oberon07.com/dee/software/linux/$
-SRC_DATE=mar 20 2025$
+SRC_DATE=jun 20 2025$
 
-BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=mar 20 2025$
+BIN_URL=https://oberon07.com/dee/software/linux/coredistro/$
+BIN_DATE=jun 20 2025$
 
 COMPILE=$
 DEPENDS=$

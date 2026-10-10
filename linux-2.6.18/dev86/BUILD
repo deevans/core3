@@ -1,5 +1,5 @@
 # CorePKG build script for bin86.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@
 DIST=deevans
 PKG=dev86
 VERSION=0.16.21
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -28,48 +28,39 @@ then echo "The core.info file is not present." 1>&2; exit 3
 fi
 
 if test -d /tmp/$DIST-$PKG/
-then rm -fr /tmp/$DIST-$PKG/
+then rm -r /tmp/$DIST-$PKG/
 fi
 
-if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+if test -d $PKG/
+then rm -fr $PKG/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf dev86-$VERSION.tar.bz2
+tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG || exit 5
 
-sed -i "/CFLAGS/ s/-O/-Os -march=$ARCH/" Makefile
-sed -i "/CFLAGS/ s/-O2/-Os -march=$ARCH/" makefile.in
+sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
+sed -i "/^CFLAGS/ s/-O /-Os -march=$ARCH /" Makefile
+sed -i "/^CFLAGS/ s/-O/-Os -march=$ARCH/" Makefile
+sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" makefile.in
+sed -i "/^CFLAGS/ s/-O/-Os -march=$ARCH/" bcc/Makefile
+sed -i "/^CCFLAGS/ s/-O/-Os -march=$ARCH/" libc/Make.defs
 CC=gcc make DIST=/tmp/$DIST-$PKG LOCALPREFIX=/usr \
-	MANDIR=/usr/man BINDIR=/usr/bin # LIBDIR=/usr/lib/bcc \
-	# install install-man || exit 6
+	BINDIR=/usr/bin LIBDIR=/usr/lib/bcc install || exit 6
+CC=gcc make DIST=/tmp/$DIST-$PKG LOCALPREFIX=/usr \
+	MANDIR=/usr/man install-man || exit 6
 
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-for i in as86{,_encap} 
-do cp as/$i /tmp/$DIST-$PKG/usr/bin/
+for i in {nm,size}86
+do rm /tmp/$DIST-$PKG/usr/bin/$i
 done
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-cp man/*.1 /tmp/$DIST-$PKG/usr/man/man1/
-echo .so man1/as86.1 > /tmp/$DIST-$PKG/usr/man/man1/as86_encap.1
-for i in {ld,objdump}86
-do cp ld/$i /tmp/$DIST-$PKG/usr/bin/
-done
-
-# See install{,-man} above if bcc and elks are installed:
-for i in bcc elks{,emu}
-do rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
-done
-
-# Supplementary manuals from Coredistro:
-cp ../*.1 /tmp/$DIST-$PKG/usr/man/man1/
-
-# Use symlinks instead:
 (cd /tmp/$DIST-$PKG/usr/bin/
-	ln -s objdump nm86
-	ln -s objdump size86
+	ln -s objdump86 nm86
+	ln -s objdump86 size86
 )
+mv /tmp/$DIST-$PKG/usr/lib/bcc/as86_encap /tmp/$DIST-$PKG/usr/bin/
+echo man1/as86.1 > /tmp/$DIST-$PKG/usr/man/man1/as86_encap.1
+cp ../*.1 /tmp/$DIST-$PKG/usr/man/man1/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

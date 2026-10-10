@@ -1,5 +1,5 @@
 # CorePKG build script for sysvinit.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,7 +17,7 @@
 DIST=deevans
 PKG=sysvinit
 VERSION=2.88dsf
-ARCH=pentium3
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -44,18 +44,12 @@ sed -i "/^CFLAGS/ s/-O2/-Os -march=$ARCH/" Makefile
 CC=gcc make || exit 6
 
 mkdir -m 755 -p /tmp/$DIST-$PKG/{s,usr/}bin/
-for i in halt last killall5 mesg runlevel
+for i in halt init last killall5 mesg runlevel shutdown sulogin utmpdump wall
 do cp $i /tmp/$DIST-$PKG/usr/bin/
 done
-for i in shutdown sulogin utmpdump wall
-do cp $i /tmp/$DIST-$PKG/usr/bin/
-done
-cp init /tmp/$DIST-$PKG/sbin/
-#(cd /tmp/$DIST-$PKG/sbin/
-# ln -s ../usr/bin/init init
-#)
-# bootlogd requires PTY support:
-#rm /tmp/$DIST-$PKG/usr/bin/{bootlogd,fstab-decode,mountpoint}
+(cd /tmp/$DIST-$PKG/sbin/
+ ln -s ../usr/bin/init init
+)
 
 (cd /tmp/$DIST-$PKG/usr/bin/
 	ln -s killall5 pidof
@@ -71,20 +65,21 @@ cp initreq.h /tmp/$DIST-$PKG/usr/include/
 cd ../man
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}
 cp *.1 /tmp/$DIST-$PKG/usr/man/man1/
+#cp ../../utmpdump.1 /tmp/$DIST-$PKG/usr/man/man1/
 cp *.5 /tmp/$DIST-$PKG/usr/man/man5/
 cp *.8 /tmp/$DIST-$PKG/usr/man/man8/
+
+cd ../
+
 rm /tmp/$DIST-$PKG/usr/man/man1/mountpoint.1
-rm /tmp/$DIST-$PKG/usr/man/man8/{bootlogd,fstab-decode}.8
-
+rm /tmp/$DIST-$PKG/usr/man/man8/bootlogd.8
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
-
-chmod g-w,o-rwx /tmp/$DIST-$PKG/sbin/*
 
 #find /tmp/$DIST-$PKG/ | xargs file | \
 #	grep -e "executable" -e "shared object" | \
 #	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded
 
-cd ../../
+cd ..
 cp core.info /tmp/$DIST-$PKG/
 if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG/

@@ -1,3 +1,4 @@
+
 # CorePKG build script for GNU readline.
 # Copyright 2010-2024 David Egan Evans
 #
@@ -17,8 +18,7 @@
 DIST=deevans
 PKG=readline
 VERSION=6.1
-ARCH=pentium3
-TARGET=i686
+ARCH=i686
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -44,12 +44,8 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
-
-for i in ../readline-patches/readline*-00?
-do patch -p0 <$i
-done
 
 CFLAGS="-Os -march=$ARCH" \
 ./configure \
@@ -59,7 +55,7 @@ CFLAGS="-Os -march=$ARCH" \
         --mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
-	--build=$TARGET-$DIST-linux-gnu
+	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 

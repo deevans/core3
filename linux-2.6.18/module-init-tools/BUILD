@@ -1,5 +1,5 @@
 # CorePKG build script for modutils.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -17,8 +17,7 @@
 DIST=deevans
 PKG=module-init-tools
 VERSION=3.12
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -35,39 +34,38 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA384.txt
-then sha384sum -c SHA384.txt || exit 4
+if test -f SHA1.txt
+then sha1sum -c SHA1.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-# A build failure with/since 3.2:
+# This resolves a build failure with/since 3.2:
 echo .so modprobe.conf.5 > modprobe.d.5
 
 CFLAGS="-Os -march=$ARCH" \
 ./configure \
+	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin
-#        --mandir=/usr/man
-# --disable-nls doesn't work but there's no i18n files either:
-#	--disable-nls
-# Why does this make files with this name, e.g. i386-deevans-linux-gnu-cmd
-#	--build=$TARGET-$DIST-linux-gnu \
-#	--host=$TARGET-$DIST-linux-gnu \
-#	--target=$TARGET-$DIST-linux-gnu 
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
+
+mv /tmp/$DIST-$PKG/usr/share/man/ /tmp/$DIST-$PKG/usr/
+rmdir /tmp/$DIST-$PKG/usr/share/
+
+# Core did not include .2 manuals:
+#rm -r /tmp/$DIST-$PKG/usr/man/man2/
+
+#echo .so man8/insmod.8 > /tmp/$DIST-$PKG/usr/man/man8/insmod_ksymoops_clean.8
+
+find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 mkdir /tmp/$DIST-$PKG/sbin/
 mv /tmp/$DIST-$PKG/usr/bin/insmod.static /tmp/$DIST-$PKG/sbin/insmod
 chmod 750 /tmp/$DIST-$PKG/sbin/*
-
-# Coredistro did not include .2 manuals (modutils-doc?):
-#rm -r /tmp/$DIST-$PKG/usr/man/man2/
-
-mv /tmp/$DIST-$PKG/usr/share/man/ /tmp/$DIST-$PKG/usr/
-rmdir /tmp/$DIST-$PKG/usr/share/
-find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

@@ -1,5 +1,5 @@
 # CorePKG build script for GNU less.
-# Copyright 2010-2024 David Egan Evans
+# Copyright 2010-2025 David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -11,14 +11,12 @@
 # FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# this program; if not, write to the Free Software Foundation, Inc., 59 Temple
-# Place, Suite 330, Boston, MA 02111-1307 USA
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
 PKG=less
 VERSION=443
-ARCH=pentium3
-TARGET=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -33,7 +31,7 @@ then rm -r /tmp/$DIST-$PKG/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
@@ -42,24 +40,15 @@ tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
-	--prefix=/usr \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
+	--host=$ARCH-$DIST-linux-gnu \
 	--libdir=/usr/lib \
-        --mandir=/usr/man \
-	--build=$TARGET-$DIST-linux-gnu \
-        --target=$TARGET-$DIST-linux-gnu
+	--mandir=/usr/man \
+	--prefix=/usr \
+	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
-#make install DESTDIR=/tmp/$DIST-$PKG/
-
-mkdir -p /tmp/$DIST-$PKG/usr/bin/
-cp less /tmp/$DIST-$PKG/usr/bin/
-
-cp lessecho lesskey /tmp/$DIST-$PKG/usr/bin/
-
-mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-cp less.nro /tmp/$DIST-$PKG/usr/man/man1/less.1
-cp lesskey.nro /tmp/$DIST-$PKG/usr/man/man1/lesskey.1
-cp lessecho.nro /tmp/$DIST-$PKG/usr/man/man1/lessecho.1
+make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
@@ -75,4 +64,4 @@ then echo $PKG has been installed to /tmp/$DIST-$PKG/
 else chown -R root: /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/
