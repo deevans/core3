@@ -1,17 +1,17 @@
-PKGs0="binutils glibc gcc bison flex m4 ncurses shadow bash"
-PKGs1=" bc bzip2 coreutils dev86 diffutils e2fsprogs file"
-PKGs2=" findutils gawk gmp grep groff gzip inetutils less"
-PKGs3=" lilo make man mktemp module-init-tools mpfr nano nasm net-tools"
-PKGs4=" patch pkg-config ppp procps-ng psmisc sed sysklogd sysvinit"
-PKGs5=" tack tar texinfo unzip util-linux-ng wget which zip linux"
+PKGs0="binutils glibc gcc bash bc bison bzip2 coreutils dev86 diffutils"
+PKGs1=" e2fsprogs file findutils flex gawk gmp grep groff gzip"
+PKGs2=" inetutils less lilo linux make man mktemp module-init-tools"
+PKGs3=" m4 mpfr mpc nano nasm ncurses net-tools patch pkg-config"
+PKGs4=" ppp procps-ng psmisc shadow sed sysklogd sysvinit"
+PKGs5=" tack tar texinfo unzip util-linux-ng wget which zip"
 
 function build {
 n=1 # Start exit at 2
 for i in $*
 do
 	(echo "==== $i ===="; cd $i
-	 sed -i '/^BIN_DATE/ cBIN_DATE=jul 20 2025$' *.info
-	 sed -i '/^COMPILE/ cCOMPILE=linux 3.10.108, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$' *.info
+	 sed -i '/^BIN_DATE/ cBIN_DATE=jul 29 2025$' *.info
+	 sed -i '/^COMPILE/ cCOMPILE=linux 3.10.108, glibc 2.23, gcc 5.5.0, binutils 2.26.1$' *.info
 		bash BUILD) \
 			|| n="$(expr $n + 1)" exit $n
 done

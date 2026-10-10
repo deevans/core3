@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=make
-VERSION=3.81
+VERSION=4.1
 ARCH=i486
 
 if test ! -w .
@@ -39,8 +39,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
@@ -48,10 +48,9 @@ cd $PKG-$VERSION || exit 5
 CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
 	--disable-nls \
-	--libdir=/usr/lib \
+	--infodir=/usr/info \
         --mandir=/usr/man \
 	--prefix=/usr \
-	--sbindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/

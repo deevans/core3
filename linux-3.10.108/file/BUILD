@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=file
-VERSION=5.11
+VERSION=5.26
 ARCH=i486
 
 if test ! -w .
@@ -40,7 +40,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \

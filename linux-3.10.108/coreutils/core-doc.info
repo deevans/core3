@@ -2,16 +2,16 @@ PKG=coreutils-doc$
 NAME=coreutils-doc$
 DESC=extra documentation for coreutils$
 
-MAJOR=8.13$
+MAJOR=8.32$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/textutils/$
-SRC_DATE=sep 8 2011$
+SRC_DATE=mar 5 2020$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=jul 20 2025$
+BIN_DATE=jul 29 2025$
 
-COMPILE=linux 3.10.108, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
+COMPILE=linux 3.10.108, glibc 2.23, gcc 5.5.0, binutils 2.26.1$
 DEPENDS=$
 RELATED=$
 

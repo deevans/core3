@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=ncurses
-VERSION=5.9
+VERSION=6.0
 ARCH=i486
 
 if test ! -w .
@@ -43,12 +43,12 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
-cd $PKG-$VERSION || exit 5
+tar xzf $PKG-$VERSION.tar.gz
+cd $PKG-$VERSION/ || exit 5
 
 # Fixes build error with later Bash and ncurses 5.6-5.9:
-sed -i '38s/`g/$(g/' include/MKhashsize.sh
-sed -i '38s/`$/)/' include/MKhashsize.sh
+#sed -i '38s/`g/$(g/' include/MKhashsize.sh
+#sed -i '38s/`$/)/' include/MKhashsize.sh
 
 # Add ticlib for tack, removed in 5.7:
 CFLAGS="-Os -march=$ARCH" ./configure \
@@ -73,13 +73,6 @@ then rm /tmp/$DIST-$PKG/usr/man/man1/reset.1
 	echo .so man1/tset.1 > /tmp/$DIST-$PKG/usr/man/man1/reset.1
 fi
 
-#if test -L /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-#then rm /tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-#	echo .so man1/adacurses-config.1 > \
-#		/tmp/$DIST-$PKG/usr/man/man1/adacurses.1
-#fi
-rm /tmp/$DIST-$PKG/usr/man/man1/adacurses{,-config}.1
-
 for i in captoinfo info{cmp,tocap} tic toe
 do mv /tmp/$DIST-$PKG/usr/man/man1/$i.1m /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
@@ -94,15 +87,13 @@ find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;
 mkdir -p /tmp/$DIST-$PKG-terminfo/usr/share/
 mv /tmp/$DIST-$PKG/usr/share/terminfo/ /tmp/$DIST-$PKG-terminfo/usr/share/
 
-mkdir -p /tmp/$DIST-$PKG/usr/share/terminfo/{a,d,l,r,v,x}
+mkdir -p /tmp/$DIST-$PKG/usr/share/terminfo/{a,l,r,v,x}
 
-mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/a/ansi \
+mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/a/ansi* \
 	/tmp/$DIST-$PKG/usr/share/terminfo/a/
-mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/d/dumb \
-	/tmp/$DIST-$PKG/usr/share/terminfo/d/
-mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/l/linux \
+mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/l/linux* \
 	/tmp/$DIST-$PKG/usr/share/terminfo/l/
-mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/r/rxvt \
+mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/r/rxvt* \
 	/tmp/$DIST-$PKG/usr/share/terminfo/r/
 mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/v/vt1{0{0,2},25} \
 	/tmp/$DIST-$PKG/usr/share/terminfo/v/
@@ -120,19 +111,17 @@ mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/v/vt5{10,2{0,5}} \
 	/tmp/$DIST-$PKG/usr/share/terminfo/v/
 mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/v/vt61 \
 	/tmp/$DIST-$PKG/usr/share/terminfo/v/
-mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/x/xterm \
+mv /tmp/$DIST-$PKG-terminfo/usr/share/terminfo/x/xterm* \
 	/tmp/$DIST-$PKG/usr/share/terminfo/x/
 
-chmod a+x /tmp/$DIST-$PKG/usr/lib/*.so.5*
-# This was for preserving /lib/ compatibility, no longer needed:
-#mkdir /tmp/$DIST-$PKG/lib/
-#for i in lib{form,menu,ncurses,panel}
-#do 
-#	(cd /tmp/$DIST-$PKG/lib/
-#		ln -s ../usr/lib/$i.so.$VERSION $i.so.$VERSION
-#		ln -s ../usr/lib/$i.so.$VERSION $i.so.5
-#	)
-#done
+# This was for preserving major version compatibility:
+for i in lib{form,menu,ncurses,panel,tic}
+do 
+	(cd /tmp/$DIST-$PKG/usr/lib/
+		ln -s $i.so.6 $i.so.5
+	)
+done
+chmod a+x /tmp/$DIST-$PKG/usr/lib/*.so.5
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

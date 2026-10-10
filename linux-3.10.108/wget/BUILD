@@ -1,5 +1,5 @@
 # CorePKG build script for wget.
-# Copyright 2010-2025 David Egan Evans
+# Copyright David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=wget
-VERSION=1.13.4
+VERSION=1.17.1
 ARCH=i486
 
 if test ! -w .
@@ -44,7 +44,7 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xjf $PKG-$VERSION.tar.bz2 || exit 5
+tar xzf $PKG-$VERSION.tar.gz || exit 5
 cd $PKG-$VERSION/ || exit 6
 
 # Are we getting to a point yet where TLS is a necessary dependency?

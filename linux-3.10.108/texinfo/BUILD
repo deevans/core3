@@ -1,5 +1,5 @@
 # CorePKG build script for texinfo.
-# Copyright 2010-2025 David Egan Evans
+# Copyright David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=texinfo
-VERSION=4.13
+VERSION=6.1
 ARCH=i486
 
 if test ! -w .
@@ -39,10 +39,10 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
-tar xzf $PKG-${VERSION}a.tar.gz
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
@@ -64,6 +64,8 @@ done
 rm -r /tmp/$DIST-$PKG/usr/man/man5/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+find /tmp/$DIST-$PKG/ -type f -name *.la -exec rm {} \;
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir

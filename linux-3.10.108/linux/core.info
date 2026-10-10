@@ -9,10 +9,10 @@ SRC_URL=http://kernel.org/pub/linux/kernel/v3.x/longterm/v3.10/$
 SRC_DATE=nov 5 2017$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=jul 20 2025$
+BIN_DATE=jul 29 2025$
 
-COMPILE=linux 3.10.108, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
-DEPENDS=$
+COMPILE=linux 3.10.108, glibc 2.23, gcc 5.5.0, binutils 2.26.1$
+DEPENDS=bc$
 RELATED=$
 
 INSTALL=$

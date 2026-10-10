@@ -1,18 +1,18 @@
 The following describes changes from Josh Devin's Core in ascending
 order. This file is influenced by Slackware.
 
-pkgs/core_less-443+1.cpk: upgraded.
+pkgs/core_less-481+1.cpk: upgraded.
   This required a change to /etc/man.conf for /usr/bin/. The more
   symlink is removed. It can be added to core_base, or the more from
   util-linux-ng can be used instead.
-pkgs/core_gzip-1.4+1.cpk: upgraded.
-pkgs/optional/core_doc_gzip-1.4+1.cpk: upgraded.
-pkgs/core_file-5.11+1.cpk: upgraded.
-pkgs/optional/file-doc-5.11+1.cpk: added.
-pkgs/core_bash-4.2+1.cpk: upgraded.
+pkgs/core_gzip-1.8+1.cpk: upgraded.
+pkgs/optional/core_doc_gzip-1.8+1.cpk: upgraded.
+pkgs/core_file-5.26+1.cpk: upgraded.
+pkgs/optional/file-doc-5.26+1.cpk: added.
+pkgs/core_bash-4.3+1.cpk: upgraded.
   Move to /usr/bin/. Why do spectre/meltdown patches cause all 3.x and
   most 4.x Bash versions to malfunction?
-pkgs/optional/core_doc_bash-4.2+1.cpk: upgraded.
+pkgs/optional/core_doc_bash-4.3+1.cpk: upgraded.
 pkgs/core_lilo-24.2+1.cpk: upgraded.
   24.2 requires dev86 0.16.14 or better.
 pkgs/dev86-0.16.21+1.cpk: added.
@@ -30,15 +30,15 @@ pkgs/core_grep-2.9+1.cpk: upgraded.
 pkgs/optional/core_doc_grep-2.9+1.cpk: upgraded.
 pkgs/core_gawk-3.1.8+1.cpk: upgraded.
 pkgs/optional/core_doc_gawk-3.1.8+1.cpk: upgraded.
-pkgs/core_findutils-4.4.2+1.cpk: upgraded.
-pkgs/optional/core_doc_findutils-4.4.2+1.cpk: upgraded.
-pkgs/core_diffutils-3.2+1.cpk: upgraded.
-pkgs/optional/core_doc_diffutils-3.2+1.cpk: upgraded.
-pkgs/core_make-3.81+1.cpk: upgraded.
-pkgs/optional/core_doc_make-3.81+1.cpk: upgraded.
-pkgs/core_pkgs/core_nano-2.2.6+1.cpk: upgraded.
-pkgs/optional/core_doc_nano-2.2.6+1.cpk: upgraded.
-pkgs/optional/nano-rc-2.2.6+1.cpk: added.
+pkgs/core_findutils-4.6.0+1.cpk: upgraded.
+pkgs/optional/core_doc_findutils-4.6.0+1.cpk: upgraded.
+pkgs/core_diffutils-3.11+1.cpk: upgraded.
+pkgs/optional/core_doc_diffutils-3.11+1.cpk: upgraded.
+pkgs/core_make-4.1+1.cpk: upgraded.
+pkgs/optional/core_doc_make-4.1+1.cpk: upgraded.
+pkgs/core_pkgs/core_nano-2.5.3+1.cpk: upgraded.
+pkgs/optional/core_doc_nano-2.5.3+1.cpk: upgraded.
+pkgs/optional/nano-rc-2.5.3+1.cpk: added.
 pkgs/core_nasm-2.09.10+1.cpk: upgraded.
 pkgs/core_net-tools-1.60+1.cpk: rebuilt.
 pkgs/inetutils-1.8+cpk: added.
@@ -48,22 +48,22 @@ pkgs/optional/inetutils-doc-1.8+cpk: added.
   for programs that are not included.
 pkgs/core_netkit-0.17+1.cpk: removed.
 pkgs/core_patch-2.6.1+1.cpk: upgraded.
-pkgs/core_ppp-2.4.5+1.cpk: upgraded.
-pkgs/core_psmisc-22.14+1.cpk: upgraded.
-pkgs/core_sed-4.2.1+1.cpk: upgraded.
-pkgs/optional/core_doc_sed-4.2.1+1.cpk: upgraded.
+pkgs/core_ppp-2.4.7+1.cpk: upgraded.
+pkgs/core_psmisc-22.21+1.cpk: upgraded.
+pkgs/core_sed-4.2.2+1.cpk: upgraded.
+pkgs/optional/core_doc_sed-4.2.2+1.cpk: upgraded.
 pkgs/core_sysklogd-1.5+1.cpk: upgraded.
-pkgs/core_tar-1.26+1.cpk: upgraded.
-pkgs/optional/core_tar-1.26+1.cpk: upgraded.
-pkgs/core_m4-1.4.15+1.cpk: upgraded.
-pkgs/optional/core_doc_m4-1.4.15+1.cpk: upgraded.
-pkgs/core_texinfo-4.13a+1.cpk: upgraded.
-pkgs/optional/core_doc_texinfo-4.13a+1.cpk: upgraded.
+pkgs/core_tar-1.28+1.cpk: upgraded.
+pkgs/optional/core_tar-1.28+1.cpk: upgraded.
+pkgs/core_m4-1.4.17+1.cpk: upgraded.
+pkgs/optional/core_doc_m4-1.4.17+1.cpk: upgraded.
+pkgs/core_texinfo-6.1+1.cpk: upgraded.
+pkgs/optional/core_doc_texinfo-6.1+1.cpk: upgraded.
 pkgs/mktemp-1.7+1.cpk: added.
   Use this from OpenBSD instead of from coreutils.
-pkgs/coreutils-8.13+1.cpk: added.
+pkgs/coreutils-8.32+1.cpk: added.
   coreutils replaces fileutils, sh-utils, and textutils.
-pkgs/optional/coreutils-doc-8.13+1.cpk: added.
+pkgs/optional/coreutils-doc-8.32+1.cpk: added.
 pkgs/core_fileutils-4.1+1.cpk: removed.
 pkgs/optional/core_doc_fileutils-4.1+1.cpk: removed.
 pkgs/core_sh-utils-2.0+1.cpk: removed.
@@ -71,29 +71,31 @@ pkgs/optional/core_doc_sh-utils-2.0+1.cpk: removed.
 pkgs/core_textutils-2.1+1.cpk: removed.
 pkgs/optional/core_doc_textutils-2.1+1.cpk: removed.
 pkgs/core_unzip-6.0+1.cpk: upgraded.
-pkgs/core_e2fsprogs-1.41.14+1.cpk: upgraded.
-  This is the first package to use pkgconfig (when installing the shared
-  libraries needed by util-linux-ng). This becomes a necessary 
-  dependency in the future, as well as a replacement to GNU libtool.
-  Devin's Core explicitly did not include .la files.
+pkgs/core_e2fsprogs-1.42.13+1.cpk: upgraded.
+  1.41 is the first package to use pkgconfig (when installing the shared
+  libraries needed by util-linux-ng). This is a necessary dependency in
+  the future, as well as a replacement to GNU libtool. Devin's Core
+  explicitly did not include .la files. Ext4 support is added.
 
   uuidd and libblk are removed, as they are provided by util-linux-ng.
-pkgs/optional/e2fsprogs-doc-1.41.14+1.cpk: added.
-pkgs/util-linux-ng-2.17.2+1.cpk: added.
+pkgs/optional/e2fsprogs-doc-1.42.13+1.cpk: added.
+pkgs/util-linux-ng-2.28.2+1.cpk: added.
   Add util-linux more, which is POSIX compliant. This means no more
   symlink to less, either in the core_less or core_base packages.
-pkgs/util-linux-ng-doc-2.17.2+1.cpk: added.
+
+  The util-linux name was restored after it became clear the the NG
+  fork would succeed util-linux. Leaving the package name with NG.
+pkgs/util-linux-ng-doc-2.28.2+1.cpk: added.
 pkgs/core_util-linux-2.11w+1.cpk: removed.
   2.12r was the last version before the util-linux-ng fork.
 pkgs/pkg-config-0.29.1+1.cpk: added.
   This is a dependency of e2fsprogs when upgrading util-linux-ng.
-pkgs/pkgs/pkgs/core_wget-1.13.4+1.cpk: upgraded.
-pkgs/optional/core_doc_wget-1.13.4+1.cpk: upgraded.
+pkgs/pkgs/pkgs/core_wget-1.17.1+1.cpk: upgraded.
+pkgs/optional/core_doc_wget-1.17.1+1.cpk: upgraded.
 core_which-2.21+1.cpk: upgraded.
 pkgs/optional/core_doc_which-2.21+1.cpk: upgraded.
   This fixes the dir file registration that was broken in earlier
-  editions, but the man page is a complete duplicate anyway. With Bash
-  4.2, this will depend on readline.
+  editions, but the man page is a complete duplicate anyway.
 core_zip-3.0+1.cpk: upgraded.
 pkgs/core_bzip2-1.0.6+1.cpk: upgraded.
 pkgs/core_flex-2.5.35+1.cpk: upgraded.
@@ -108,25 +110,25 @@ pkgs/optional/flex-doc-2.5.35+1.cpk: added.
 pkgs/copkgs/tack-1.08+1.cpk: added.
   This was removed from ncurses 5.7, and this version is added here to
   preserve compatibility with Devin's Core.
-pkgs/core_ncurses-5.9+1.cpk: upgraded.
+pkgs/core_ncurses-6.0+1.cpk: upgraded.
   Libraries are moved to /usr/lib/.
-pkgs/optional/core_doc_ncurses-5.9+1.cpk: upgraded.
-pkgs/optional/core_ncurses-terminfo-5.9+1.cpk: upgraded.
-pkgs/core_perl-5.12.5+1.cpk: upgraded.
-pkgs/optional/core_doc_perl-5.12.5+1.cpk: upgraded.
-pkgs/core_shadow-4.1.3.4.1+1.cpk: upgraded.
+pkgs/optional/core_doc_ncurses-6.0+1.cpk: upgraded.
+pkgs/optional/core_ncurses-terminfo-6.0+1.cpk: upgraded.
+pkgs/core_perl-5.22.2+1.cpk: upgraded.
+pkgs/optional/core_doc_perl-5.22.2+1.cpk: upgraded.
+pkgs/core_shadow-4.4.1+1.cpk: upgraded.
   Going from 4.0 to 4.1 doubled the package size.
 pkgs/core_sysvinit-2.88+1.cpk: upgraded.
   It is necessary to change /etc/inittab references from /sbin. utmpdump
   now has a provided man page.
-pkgs/core_bison-2.4.3+1.cpk: upgraded.
-pkgs/optional/core_doc_bison-2.4.3+1.cpk: upgraded.
+pkgs/core_bison-3.0.5+1.cpk: upgraded.
+pkgs/optional/core_doc_bison-3.0.5+1.cpk: upgraded.
 pkgs/core_man-1.6g+1.cpk: upgraded.
   This is the last version of man. We'll stay here awhile, but will
   ultimately move to man-db. Some adjustments to man.conf have occured
   with changes elsewhere, mainly regarding paths.
-pkgs/core_groff-1.21+1.cpk: upgraded.
-pkgs/optional/core_doc_groff-1.21+1.cpk: upgraded.
+pkgs/core_groff-1.22.3+1.cpk: upgraded.
+pkgs/optional/core_doc_groff-1.22.3+1.cpk: upgraded.
 pkgs/procps-ng-3.3.0+1.cpk: added.
   procps-ng replaces procps.
 pkgs/core_procps-3.0.4+1.cpk: removed.
@@ -134,17 +136,15 @@ pkgs/module-init-tools-3.16+1.cpk: added.
   This version resolved several build issues over many releases. It's
   the last version before the switch to kmod.
 pkgs/core_modutils-2.4.21+1.cpk: removed.
-pkgs/core_gcc-4.4.7+1.cpk: upgraded.
-pkgs/optional/core_doc_gcc-4.4.7+1.cpk: upgraded.
-pkgs/mpfr-3.1.4+1.cpk: added.
-  A dependency of GCC.
-pkgs/optional/mpfr-doc-3.1.4+1.cpk: added.
-pkgs/gmp-6.1.0+1.cpk: added.
-  A dependency of GCC.
-pkgs/optional/gmp-doc-6.1.0+1.cpk: added.
-pkgs/core_glibc-2.11.1+1.cpk: upgraded.
-  NPTL replaces pthreads. The /usr/sbin/ directory is removed and /usr/bin/
-  normalized for dynamic shared objects.
+pkgs/core_glibc-2.23+1.cpk: upgraded.
+  NPTL replaces pthreads for Linux 2.4.
+
+  The /usr/sbin/ directory is removed and /usr/bin/ normalized for dynamic
+  shared objects. /sbin/ is repurposed for its original Sun-era intent
+  to be for statically compiled programs (though that was for the boot
+  process), and may be moved to /usr/ when moving glibc libraries there,
+  completing the /usr/ merge, or removed entirely (with an /sbin/
+  symlink to /usr/bin/) for compatibilty.
 
   Instead of a generic [info manual] reference, there is a singular info
   manual to install (even though there are several files) to the dir file,
@@ -156,9 +156,24 @@ pkgs/core_glibc-2.11.1+1.cpk: upgraded.
 
   Version 2.7 had issues in one place with -Os, so '-g -O2' was
   used for this build.
-pkgs/optional/core_doc_glibc-2.11.1+1.cpk: upgraded.
-pkgs/optional/core_glibc-i18n-2.11.1+1.cpk: upgraded.
-pkgs/core_binutils-2.19.1+1.cpk: upgraded.
+
+  tzcode and tzdata are now separate sources, but installed along with
+  the glibc package. right and posix are now symlinks to zoneinfo-leaps
+  and zoneinfo respectively.
+pkgs/optional/core_doc_glibc-2.23.1+1.cpk: upgraded.
+pkgs/optional/core_glibc-i18n-2.23+1.cpk: upgraded.
+pkgs/core_gcc-5.5.0+1.cpk: upgraded.
+  Some man pages are missing and needs to be added.
+pkgs/optional/core_doc_gcc-5.5.0+1.cpk: upgraded.
+pkgs/mpc-1.0.3+1.cpk: added.
+  This is a dependency of GCC 5.
+pkgs/mpfr-3.1.4+1.cpk: added.
+  A dependency of GCC 4.4.
+pkgs/optional/mpfr-doc-3.1.4+1.cpk: added.
+pkgs/gmp-6.1.0+1.cpk: added.
+  A dependency of GCC 4.4.
+pkgs/optional/gmp-doc-6.1.0+1.cpk: added.
+pkgs/core_binutils-2.20.1+1.cpk: upgraded.
   Manual pages and info manuals are uncompressed in Josh Devan's Core.
   Switch to Bzip2 compression.
 
@@ -167,7 +182,7 @@ pkgs/core_binutils-2.19.1+1.cpk: upgraded.
   to binary stripping of debug and related symbols. Optimizing is for size,
   e.g. -Os: storage is a big deal for small systems. LFS suggested
   CC="gcc -s".
-pkgs/optional/core_doc_binutils-2.19.1+1.cpk: upgraded.
+pkgs/optional/core_doc_binutils-2.20.1+1.cpk: upgraded.
 pkgs/base/core_base-1+1.cpk: added.
   Move to base/ subdirectory to facilitate upgrade based installations,
   and to avoid clobbering existing installs by accident.
@@ -233,7 +248,6 @@ pkgs/linux-3.10.108+1.cpk: added.
   devices of Devin's Core. The sys file system is added as part of
   Linux 2.6. Udev is not yet used.
 pkgs/bc-1.06.95+1.cpk: added.
-  This is now a dependency of the kernel build process.
 pkgs/optional/bc-doc-1.06.95+1.cpk: added.
 boot/config: removed.
 boot/System.map: removed.

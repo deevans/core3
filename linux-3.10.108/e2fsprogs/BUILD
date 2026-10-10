@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=e2fsprogs
-VERSION=1.41.14
+VERSION=1.42.13
 ARCH=i486
 TARGET=i486
 
@@ -40,12 +40,10 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-# disable-tls on Linux 2.4 but not 2.6:
 CC=gcc CFLAGS="-Os -march=$ARCH" ./configure \
 	--bindir=/usr/bin \
 	--build=$TARGET-$DIST-linux-gnu \
 	--disable-e2initrd_helper \
-	--disable-findfs \
 	--disable-fsck \
 	--disable-libblkid \
 	--disable-libuuid \
@@ -66,13 +64,12 @@ make install-libs DESTDIR=/tmp/$DIST-$PKG/
 cp /tmp/$DIST-$PKG/etc/mke2fs.conf ../mke2fs.conf.$VERSION
 rm -r /tmp/$DIST-$PKG/etc/
 
-# Remove linked file names and replace with .so reference files:
 for i in mkfs.ext{2,3,4{,dev}}
 do rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
-#	echo .so man8/mke2fs.8 > /tmp/$DIST-$PKG/usr/man/man8/$i.8
+	echo .so man8/mke2fs.8 > /tmp/$DIST-$PKG/usr/man/man8/$i.8
 	(cd /tmp/$DIST-$PKG/usr/bin/
 		rm $i
-#		ln -s mke2fs $i
+		ln -s mke2fs $i
 	)
 done
 for i in fsck.ext{2,3,4{,dev}}
@@ -90,6 +87,10 @@ do
 		ln -s e2label $i
 	)
 done
+
+rm /tmp/$DIST-$PKG/usr/man/man5/ext{2,3}.5
+echo .so man5/ext4.5 > /tmp/$DIST-$PKG/usr/man/man5/ext2.5
+echo .so man5/ext4.5 > /tmp/$DIST-$PKG/usr/man/man5/ext3.5
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

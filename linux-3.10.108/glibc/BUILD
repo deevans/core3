@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=glibc
-VERSION=2.11.1
+VERSION=2.23
 ARCH=i486
 
 if test ! -w .
@@ -46,40 +46,32 @@ fi
 if test -d $PKG-build/
 then rm -fr $PKG-build/
 fi
+if test -d tz-build/
+then rm -fr tz-build/
+fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
-#<*.patch patch -p0
-
-#cd $PKG-$VERSION || exit 5
-#tar xjf ../$PKG-libidn-$VERSION.tar.bz2
-#cd timezone
-#tar xjf ../../tzdata*.tar.bz2
-#chmod 755 yearistype.sh
-#tar xjf ../../tzcode*.tar.bz2
-#sed -i 's:/usr/local:$(pwd):g' Makefile
-#sed -i '/^cc/ s/cc$/gcc/' Makefile
-#sed -i '/^GCC_DEBUG_FLAGS/ s/O3/Os/' Makefile
-#make
-#make install DESTDIR=/tmp/$DIST-$PKG/
-#(cd /tmp/$DIST-$PKG/usr/share/zoneinfo/
-#ln -s /usr/share/zoneinfo posix
-#ln -s /usr/share/zoneinfo/zoneinfo-leaps right
-#rm -f localtime && ln -sf /etc/localtime .
-#)
-#cd ../../
+sed -i 's:@BASH@:/bin/bash:' $PKG-$VERSION/elf/ldd.bash.in
 
 mkdir $PKG-build/
-cd $PKG-build
+cd $PKG-build/
 
-# stat.h changes in glibc-2.7 make -Os unusable:
-CFLAGS="-g -O2 -march=$ARCH" ../$PKG-$VERSION/configure \
+echo "CFLAGS += -march=i486 -fomit-frame-pointer -Os -pipe" > configparms
+
+# stat.h changes in glibc-2.7 make -Os unusable.
+# posix_fallocate func issue resolved by omit-frame-pointer:
+#CFLAGS="-Os -march=$ARCH -fomit-frame-pointer" \
+../$PKG-$VERSION/configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-profile \
-	--enable-kernel=2.6.27 \
+	--disable-nls \
+	--disable-werror \
 	--enable-add-ons \
+	--enable-kernel=3.10 \
+	--enable-obsolete-rpc \
 	--host=$ARCH-$DIST-linux-gnu \
 	--infodir=/usr/info \
 	--mandir=/usr/man \
@@ -89,17 +81,36 @@ CFLAGS="-g -O2 -march=$ARCH" ../$PKG-$VERSION/configure \
 	--without-selinux
 
 make || exit 6
-make install install_root=/tmp/$DIST-$PKG/
+#make install install_root=/tmp/$DIST-$PKG/
+make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Does --sbindir fix this?
-#mv /tmp/$DIST-$PKG/usr/sbin/* /tmp/$DIST-$PKG/usr/bin/
-#rmdir /tmp/$DIST-$PKG/usr/sbin/
+# Don't keep rpc or ld cache file:
+rm -r /tmp/$DIST-$PKG/etc/
+
+# make localdata/install-locales install_root=/tmp/$DIST-$PKG/i18n/
+# Until --disable-nls actually works:
+if test -d /tmp/$DIST-$PKG/usr/share/locale/
+then rm -r /tmp/$DIST-$PKG/usr/share/locale/
+fi
+
 chmod o-rwx /tmp/$DIST-$PKG/sbin/*
 
-rm -r /tmp/$DIST-$PKG/etc/
-rm -r /tmp/$DIST-$PKG/usr/share/locale/
 # glibcbug was removed in 2.3.4:
 rm /tmp/$DIST-$PKG/usr/bin/xtrace
+
+ZONEINFO=/tmp/$DIST-$PKG/usr/share/zoneinfo
+mkdir -p $ZONEINFO/{posix,right}
+(cd ../glibc-$VERSION/timezone
+for tz in etcetera {north,south}america europe africa antarctica \
+	{austral,}asia backward pacificnew systemv
+do
+	zic -L /dev/null -d $ZONEINFO -y "bash yearistype.sh" $tz
+	zic -L /dev/null -d $ZONEINFO/posix -y "bash yearistype.sh" $tz
+	zic -L leapseconds -d $ZONEINFO/right -y "bash yearistype.sh" $tz
+done
+)
+unset ZONEINFO
+cd ../glibc-build/
 
 # For some reason, man pages were not installed since Glibc 2.3:
 mkdir -p /tmp/$DIST-$PKG/usr/man/man{1,5,8}/
@@ -122,6 +133,9 @@ mkdir -p /tmp/$DIST-$PKG-i18n/usr/{lib,share}/
 mv /tmp/$DIST-$PKG/usr/lib/gconv/ /tmp/$DIST-$PKG-i18n/usr/lib/
 mv /tmp/$DIST-$PKG/usr/share/i18n/ /tmp/$DIST-$PKG-i18n/usr/share/
 
+#mv /tmp/$DIST-$PKG/etc/zoneinfo/ /tmp/$DIST-$PKG/usr/share/
+#mv /tmp/$DIST-$PKG/etc/zoneinfo-leaps/ /tmp/$DIST-$PKG/usr/share/
+
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \
 	grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2>/dev/null
@@ -138,10 +152,10 @@ if test $(id -u) -ne 0
 then echo $PKG has been installed to /tmp/$DIST-$PKG{,-doc,-i18n}/
 	echo Before packaging: chown -R root: /tmp/$DIST-$PKG{,-doc,-i18n}/
 else chown -R root: /tmp/$DIST-$PKG{,-doc,-i18n}/
-	chmod u+s /tmp/$DIST-$PKG/usr/libexec/pt_chown
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 	corepkg -c /tmp/$DIST-$PKG-i18n/ && rm -r /tmp/$DIST-$PKG-i18n/
 fi
 rm -fr $PKG-$VERSION/
 rm -fr $PKG-build/
+rm -fr tz-build/

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=bison
-VERSION=2.4.3
+VERSION=3.0.5
 ARCH=i486
 
 if test ! -w .
@@ -43,7 +43,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" ./configure \
@@ -56,6 +56,8 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
+
+rm -r /tmp/$DIST-$PKG/usr/share/doc/
 
 #echo .so man1/bison.1 > /tmp/$DIST-$PKG/usr/man/man1/yacc.1
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;

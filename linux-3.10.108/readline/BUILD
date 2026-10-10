@@ -18,7 +18,7 @@
 DIST=deevans
 PKG=readline
 VERSION=6.1
-ARCH=i686
+ARCH=i486
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2
@@ -39,7 +39,7 @@ then rm -r /tmp/$DIST-$PKG-doc/
 fi
 
 if test -d $PKG-$VERSION/
-then rm -r $PKG-$VERSION/
+then rm -fr $PKG-$VERSION/
 fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
@@ -49,13 +49,13 @@ cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" \
 ./configure \
+	--build=$ARCH-$DIST-linux-gnu \
 	--bindir=/usr/bin \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
         --mandir=/usr/man \
 	--prefix=/usr \
-	--sbindir=/usr/bin \
-	--build=$ARCH-$DIST-linux-gnu
+	--sbindir=/usr/bin
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
@@ -87,4 +87,4 @@ else chown -R root: /tmp/$DIST-$PKG{,-doc}/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -fr $PKG-$VERSION/

@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=groff
-VERSION=1.21
+VERSION=1.22.3
 ARCH=i486
 
 if test ! -w .
@@ -39,8 +39,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5

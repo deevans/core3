@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=perl
-VERSION=5.12.5
+VERSION=5.22.2
 ARCH=i486
 
 if test ! -w .
@@ -50,7 +50,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 6
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 7
 
 ./Configure \
@@ -60,7 +60,7 @@ cd $PKG-$VERSION || exit 7
 	-Dinstallprefix=/tmp/$DIST-$PKG/usr \
 	-Uinstallusrbinperl \
 	-Darchname=$ARCH-linux \
-	-Dinc_version_list='5.12.5' \
+	-Dinc_version_list='5.22.2' \
 	-Doptimize="-Os -march=$ARCH"
 make || exit 8
 make test #|| exit 9
@@ -70,6 +70,7 @@ for i in perl{bug,thanks}
 do rm /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
+rm /tmp/$DIST-$PKG/usr/bin/perl${VERSION}
 
 for i in CHANGE{S,LOG} ChangeLog Changes ReadMe.txt README TODO
 do find /tmp/$DIST-$PKG/ -name $i -exec rm {} \;
@@ -78,12 +79,6 @@ for i in ChangeLog.* Changes.*
 do find /tmp/$DIST-$PKG/ -name $i -exec rm {} \;
 done
 rm /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/Encode/README.e2x
-
-# Remove links:
-rm /tmp/$DIST-$PKG/usr/bin/perl${VERSION}
-for i in pstruct s2p
-do rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
-done
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
@@ -111,21 +106,18 @@ mv /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/*.pod \
 	/tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 
 mkdir /tmp/$DIST-$PKG/usr/man/man1/
-for i in a2p c2ph config_data corelist cpan* dprofpp enc2xs find2perl
+for i in c2ph corelist cpan* enc{2xs,guess} h2{ph,xs} json_pp instmodsh
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in h2{ph,xs} instmodsh libnetcfg perl{,doc,ivp} piconv pl2pm
+for i in libnetcfg perl{,doc,ivp} piconv pl2pm pod{2*,checker,select}
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in pod{2*,checker,select} prove psed ptar{,diff} shasum splain xsubpp
+for i in prove pstruct ptar{,diff,grep} shasum splain xsubpp zipdetails
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-mv /tmp/$DIST-$PKG-doc/usr/man/man1/cpan{2dist,p}.1 \
-	/tmp/$DIST-$PKG/usr/man/man1/
 
-# See the above deletion of links:
-echo .so man1/c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
-echo .so man1/psed.1 > /tmp/$DIST-$PKG/usr/man/man1/s2p
+rm /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
+echo .so c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;

@@ -1,5 +1,5 @@
 # CorePKG build script for psmisc.
-# Copyright 2010-2025 David Egan Evans
+# Copyright David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=psmisc
-VERSION=22.14
+VERSION=22.21
 ARCH=i486
 
 if test ! -w .
@@ -37,7 +37,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 ./configure \

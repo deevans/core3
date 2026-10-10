@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=m4
-VERSION=1.4.15
+VERSION=1.4.17
 ARCH=i486
 
 if test ! -w .
@@ -40,23 +40,26 @@ fi
 if test -d $PKG-$VERSION/
 then rm -fr $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+# Fixes 1.4.17 update-copyright test:
+patch -p0 <../perlfix.patch
+
+CFLAGS="-Os -march=$ARCH" \
+./configure \
 	--build=$ARCH-$DIST-linux-gnu \
-	--disable-nls \
 	--prefix=/usr
 make || exit 6
-make check
+make check || exit 7
 
 mkdir -p /tmp/$DIST-$PKG/usr/bin/
 cp src/$PKG /tmp/$DIST-$PKG/usr/bin/
 mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-cp ../m4.1 /tmp/$DIST-$PKG/usr/man/man1/
+cp doc/m4.1 /tmp/$DIST-$PKG/usr/man/man1/
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/info/

@@ -1,5 +1,5 @@
 # CorePKG build script for util-linux.
-# Copyright 2010-2025 David Egan Evans
+# Copyright David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -14,8 +14,8 @@
 # this program; if not, see <https://www.gnu.org/licenses/>.
 
 DIST=deevans
-PKG=util-linux-ng
-VERSION=2.17.2
+PKG=util-linux
+VERSION=2.28.2
 ARCH=i486
 
 if test ! -w .
@@ -36,33 +36,41 @@ if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
 
-tar xjf $PKG-$VERSION.tar.bz2 || exit 4
+tar xzf $PKG-$VERSION.tar.gz || exit 4
 cd $PKG-$VERSION/ || exit 5
 
-# With rdev, look at ramsize, vidmode, and rootflags too (remove with i586):
 CC=gcc CFLAGS="-Os -march=$ARCH" \
 ./configure \
 	--bindir=/usr/bin \
 	--disable-bfs \
+	--disable-chfn-chsh \
 	--disable-ipcrm \
 	--disable-ipcs \
+	--disable-kill \
+	--disable-last \
 	--disable-logger \
 	--disable-login \
-	--disable-mkfs \
+	--disable-mesg \
 	--disable-nologin \
 	--disable-nls \
 	--disable-pg \
 	--disable-pivot-root \
+	--disable-pylibmount \
 	--disable-raw \
 	--disable-rename \
-	--disable-scriptutils \
+	--disable-runuser \
+	--disable-setpriv \
+	--disable-su \
+	--disable-sulogin \
 	--disable-ul \
-	--disable-hexdump \
-	--enable-rdev \
+	--disable-utmpdump \
+	--disable-wall \
 	--infodir=/usr/info \
 	--libdir=/usr/lib \
 	--mandir=/usr/man \
-	--prefix=/usr
+	--prefix=/usr \
+	--without-systemd \
+	--without-systemdsystemunitdir
 
 make -j 3 || exit 7
 
@@ -70,16 +78,12 @@ make -j 3 || exit 7
 make install sbindir=/usr/bin usrsbin_execdir=/usr/bin \
 	DESTDIR=/tmp/$DIST-$PKG
 
-# These were not part of Core:
-for i in flock hexdump ipc{mk,s,rm} lo{gger,ok} namei
+# These were not part of Core (or are related, e.g. ipcmk):
+for i in flock hexdump ipcmk look lsipc namei rev setsid
 do rm /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
 done
-for i in pg re{v,adprofile} setsid ul
-do rm /tmp/$DIST-$PKG/usr/bin/$i
-	rm /tmp/$DIST-$PKG/usr/man/man1/$i.1
-done
-for i in blockdev ctrlaltdel isosize mkfs mkfs.bfs sfdisk
+for i in blockdev ctrlaltdel isosize mkfs sfdisk
 do rm /tmp/$DIST-$PKG/usr/bin/$i
 	rm /tmp/$DIST-$PKG/usr/man/man8/$i.8
 done
@@ -100,9 +104,11 @@ bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
 mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
-mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
-rm /tmp/$DIST-$PKG-doc/usr/info/dir
-bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*.info
+
+# For the IPC info manual:
+#mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
+#rm /tmp/$DIST-$PKG-doc/usr/info/dir
+#bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*.info
 
 rm /tmp/$DIST-$PKG/usr/lib/*.la
 

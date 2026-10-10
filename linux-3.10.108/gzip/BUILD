@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gzip
-VERSION=1.4
+VERSION=1.8
 ARCH=i486
 
 if test ! -w .

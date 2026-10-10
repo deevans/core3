@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=nano
-VERSION=2.2.6
+VERSION=2.5.3
 ARCH=i486
 
 if test ! -w .
@@ -46,8 +46,8 @@ fi
 if test -d $PKG-$VERSION/
 then rm -r $PKG-$VERSION/
 fi
-if test -f SHA1.txt
-then sha1sum -c SHA1.txt || exit 4
+if test -f SHA384.txt
+then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
@@ -71,9 +71,10 @@ mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 
-rm -r /tmp/$DIST-$PKG/usr/share/$PKG/man-html/
-mkdir -p /tmp/$DIST-$PKG-rc/usr/share/
-mv /tmp/$DIST-$PKG/usr/share/$PKG/ /tmp/$DIST-$PKG-rc/usr/share/
+rm -r /tmp/$DIST-$PKG/usr/share/doc/
+# Move RC files to separate package:
+mkdir -p /tmp/$DIST-$PKG-rc/usr/
+mv /tmp/$DIST-$PKG/usr/share/ /tmp/$DIST-$PKG-rc/usr/
 
 find /tmp/$DIST-$PKG/ | xargs file | \
 	grep -e "executable" -e "shared object" | \

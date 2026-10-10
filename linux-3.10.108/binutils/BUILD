@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=binutils
-VERSION=2.20.1
+VERSION=2.26.1
 ARCH=i486
 
 if test ! -w .
@@ -56,6 +56,7 @@ mkdir $PKG-build && cd $PKG-build || exit 5
 CC=gcc CFLAGS="-Os -march=$ARCH" \
 ../$PKG-$VERSION/configure \
 	--disable-nls \
+	--disable-werror \
 	--enable-shared \
 	--infodir=/usr/info \
 	--mandir=/usr/man \

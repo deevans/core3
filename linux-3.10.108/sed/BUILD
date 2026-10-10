@@ -1,5 +1,5 @@
 # CorePKG build script for GNU sed.
-# Copyright 2010-2025 David Egan Evans
+# Copyright David Egan Evans
 #
 # This program is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free Software
@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sed
-VERSION=4.2.1
+VERSION=4.2.2
 ARCH=i486
 
 if test ! -w .

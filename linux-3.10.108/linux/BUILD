@@ -58,7 +58,7 @@ make mrproper
 make headers_check O=$home/build ARCH=x86 || exit 8
 make headers_install O=$home/build ARCH=x86 \
  INSTALL_HDR_PATH=/tmp/$DIST-$PKG/usr || exit 9
-cp -R dest/include/* /tmp/$DIST-$PKG/usr/include/
+#cp -R include/* /tmp/$DIST-$PKG/usr/include/
 
 (cd /tmp/$DIST-$PKG/usr/include/
  find . \( -name .install -o -name ..install.cmd \) -delete
@@ -71,10 +71,10 @@ make -j 2 O=$home/build || exit 9
 #make O=$home/build INSTALL_MOD_PATH=/tmp/$DIST-$PKG/usr \
 #	modules_install || exit 12
 
-mkdir -p /tmp/$DIST-$PKG/boot/
+mkdir -p /tmp/$DIST-$PKG/boot/$VERSION/
 cp $home/build/System.map $home/build/arch/x86/boot/bzImage \
-	/tmp/$DIST-$PKG/boot/ || exit 13
-cp $home/build/.config /tmp/$DIST-$PKG/boot/config
+	/tmp/$DIST-$PKG/boot/$VERSION/ || exit 13
+cp $home/build/.config /tmp/$DIST-$PKG/boot/$VERSION/config
 #cp $home/grub /tmp/$DIST-$PKG/boot/$RELEASE/
 #make mrproper
 #(cd /tmp/$DIST-$PKG/usr/lib/modules/$VERSION/

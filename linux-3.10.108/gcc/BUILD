@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gcc
-VERSION=4.4.7
+VERSION=5.5.0
 ARCH=i486
 
 if test ! -w .
@@ -46,21 +46,7 @@ if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
 
-tar xjf $PKG-$VERSION.tar.bz2
-
-cd $PKG-$VERSION || exit 5
-# GCC 4.0.x --disable-libiberty: libiberty.a comes from binutils:
-sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
-
-# GCC 4.0.x --disable-bootstrap:
-sed -i 's/^XCFLAGS -$/& -fomit-frame-pointer/' gcc/Makefile.in
-
-# GCC 4.0.x suppress fixincludes:
-sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
-
-# GCC 4.0.x suppress mktemp test:
-sed -i 's/@have_mktemp_command@/yes/' gcc/gccbug.in
-cd ../
+tar xzf $PKG-$VERSION.tar.gz
 
 # unwind was originally disabled by Coredistro, but is needed by later glibc:
 mkdir build
@@ -75,7 +61,9 @@ CFLAGS="-Os -march=$ARCH" \
 	--enable-__cxa_atexit \
 	--enable-clocale=gnu \
 	--host=$ARCH-$DIST-linux-gnu \
+	--infodir=/usr/info \
 	--libexecdir=/usr/lib \
+	--mandir=/usr/man \
 	--prefix=/usr \
 	--target=$ARCH-$DIST-linux-gnu
 make || exit 6
@@ -83,7 +71,7 @@ make -k check #|| exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/
 rm -r /tmp/$DIST-$PKG/usr/man/man7/
 # c++filt was removed by Coredistro, but is missing in later GCC versions.
-rm /tmp/$DIST-$PKG/usr/bin/gccbug
+#rm /tmp/$DIST-$PKG/usr/bin/gccbug
 
 # This is provided by binutils:
 #rm /tmp/$DIST-$PKG/usr/lib/libiberty.a

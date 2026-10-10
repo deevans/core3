@@ -1,0 +1,11 @@
+--- build-aux/update-copyright.bkp
++++ build-aux/update-copyright
+@@ -124,7 +124,7 @@
+ use warnings;
+ 
+ my $copyright_re = 'Copyright';
+-my $circle_c_re = '(?:\([cC]\)|@copyright{}|&copy;)';
++my $circle_c_re = '(?:\([cC]\)|@copyright\{}|\\\\\(co|&copy;)';
+ my $holder = $ENV{UPDATE_COPYRIGHT_HOLDER};
+ $holder ||= 'Free Software Foundation, Inc.';
+ my $prefix_max = 5;

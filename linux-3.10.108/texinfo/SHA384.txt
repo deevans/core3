@@ -1,1 +1,1 @@
-d1fb408f5b504c3e29894503976ca6c1a4df7a1c7da0c594c618217758142f6bbc7a27a0eaba04a0db1b4f307ca77fde  texinfo-4.13a.tar.bz2
+2ff9c7b1aaab25af3889bbdd22eaf0485bff4a8a144973c56f4efcfda9f9b89cd94d5c834fb507b08272e9c6bfa8fdee  texinfo-6.1.tar.gz
