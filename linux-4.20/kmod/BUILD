@@ -16,7 +16,7 @@
 ARCH=i486
 DIST=deevans
 PKG=kmod
-VERSION=22
+VERSION=26
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 1
@@ -33,7 +33,7 @@ fi
 if test -f SHA256.txt
 then sha256sum -c SHA256.txt || exit 3
 fi
-tar xJf $PKG-$VERSION.tar.xz
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION/ || exit 4
 #zlib_CFLAGS="-I/usr/include" zlib_LIBS="-L/lib -lz" \
 #liblzma_CFLAGS="-I/usr/include" liblzma_LIBS="-L/lib -llzma" \

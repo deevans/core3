@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=bison
-VERSION=3.0.5
+VERSION=3.2.4
 ARCH=i486
 
 if test ! -w .
@@ -46,7 +46,8 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" \
+./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \

@@ -2,14 +2,14 @@ PKG=core_doc_sed$
 NAME=doc_sed$
 DESC=extra documentation for sed$
 
-MAJOR=4.2.2$
+MAJOR=4.7$
 MINOR=1$
 
 SRC_URL=ftp://ftp.gnu.org/gnu/sed/$
-SRC_DATE=dec 22 2012$
+SRC_DATE=dec 21 2018$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 6 2025$
+BIN_DATE=aug 10 2025$
 
 COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
 DEPENDS=$

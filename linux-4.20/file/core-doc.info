@@ -2,14 +2,14 @@ PKG=file-doc$
 NAME=file-doc$
 DESC=extra files for file$
 
-MAJOR=5.26$
+MAJOR=5.39$
 MINOR=1$
 
 SRC_URL=http://ftp.astron.com/pub/file/$
-SRC_DATE=apr 16 2016$
+SRC_DATE=jun 15 2020$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 6 2025$
+BIN_DATE=aug 10 2025$
 
 COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
 DEPENDS=$

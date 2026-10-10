@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=m4
-VERSION=1.4.19
+VERSION=1.4.20
 ARCH=i486
 
 if test ! -w .

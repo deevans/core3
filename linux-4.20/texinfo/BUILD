@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=texinfo
-VERSION=6.1
+VERSION=6.6
 ARCH=i486
 
 if test ! -w .

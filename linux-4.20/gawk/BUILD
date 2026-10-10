@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gawk
-VERSION=3.1.8
+VERSION=4.2.1
 ARCH=i486
 
 if test ! -w .
@@ -42,32 +42,42 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xjf $PKG-$VERSION.tar.bz2
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" \
+./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
         --mandir=/usr/man \
-	--prefix=/usr
+	--prefix=/usr \
+	--sysconfdir=/etc
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-rm /tmp/$DIST-$PKG/usr/bin/{,p}$PKG-$VERSION
+mkdir /tmp/$DIST-$PKG/usr/share/$PKG/
+mv /tmp/$DIST-$PKG/etc/ /tmp/$DIST-$PKG/usr/share/$PKG/
 
-for i in pgawk.1
-do rm /tmp/$DIST-$PKG/usr/man/man1/$i
-	echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/$i
-done
+rm /tmp/$DIST-$PKG/usr/bin/$PKG-$VERSION
+#rm /tmp/$DIST-$PKG/usr/bin/{,p}$PKG-$VERSION
+#for i in pgawk.1
+#do rm /tmp/$DIST-$PKG/usr/man/man1/$i
+#	echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/$i
+#done
+
+# Shouldn't the awk symlink be in base, so another Awk can be used?
 echo .so man1/gawk.1 > /tmp/$DIST-$PKG/usr/man/man1/awk.1
+
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
+
+mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
+mv /tmp/$DIST-$PKG/usr/man/man3/ /tmp/$DIST-$PKG-doc/usr/man/
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir
 then rm -f /tmp/$DIST-$PKG/usr/info/dir
 fi
-mkdir -p /tmp/$DIST-$PKG-doc/usr/
 mv /tmp/$DIST-$PKG/usr/info/ /tmp/$DIST-$PKG-doc/usr/
 bzip2 -9 /tmp/$DIST-$PKG-doc/usr/info/*
 

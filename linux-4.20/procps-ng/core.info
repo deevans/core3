@@ -2,14 +2,14 @@ PKG=procps-ng$
 NAME=procps-ng$
 DESC=process handling utilities$
 
-MAJOR=3.3.11$
+MAJOR=3.3.17$
 MINOR=1$
 
 SRC_URL=https://prdownloads.sf.net/procps-ng/$
-SRC_DATE=aug 9 2015$
+SRC_DATE=feb 9 2021$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 6 2025$
+BIN_DATE=aug 10 2025$
 
 COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
 DEPENDS=$

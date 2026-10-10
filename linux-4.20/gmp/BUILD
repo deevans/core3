@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gmp
-VERSION=6.1.0
+VERSION=6.1.2
 ARCH=i486
 
 if test ! -w .
@@ -45,7 +45,8 @@ fi
 tar xjf $PKG-$VERSION.tar.bz2
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" \
+./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \

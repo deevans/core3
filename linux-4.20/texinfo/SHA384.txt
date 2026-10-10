@@ -1,1 +1,1 @@
-2ff9c7b1aaab25af3889bbdd22eaf0485bff4a8a144973c56f4efcfda9f9b89cd94d5c834fb507b08272e9c6bfa8fdee  texinfo-6.1.tar.gz
+a1aa5abf6bba60c7f577d91640cdfaecf30307c946ec8623b536a4ba9bf6a4099f4e42732577723c6ba9ccc4f4be714f  texinfo-6.6.tar.gz

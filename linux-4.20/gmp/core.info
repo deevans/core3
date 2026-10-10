@@ -2,14 +2,14 @@ PKG=gmp$
 NAME=gmp$
 DESC=library for arbitrary precision arithmetic$
 
-MAJOR=6.1.0$
+MAJOR=6.1.2$
 MINOR=1$
 
-SRC_URL=htp://ftp.gnu.org/gnu/gmp/$
-SRC_DATE=nov 1 2015$
+SRC_URL=ftp://ftp.gnu.org/gnu/gmp/$
+SRC_DATE=dec 18 2016$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 6 2025$
+BIN_DATE=aug 10 2025$
 
 COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
 DEPENDS=$

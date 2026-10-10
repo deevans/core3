@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=tar
-VERSION=1.28
+VERSION=1.31
 ARCH=i486
 
 if test ! -w .
@@ -56,8 +56,6 @@ CFLAGS="-Os -march=$ARCH" FORCE_UNSAFE_CONFIGURE=1 ./configure \
 make || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-#mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-#cp ../tar.1 /tmp/$DIST-$PKG/usr/man/man1/
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man?/*.?
 
 if test -f /tmp/$DIST-$PKG/usr/info/dir

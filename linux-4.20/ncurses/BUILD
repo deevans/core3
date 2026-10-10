@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=ncurses
-VERSION=6.0
+VERSION=6.1
 ARCH=i486
 
 if test ! -w .
@@ -45,10 +45,6 @@ then sha384sum -c SHA384.txt || exit 4
 fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION/ || exit 5
-
-# Fixes build error with later Bash and ncurses 5.6-5.9:
-#sed -i '38s/`g/$(g/' include/MKhashsize.sh
-#sed -i '38s/`$/)/' include/MKhashsize.sh
 
 # Add ticlib for tack, removed in 5.7:
 CFLAGS="-Os -march=$ARCH" ./configure \

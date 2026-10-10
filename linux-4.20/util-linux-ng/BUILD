@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=util-linux
-VERSION=2.28.2
+VERSION=2.33.2
 ARCH=i486
 
 if test ! -w .
@@ -42,6 +42,7 @@ cd $PKG-$VERSION/ || exit 5
 CC=gcc CFLAGS="-Os -march=$ARCH" \
 ./configure \
 	--bindir=/usr/bin \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-bfs \
 	--disable-chfn-chsh \
 	--disable-ipcrm \

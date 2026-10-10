@@ -16,7 +16,7 @@
 ARCH=i486
 DIST=deevans
 PKG=mpc
-VERSION=1.0.3
+VERSION=1.2.1
 
 if test ! -w .
 then echo 'Cannot write to this directory!' 1>&2; exit 2

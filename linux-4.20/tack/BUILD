@@ -37,7 +37,7 @@ fi
 if test -f SHA1.txt
 then sha1sum -c SHA1.txt || exit 4
 fi
-tar xzf $PKG-$VERSION.tgz
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CPPFLAGS="-Os -march=$ARCH" CFLAGS="-Os -march=$ARCH" \

@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=procps-ng
-VERSION=3.3.11
+VERSION=3.3.17
 ARCH=i486
 
 if test ! -w .
@@ -38,11 +38,12 @@ if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
 tar xJf $PKG-$VERSION.tar.xz
-cd $PKG-$VERSION/ || exit 5
+cd procps-$VERSION/ || exit 5
 
 CFLAGS="-Os -march=$ARCH" \
-	./configure \
+./configure \
 	--build=$ARCH-$DIST-linux-gnu \
+	--disable-nls \
 	--mandir=/usr/man \
 	--prefix=/usr \
 	--sbindir=/usr/bin \
@@ -54,6 +55,14 @@ make install DESTDIR=/tmp/$DIST-$PKG/
 
 # Don't include sysctl.conf example as the man page is sufficient:
 rm -r /tmp/$DIST-$PKG/usr/share/
+
+# Because --disable-nls doesn't work:
+for i in de fr pl pt_BR sv uk
+do rm -r /tmp/$DIST-$PKG/usr/man/$i/
+done
+
+rm /tmp/$DIST-$PKG/usr/man/man1/procps.1
+echo .so man1/ps.1 > /tmp/$DIST-$PKG/usr/man/man1/procps.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/
@@ -71,4 +80,4 @@ else chown -R root: /tmp/$DIST-$PKG*/
 	corepkg -c /tmp/$DIST-$PKG/ && rm -r /tmp/$DIST-$PKG/
 	corepkg -c /tmp/$DIST-$PKG-doc/ && rm -r /tmp/$DIST-$PKG-doc/
 fi
-rm -r $PKG-$VERSION/
+rm -r procps-$VERSION/

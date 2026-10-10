@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=file
-VERSION=5.26
+VERSION=5.39
 ARCH=i486
 
 if test ! -w .
@@ -52,8 +52,6 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 make -j 2 || exit 6
 make install DESTDIR=/tmp/$DIST-$PKG/
 
-# Why does it install a blank directory?
-#rmdir /tmp/$DIST-$PKG/usr/man/man5/
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 
 mkdir -p /tmp/$DIST-$PKG-doc/usr/man/

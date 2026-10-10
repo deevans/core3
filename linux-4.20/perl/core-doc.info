@@ -2,14 +2,14 @@ PKG=core_doc_perl$
 NAME=doc_perl$
 DESC=extra documentation for perl$
 
-MAJOR=5.22.2$
+MAJOR=5.26.3$
 MINOR=1$
 
 SRC_URL=https://cpan.org/src/$
-SRC_DATE=apr 29 2016$
+SRC_DATE=nov 29 2018$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 6 2025$
+BIN_DATE=aug 10 2025$
 
 COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
 DEPENDS=$

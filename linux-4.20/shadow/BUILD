@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=shadow
-VERSION=4.4
+VERSION=4.6
 ARCH=i486
 
 if test ! -w .
@@ -40,7 +40,8 @@ fi
 tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
-CFLAGS="-Os -march=$ARCH" ./configure \
+CFLAGS="-Os -march=$ARCH" \
+./configure \
 	--bindir=/usr/bin \
 	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \

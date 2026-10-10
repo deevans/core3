@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=perl
-VERSION=5.22.2
+VERSION=5.26.3
 ARCH=i486
 
 if test ! -w .
@@ -106,18 +106,15 @@ mv /tmp/$DIST-$PKG/usr/lib/perl5/$VERSION/$ARCH-linux/*.pod \
 	/tmp/$DIST-$PKG-doc/usr/lib/perl5/$VERSION/$ARCH-linux/
 
 mkdir /tmp/$DIST-$PKG/usr/man/man1/
-for i in c2ph corelist cpan* enc{2xs,guess} h2{ph,xs} json_pp instmodsh
+for i in corelist cpan* enc{2xs,guess} h2{ph,xs} json_pp instmodsh
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
 for i in libnetcfg perl{,doc,ivp} piconv pl2pm pod{2*,checker,select}
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-for i in prove pstruct ptar{,diff,grep} shasum splain xsubpp zipdetails
+for i in prove ptar{,diff,grep} shasum splain xsubpp zipdetails
 do mv /tmp/$DIST-$PKG-doc/usr/man/man1/$i.1 /tmp/$DIST-$PKG/usr/man/man1/
 done
-
-rm /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
-echo .so c2ph.1 > /tmp/$DIST-$PKG/usr/man/man1/pstruct.1
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 find /tmp/$DIST-$PKG-doc/usr/man/ -type f -exec bzip2 -9 {} \;

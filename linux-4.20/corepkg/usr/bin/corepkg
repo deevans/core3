@@ -1,21 +1,19 @@
 #!/bin/sh
 # corepkg - The Core GNU/Linux Distro package manager.
 # Copyright 2003 Josh Devan <jd@eknitek.net>
-# Copyright 2011-2012, 2014-2017, 2020 David Egan Evans <sinuhe@gnu.org>
+# Copyright David Egan Evans <sinuhe@gnu.org>
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License along
-# with this program; if not, write to the Free Software Foundation, Inc.,
-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, see <https://www.gnu.org/licenses/>.
 
 # Based on CorePKG version 1
 
@@ -135,8 +133,8 @@ remove_pkg() { # [pkg] [dir]
 	sort -u "$DIR"/etc/core/$1.list > /tmp/"$1".$$
 	comm -12 /tmp/allpkgs.$$ /tmp/"$1".$$ > /tmp/rmfiles.$$
 	while read i
-	do rm "$DIR"/$i
-		rmdir -p $(dirname "$DIR"/$i) 2> /dev/null
+	do rm "$DIR"/"$i"
+		rmdir -p $(dirname "$DIR"/"$i") 2> /dev/null
 	done < /tmp/rmfiles.$$
 
 	if ! (test -d "$DIR"/var/log/removed_pkgs)

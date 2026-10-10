@@ -1,0 +1,21 @@
+PKG=python$
+NAME=python$
+DESC=python progamming language$
+
+MAJOR=3.4.10$
+MINOR=1$
+
+SRC_URL=https://python.org/ftp/python/$MAJOR/$
+SRC_DATE=mar 18 2019$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=aug 11 2025$
+
+COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+DEPENDS=zlib$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

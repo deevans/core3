@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=flex
-VERSION=2.6.0
+VERSION=2.6.4
 ARCH=i486
 
 if test ! -w .
@@ -40,7 +40,7 @@ fi
 if test -f SHA384.txt
 then sha384sum -c SHA384.txt || exit 4
 fi
-tar xJf $PKG-$VERSION.tar.xz
+tar xzf $PKG-$VERSION.tar.gz
 cd $PKG-$VERSION || exit 5
 
 CFLAGS="-Os -march=$ARCH" \
@@ -53,12 +53,14 @@ CFLAGS="-Os -march=$ARCH" \
 make || exit 6
 mkdir -p /tmp/$DIST-$PKG/usr/{bin,man}
 make install DESTDIR=/tmp/$DIST-$PKG/
+
+# Should this be in core_base?
 cp ../lex /tmp/$DIST-$PKG/usr/bin/
+echo .so man1/flex.1 > /tmp/$DIST-$PKG/usr/man/man1/lex.1
 
 rm -r /tmp/$DIST-$PKG/usr/share/
 rm /tmp/$DIST-$PKG/usr/lib/*.la
 
-echo .so man1/flex.1 > /tmp/$DIST-$PKG/usr/man/man1/lex.1
 echo .so man1/flex.1 > /tmp/$DIST-$PKG/usr/man/man1/flex++.1
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

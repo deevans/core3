@@ -52,10 +52,10 @@ for i in cdrom floppy remote
 do mkdir -p /tmp/$DIST-$PKG/mnt/$i
 done
 
-cp -Rdp etc/ dev/ root/ run/ usr/ var/ /tmp/$DIST-$PKG/
+cp -Rdp etc/ root/ run/ usr/ var/ /tmp/$DIST-$PKG/
 mkdir -m 700 -p /tmp/$DIST-$PKG/var/lock/
-mkdir -m 755 /tmp/$DIST-$PKG/dev/pts/
-chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
+mkdir -pm 755 /tmp/$DIST-$PKG/dev/pts/
+#chgrp tty /tmp/$DIST-$PKG/dev/{console,ptmx,tty}
 
 # This assumes the move of bash from /bin/bash to /usr/bin/bash:
 (cd /tmp/$DIST-$PKG/usr/bin/

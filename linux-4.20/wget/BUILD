@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=wget
-VERSION=1.17.1
+VERSION=1.20.3
 ARCH=i486
 
 if test ! -w .
@@ -47,14 +47,16 @@ fi
 tar xzf $PKG-$VERSION.tar.gz || exit 5
 cd $PKG-$VERSION/ || exit 6
 
-# Are we getting to a point yet where TLS is a necessary dependency?
-CFLAGS="-Os -march=$ARCH" ./configure \
+# --with-ssl=no disabled TLS building:
+CFLAGS="-Os -march=$ARCH" \
+./configure \
+	--build=$ARCH-$DIST-linux-gnu \
 	--disable-nls \
 	--infodir=/usr/info \
 	--mandir=/usr/man \
 	--prefix=/usr \
-	--with-ssl=no \
-	$ARCH-$DIST-linux-gnu
+	--with-ssl=openssl
+
 make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG/
 

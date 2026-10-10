@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=sysvinit
-VERSION=2.90
+VERSION=2.99
 ARCH=i486
 
 if test ! -w .
