@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=binutils
-VERSION=2.31.1
+VERSION=2.35.2
 ARCH=i486
 
 if test ! -w .

@@ -24,7 +24,7 @@ pkgs/core_lilo-24.2+1.cpk: upgraded.
   24.2 requires dev86 0.16.14 or better.
 pkgs/dev86-0.16.21+1.cpk: added.
   0.16.12 changes the name to dev86. Allow for inclusion of bcc and ELKS.
-  This increases the x86 target footprint back to 8086. This build is
+  This increases the x86 target footprint back to 8086, and perhaps
   makes a future foundation for continuing to use 80386 (and earlier)
   native builds.
 
@@ -48,7 +48,7 @@ pkgs/optional/core_doc_make-4.3+1.cpk: upgraded.
 pkgs/core_pkgs/core_nano-3.2+1.cpk: upgraded.
 pkgs/optional/core_doc_nano-3.2+1.cpk: upgraded.
 pkgs/optional/nano-rc-3.2+1.cpk: added.
-pkgs/core_nasm-2.13.03+1.cpk: upgraded.
+pkgs/core_nasm-2.15.05+1.cpk: upgraded.
 pkgs/core_net-tools-1.60+1.cpk: rebuilt.
 pkgs/inetutils-1.8+cpk: added.
   Replaces netkit. Only the equivalents are included.
@@ -118,8 +118,8 @@ pkgs/pkg-config-0.29.2+1.cpk: added.
   Devin's Core decided not to use libtool, but pkg-config seems so
   universal (and required by some packages) that it was decided to
   include it.
-pkgs/pkgs/pkgs/core_wget-1.20.3+1.cpk: upgraded.
-pkgs/optional/core_doc_wget-1.20.3+1.cpk: upgraded.
+pkgs/pkgs/pkgs/core_wget-1.25.0+1.cpk: upgraded.
+pkgs/optional/core_doc_wget-1.25.0+1.cpk: upgraded.
 core_which-2.23+1.cpk: upgraded.
 pkgs/optional/core_doc_which-2.23+1.cpk: upgraded.
   The dir file registration was broken in earlier editions. The man
@@ -168,7 +168,7 @@ pkgs/core_procps-3.0.4+1.cpk: removed.
 pkgs/kmod-26+1.cpk: added.
   kmod replaces module-init-tools 3.16, which replaced modutils.
 pkgs/core_modutils-2.4.21+1.cpk: removed.
-pkgs/core_glibc-2.28+1.cpk: upgraded.
+pkgs/core_glibc-2.33+1.cpk: upgraded.
   NPTL replaces pthreads for Linux 2.4. This requires i486 builds, so
   through kernel 3.7, 80386 builds *require* no threading support. It
   is decided to abandon i386, especially where this is removed from
@@ -190,12 +190,11 @@ pkgs/core_glibc-2.28+1.cpk: upgraded.
 
   Version 2.7 had issues in one place with -Os, so '-g -O2' was
   used since that version.
-pkgs/optional/core_doc_glibc-2.28.1+1.cpk: upgraded.
-pkgs/optional/core_glibc-i18n-2.28+1.cpk: upgraded.
-pkgs/core_gcc-7.5.0+1.cpk: upgraded.
-pkgs/optional/core_doc_gcc-7.5.0+1.cpk: upgraded.
-  GNU doesn't bother with man pages, favoring info. Several man pages
-  are missing, and need to be added for completeness.
+pkgs/optional/core_doc_glibc-2.33.1+1.cpk: upgraded.
+pkgs/optional/core_glibc-i18n-2.33+1.cpk: upgraded.
+pkgs/core_gcc-8.5.0+1.cpk: upgraded.
+pkgs/optional/core_doc_gcc-8.5.0+1.cpk: upgraded.
+  Man pages are missing. TODO: add them.
 pkgs/mpc-1.2.1+1.cpk: added.
   This is a dependency of GCC 5.
 pkgs/mpfr-4.1.1+1.cpk: added.
@@ -204,7 +203,7 @@ pkgs/optional/mpfr-doc-4.1.1+1.cpk: added.
 pkgs/gmp-6.1.2+1.cpk: added.
   A dependency of GCC 4.4.
 pkgs/optional/gmp-doc-6.1.0+1.cpk: added.
-pkgs/core_binutils-2.31.1+1.cpk: upgraded.
+pkgs/core_binutils-2.35.2+1.cpk: upgraded.
   Manual pages and info manuals are uncompressed in Josh Devan's Core.
   Switch to gzip compression, then bzip2. I'm not a fan of xz, due to
   known decompression integrity issues (though rarely seen from
@@ -216,7 +215,7 @@ pkgs/core_binutils-2.31.1+1.cpk: upgraded.
   to binary stripping of debug and related symbols. Optimizing is for size,
   e.g. -Os: storage is a big deal for small systems. LFS suggested
   CC="gcc -s".
-pkgs/optional/core_doc_binutils-2.31.1+1.cpk: upgraded.
+pkgs/optional/core_doc_binutils-2.35.2+1.cpk: upgraded.
 pkgs/base/core_base-1+1.cpk: added.
   Move to base/ subdirectory to facilitate upgrade based installations,
   and to avoid clobbering existing installs by accident, though an

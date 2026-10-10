@@ -60,7 +60,7 @@ cd $PKG-$VERSION || exit 7
 	-Dinstallprefix=/tmp/$DIST-$PKG/usr \
 	-Uinstallusrbinperl \
 	-Darchname=$ARCH-linux \
-	-Dinc_version_list='5.22.2' \
+	-Dinc_version_list='5.26.3' \
 	-Doptimize="-Os -march=$ARCH"
 make || exit 8
 make test #|| exit 9

@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=nasm
-VERSION=2.13.03
+VERSION=2.15.05
 ARCH=i486
 
 if test ! -w .
@@ -47,12 +47,8 @@ CFLAGS="-Os -march=$ARCH" ./configure \
 	--prefix=/usr
 make || exit 6
 make strip || exit 7
-make install INSTALLROOT=/tmp/$DIST-$PKG/
-
-#mkdir -p /tmp/$DIST-$PKG/usr/{bin,man}/
-#mkdir -p /tmp/$DIST-$PKG/usr/man/man1/
-#cp nasm ndisasm /tmp/$DIST-$PKG/usr/bin/
-#cp nasm.1 ndisasm.1 /tmp/$DIST-$PKG/usr/man/man1/
+#make install INSTALLROOT=/tmp/$DIST-$PKG/
+make install DESTDIR=/tmp/$DIST-$PKG/
 
 find /tmp/$DIST-$PKG/usr/man/ -type f -exec bzip2 -9 {} \;
 

@@ -9,9 +9,9 @@ SRC_URL=https://www.multiprecision.org/mpc/download/$
 SRC_DATE=oct 23 2020$
 
 BIN_URL=https://oberon07.com/dee/software/linux/$
-BIN_DATE=aug 10 2025$
+BIN_DATE=aug 13 2025$
 
-COMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$
+COMPILE=linux 4.20, glibc 2.33, gcc 8.5.0, binutils 2.35.2$
 DEPENDS=$
 RELATED=$
 

@@ -10,8 +10,8 @@ n=1 # Start exit at 2
 for i in $*
 do
 	(echo "==== $i ===="; cd $i
-	 sed -i '/^BIN_DATE/ cBIN_DATE=aug 10 2025$' *.info
-	 sed -i '/^COMPILE/ cCOMPILE=linux 4.20, glibc 2.28, gcc 7.5.0, binutils 2.31.1$' *.info
+	 sed -i '/^BIN_DATE/ cBIN_DATE=aug 13 2025$' *.info
+	 sed -i '/^COMPILE/ cCOMPILE=linux 4.20, glibc 2.33, gcc 8.5.0, binutils 2.35.2$' *.info
 		bash BUILD) \
 			|| n="$(expr $n + 1)" exit $n
 done

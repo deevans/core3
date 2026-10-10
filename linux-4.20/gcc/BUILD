@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=gcc
-VERSION=7.5.0
+VERSION=8.5.0
 ARCH=i486
 
 if test ! -w .

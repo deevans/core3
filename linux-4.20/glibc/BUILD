@@ -16,7 +16,7 @@
 
 DIST=deevans
 PKG=glibc
-VERSION=2.28
+VERSION=2.33
 ARCH=i486
 
 if test ! -w .
@@ -70,7 +70,7 @@ echo "CFLAGS += -march=i486 -fomit-frame-pointer -Os -pipe" > configparms
 	--disable-nls \
 	--disable-werror \
 	--enable-add-ons \
-	--enable-kernel=3.10 \
+	--enable-kernel=4.20 \
 	--enable-obsolete-rpc \
 	--host=$ARCH-$DIST-linux-gnu \
 	--infodir=/usr/info \
@@ -81,7 +81,6 @@ echo "CFLAGS += -march=i486 -fomit-frame-pointer -Os -pipe" > configparms
 	--without-selinux
 
 make || exit 6
-#make install install_root=/tmp/$DIST-$PKG/
 make install DESTDIR=/tmp/$DIST-$PKG/
 
 # Don't keep rpc or ld cache file:

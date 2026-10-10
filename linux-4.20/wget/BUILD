@@ -15,7 +15,7 @@
 
 DIST=deevans
 PKG=wget
-VERSION=1.20.3
+VERSION=1.25.0
 ARCH=i486
 
 if test ! -w .
