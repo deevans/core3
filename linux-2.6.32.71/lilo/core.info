@@ -1,0 +1,21 @@
+PKG=core_lilo$
+NAME=lilo$
+DESC=linux boot loader$
+
+MAJOR=24.2$
+MINOR=1$
+
+SRC_URL=https://www.joonet.de/sources/lilo/$
+SRC_DATE=nov 22 2015$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 19 2025$
+
+COMPILE=linux 2.6.32.71, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
+DEPENDS=dev86 0.16.18$
+RELATED=$
+
+INSTALL=$
+REMOVE=$
+
+NOTES=$

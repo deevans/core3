@@ -1,0 +1,21 @@
+PKG=util-linux-ng-doc$
+NAME=util-linux-ng-doc$
+DESC=extra documentation for util-linux-ng$
+
+MAJOR=2.17.2$
+MINOR=1$
+
+SRC_URL=https://kernel.org/pub/linux/utils/util-linux/$
+SRC_DATE=mar 22 2010$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 19 2025$
+
+COMPILE=linux 2.6.32.71, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
+DEPENDS=e2fsprogs$
+RELATED=$
+
+INSTALL=install-info /usr/info/ipc.info.bz2 /usr/info/dir$
+REMOVE=install-info --delete /usr/info/ipc.info.bz2 /usr/info/dir$
+
+NOTES=$

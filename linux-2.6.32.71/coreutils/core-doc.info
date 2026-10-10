@@ -1,0 +1,21 @@
+PKG=coreutils-doc$
+NAME=coreutils-doc$
+DESC=extra documentation for coreutils$
+
+MAJOR=8.13$
+MINOR=1$
+
+SRC_URL=ftp://ftp.gnu.org/gnu/textutils/$
+SRC_DATE=sep 8 2011$
+
+BIN_URL=https://oberon07.com/dee/software/linux/$
+BIN_DATE=jul 19 2025$
+
+COMPILE=linux 2.6.32.71, glibc 2.11.1, gcc 4.4.7, binutils 2.20.1$
+DEPENDS=$
+RELATED=$
+
+INSTALL=install-info /usr/info/coreutils.info.bz2 /usr/info/dir$
+REMOVE=install-info /usr/info/coreutils.info.bz2 /usr/info/dir --delete$
+
+NOTES=$
