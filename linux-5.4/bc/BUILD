@@ -65,7 +65,7 @@ LANGUAGE=C
 LANG=C
 LC_ALL=C
 export LANG LANGUAGE LC_ALL # For Perl
-make || exit 1
+make || exit 7
 make install DESTDIR=/tmp/$DIST-$PKG
 bzip2 -9 /tmp/$DIST-$PKG/usr/man/man1/*.1
 
