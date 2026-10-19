@@ -48,9 +48,6 @@ then sha384sum -c SHA384.txt || exit 4
 fi
 tar xjf $PKG-$VERSION.tar.bz2
 
-cd $PKG-$VERSION/
-
-cd ..
 mkdir $PKG-build && cd $PKG-build || exit 5
 
 CC=gcc CFLAGS="-Os -march=$ARCH" \
